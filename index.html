@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <script type="text/javascript" src="fi.js"></script>
+        <script type="text/javascript" src="verbs.js"></script>
+        <script type="text/javascript" src="vampiro.js"></script>
+        <title>Cafax</title>
+    </head>
+    <body>
+        <div id="dvTop">
+                <table width="100%"><tr>
+                        <td align="left"><div id="dvTitle"></div></td>
+                        <td align="right"><div style="font-style:italic; color:gray" id="dvId"></div></td>
+                </tr></table>
+        </div>
+        <div id="dvIntro" style="display:block" onSubmit="return ctrl.boot();">
+                <form id="frmIntro" action="submit">
+                        <input type="image" id="btBoot" class="btn"
+                               alt="enter" width="32" height="32"
+                               src="res/enter.png"
+                               onClick="return ctrl.boot();">
+                </form>
+        </div>
+        <div id="dvFi" style="display:none">
+                <div id="dvFrame">
+                      <table width="100%">
+                        <tr>
+                                <td align="left">
+                                <map name="compas_map">
+                                        <area shape="rect" coords="20,0,60,25" href="javascript:ctrl.inject('n')">
+                                        <area shape="rect" coords="0,30,25,60" href="javascript:ctrl.inject('o')">
+                                        <area shape="rect" coords="60,30,85,60" href="javascript:ctrl.inject('e')">
+                                        <area shape="rect" coords="30,60,60,85" href="javascript:ctrl.inject('s')">
+                                </map>
+                              <img src="res/compas.png" usemap="#compas_map"></td>
+                              <td align="center" rowspan="2"><div id="dvPic"></div></td>
+                        </tr>
+                      </table>
+                </div>
+                <div id="dvDesc" style="color:green">
+                </div>
+                <p>
+                <div id="dvAnswer">
+                </div>
+                <p>
+                <div id="dvContextMenu" style="display:none">
+                       <!-- <hr>
+                        <h1>UALAAAAHHHH!!!!</h1>-->
+                </div>
+                <div id="dvActs">
+                        <table><tr>
+                        <td>
+                        <img id="btInv" alt="inv" width="16" height="16"
+                                        style="vertical-align:middle;"
+                                        src="res/inv.png"
+                                        onClick="ctrl.inject( 'inv' ); return false;">
+                        </td>
+                        <td>
+                        <img id="btEx" alt="ex" width="16" height="16"
+                                        style="vertical-align:middle;"
+                                        src="res/ex.png"
+                                        onClick="ctrl.inject( 'examina ', false ); return false;">
+                        </td>
+                        <td>
+                        <img id="btExits" alt="exits" width="16" height="16"
+                                        style="vertical-align:middle;"
+                                        src="res/compass.png"
+                                        onClick="ctrl.inject( 'exits' ); return false;">
+                        </td>
+                        <td>
+                        <img id="btTake" alt="take" width="24" height="24"
+                                        style="vertical-align:middle;"
+                                        src="res/take.png"
+                                        onClick="ctrl.inject( 'coge ', false ); return false;">
+                        </td>
+                        <td>
+                        <img id="btDrop" alt="drop" width="24" height="24"
+                                        style="vertical-align:middle;"
+                                        src="res/drop.png"
+                                        onClick="ctrl.inject( 'deja ', false ); return false;">
+                        </td>
+                        </tr></table>
+                </div>
+                <div id="dvInput" style="width:100%;display:block">
+                    <table width="100%"><tr>
+                    <form id="frmInput" action="submit" onsubmit="return parser.doParse();">
+                        <td align="left">
+                        &gt; <input type="text" class="txt" size="40"
+                                maxLength="80" id="edInput"
+                                placeholder="Tu orden..."
+                                style="width:85%;color:black;background-color:white;border:none">
+                        </td>
+                        <td align="right"><table><tr>
+							<td>
+							<img id="btSend" alt="enter" width="16" height="16"
+									style="vertical-align:middle;"
+									src="res/enter.png"
+									onClick="return parser.doParse();">
+							</td>
+							<td>
+							<img id="btReset" alt="reset" width="16" height="16"
+									style="vertical-align:middle;"
+									src="res/del.png"
+									onClick="document.forms['frmInput'].reset();document.getElementById( 'edInput' ).focus();">
+							</td>
+						</tr></table></td>
+                    </form>
+                    </tr></table>
+                </div>
+                <div id="dvError">
+                </div>
+        </div>
+        <script>
+            ctrl.start();
+	    document.getElementById( "btBoot" ).focus();
+        </script>
+    </body>
+</html>
