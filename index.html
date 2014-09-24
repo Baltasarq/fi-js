@@ -29,10 +29,10 @@
                         <tr>
                                 <td align="left">
                                 <map name="compas_map">
-                                        <area shape="rect" coords="20,0,60,25" href="javascript:ctrl.inject('n')">
-                                        <area shape="rect" coords="0,30,25,60" href="javascript:ctrl.inject('o')">
-                                        <area shape="rect" coords="60,30,85,60" href="javascript:ctrl.inject('e')">
-                                        <area shape="rect" coords="30,60,60,85" href="javascript:ctrl.inject('s')">
+                                        <area shape="rect" coords="20,0,60,25" onClick="javascript:ctrl.inject('n'); return false">
+                                        <area shape="rect" coords="0,30,25,60" onClick="javascript:ctrl.inject('o'); return false">
+                                        <area shape="rect" coords="60,30,85,60" onClick="javascript:ctrl.inject('e'); return false">
+                                        <area shape="rect" coords="30,60,60,85" onClick="javascript:ctrl.inject('s'); return false">
                                 </map>
                               <img src="res/compas.png" usemap="#compas_map"></td>
                               <td align="center" rowspan="2"><div id="dvPic"></div></td>
@@ -49,41 +49,41 @@
                        <!-- <hr>
                         <h1>UALAAAAHHHH!!!!</h1>-->
                 </div>
-                <div id="dvActs">
-                        <table><tr>
-                        <td>
-                        <img id="btInv" alt="inv" width="16" height="16"
-                                        style="vertical-align:middle;"
-                                        src="res/inv.png"
-                                        onClick="ctrl.inject( 'inv' ); return false;">
-                        </td>
-                        <td>
-                        <img id="btEx" alt="ex" width="16" height="16"
-                                        style="vertical-align:middle;"
-                                        src="res/ex.png"
-                                        onClick="ctrl.inject( 'examina ', false ); return false;">
-                        </td>
-                        <td>
-                        <img id="btExits" alt="exits" width="16" height="16"
-                                        style="vertical-align:middle;"
-                                        src="res/compass.png"
-                                        onClick="ctrl.inject( 'exits' ); return false;">
-                        </td>
-                        <td>
-                        <img id="btTake" alt="take" width="24" height="24"
-                                        style="vertical-align:middle;"
-                                        src="res/take.png"
-                                        onClick="ctrl.inject( 'coge ', false ); return false;">
-                        </td>
-                        <td>
-                        <img id="btDrop" alt="drop" width="24" height="24"
-                                        style="vertical-align:middle;"
-                                        src="res/drop.png"
-                                        onClick="ctrl.inject( 'deja ', false ); return false;">
-                        </td>
-                        </tr></table>
-                </div>
                 <div id="dvInput" style="width:100%;display:block">
+					<div id="dvActs">
+							<table><tr>
+							<td>
+							<img id="btInv" alt="inv" width="16" height="16"
+											style="vertical-align:middle;"
+											src="res/inv.png"
+											onClick="ctrl.inject( 'inv' ); return false;">
+							</td>
+							<td>
+							<img id="btEx" alt="ex" width="16" height="16"
+											style="vertical-align:middle;"
+											src="res/ex.png"
+											onClick="ctrl.inject( 'examina ', false ); return false;">
+							</td>
+							<td>
+							<img id="btExits" alt="exits" width="16" height="16"
+											style="vertical-align:middle;"
+											src="res/compass.png"
+											onClick="ctrl.inject( 'exits' ); return false;">
+							</td>
+							<td>
+							<img id="btTake" alt="take" width="24" height="24"
+											style="vertical-align:middle;"
+											src="res/take.png"
+											onClick="ctrl.inject( 'coge ', false ); return false;">
+							</td>
+							<td>
+							<img id="btDrop" alt="drop" width="24" height="24"
+											style="vertical-align:middle;"
+											src="res/drop.png"
+											onClick="ctrl.inject( 'deja ', false ); return false;">
+							</td>
+							</tr></table>
+					</div>
                     <table width="100%"><tr>
                     <form id="frmInput" action="submit" onsubmit="return parser.doParse();">
                         <td align="left">

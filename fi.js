@@ -591,7 +591,7 @@ var ctrl = ( function() {
 
     function endGame(msg, pic)
     {
-        var frmInput = getHtmlPart( "frmInput", "missing input div" );
+        var dvInput = getHtmlPart( "dvInput", "missing input div" );
         var dvDesc = getHtmlPart( "dvDesc", "missing desc div" );
         var dvPic = getHtmlPart( "dvPic", "missing pic div" );
         var dvId = getHtmlPart( "dvId", "missing id div" );
@@ -605,7 +605,7 @@ var ctrl = ( function() {
         }
 
         // Eliminate input possibilities and extra stuff
-        frmInput.style.display = "none";
+        dvInput.style.display = "none";
         dvId.style.display = "none";
         ctrl.media.audio.stop();
 

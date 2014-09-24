@@ -1,6 +1,12 @@
+// vampiro.js
 /*
 	generado por FI.JS@txtMap, v0.1/ v0.6 20140612
 	Sun Aug 31 22:46:09 2014
+
+        * Adaptado para fi.js, como demo.
+
+        (c) Jaume Alcazo Castellarnau 1998
+        (c) baltasarq 2014
 
 */
 
@@ -27,52 +33,53 @@ ctrl.ponVersion( "20140831" );
 var locBiblioteca = ctrl.lugares.creaLoc(
 	"Biblioteca",
 	[ "biblioteca" ],
-	"\nTe hallas en la biblioteca del castillo. Obviamente está \
+	"Te hallas en la biblioteca del castillo. Obviamente está \
         llena de ${libros, ex libros} interesantes, pero \
         desgraciadamente no tienes \
-        tiempo para leerlos.\nSalidas visibles: ${oeste, oeste}."
+        tiempo para leerlos.<br>Salidas visibles: ${oeste, oeste}."
 );
 locBiblioteca.pic = "res/biblioteca.jpg";
 
 var locCocina = ctrl.lugares.creaLoc(
 	"Cocina",
-	[ "cocina" ],
-	"\nEstás en la cocina del castillo. Esto está lleno de \
+	[ "cocina", "habitacion", "estancia" ],
+	"Estás en la cocina del castillo. Esto está lleno de \
         ${cacerolas, ex cacerolas} y de ${cacharros, ex cacharros} \
         para cocinar. Hay un ${horno, ex horno}, un \
         ${fregadero, ex fregadero} y un ${armario, ex armario} pequeño.\
-        \nSalidas visibles: \
+        <br>Salidas visibles: \
         ${este, este}."
 );
 locCocina.pic = "res/cocina.jpg";
 
 var locDormitorio = ctrl.lugares.creaLoc(
 	"Dormitorio",
-	[ "dormitorio" ],
-	"\nEstás en un dormitorio no muy grande ni tampoco muy pequeño. \
+	[ "dormitorio", "habitacion", "estancia" ],
+	"Estás en un dormitorio no muy grande ni tampoco muy pequeño. \
         Es bastante austero. Sólo hay una ${cama, ex cama} \
         y un ${armario, ex armario}.\
-        \nSalidas visibles: ${este, este}."
+        <br>Salidas visibles: ${este, este}."
 );
 locDormitorio.pic = "res/dormitorio.jpg";
 
 
 var locElFinal = ctrl.lugares.creaLoc(
 	"El Final",
-	[ "el final" ],
-	"\nEstás en una habitación desnuda. Unicamente hay un \
-         ${altar, ex altar} en el centro. Encima del altar puedes ver \
-         un ataud.\nSalidas visibles: ${este, este}."
+	[ "habitacion", "estancia" ],
+	"Estás en una habitación desnuda. Unicamente hay un \
+         ${altar, ex altar} en el centro. \
+         Encima del altar puedes ver un ${ataud, ex ataud}.\
+         <br>Salidas visibles: ${este, este}."
 );
 locElFinal.pic = "res/final.jpg";
 
 var locEscaleras = ctrl.lugares.creaLoc(
 	"Escaleras",
 	[ "escaleras" ],
-	"\nTe hallas en el final del pasillo. Delante de tí ves unas \
+	"Te hallas en el final del pasillo. Delante de tí ves unas \
         escaleras que ${suben, sube} y otras que ${bajan, baja}. \
         Al ${oeste, oeste} está el ${dormitorio, oeste} y al ${este, este} \
-        la ${sala de estar, este}.\nSalidas visibles: \
+        la ${sala de estar, este}.<br>Salidas visibles: \
         ${sur, sur}, ${este, este}, ${oeste, oeste}, \
         ${arriba, arriba}, ${abajo, abajo}."
 );
@@ -80,22 +87,22 @@ locEscaleras.pic = "res/escaleras.jpg";
 
 var locEscalerasSuperiores = ctrl.lugares.creaLoc(
 	"Escaleras superiores",
-	[ "escaleras superiores" ],
-	"\nEstás en el piso superior del castillo. Aquí hace aún más \
+	[ "escaleras", "rellano" ],
+	"Estás en el piso superior del castillo. Aquí hace aún más \
         frío que ${abajo, abajo}. Detrás de tí están las \
         escaleras que ${bajan, baja} y \
         hacia el ${oeste, oeste} está la ${habitación, oeste} del \
-        vampiro.\nSalidas visibles: ${oeste, oeste}, ${abajo, abajo}."
+        vampiro.<br>Salidas visibles: ${oeste, oeste}, ${abajo, abajo}."
 );
 locEscalerasSuperiores.pic = "res/escaleras_superiores.jpg";
 
 var locPasillo = ctrl.lugares.creaLoc(
 	"Pasillo",
 	[ "pasillo" ],
-	"\nTe encuentras en medio del pasillo principal de este piso. \
+	"Te encuentras en medio del pasillo principal de este piso. \
          Al ${oeste, oeste} está la ${cocina, oeste} y al ${este, este} \
          la ${biblioteca, este}. El pasillo sigue hacia el \
-         ${norte, norte}.\nSalidas visibles: \
+         ${norte, norte}.<br>Salidas visibles: \
          ${norte, norte}, ${sur, sur}, ${este, este}, ${oeste, oeste}."
 );
 locPasillo.pic = "res/pasillo.jpg";
@@ -103,61 +110,74 @@ locPasillo.pic = "res/pasillo.jpg";
 
 var locSalaDeEstar = ctrl.lugares.creaLoc(
 	"Sala de estar",
-	[ "sala de estar" ],
-	"\nEs la sala más acogedora de todo el castillo. \
+	[ "sala", "habitacion", "estancia" ],
+	"Es la sala más acogedora de todo el castillo. \
         En la ${chimenea, ex chimenea} \
         los últimos ${restos de algún fuego, ex fuego} \
         chisporrotean alegremente. \
         Hay una ${mesa, ex mesa} grande con una ${silla, ex silla} al \
         lado. De la pared cuelgan \
         bastantes ${trofeos, ex trofeos} de caza y \
-        ${adornos, ex adornos} varios.\nSalidas visibles: \
+        ${adornos, ex adornos} varios.<br>Salidas visibles: \
         ${oeste, oeste}.\n"
 );
 locSalaDeEstar.pic = "res/sala_estar.jpg";
 
-var locSTano = ctrl.lugares.creaLoc(
+var locSotano = ctrl.lugares.creaLoc(
 	"Sótano",
-	[ "sótano" ],
-	"\nEn este pequeño sótano hace mucho calor, sientes una \
+	[ "sotano" ],
+	"En este pequeño sótano hace mucho calor, sientes una \
         sensación de recogimiento. Está todo muy sucio. Hay un \
         ${barril, ex barril} \
         aquí, también hay unas ${escaleras, ex escaleras} que \
-        ${suben, arriba}.\nSalidas visibles: \
+        ${suben, arriba}.<br>Salidas visibles: \
         ${arriba, arriba}.\n"
 );
-locSTano.pic = "res/sotano.jpg";
+locSotano.pic = "res/sotano.jpg";
 
-var locVestBulo = ctrl.lugares.creaLoc(
+var locVestibulo = ctrl.lugares.creaLoc(
 	"Vestíbulo",
-	[ "vestíbulo" ],
-	"\nEstás en el vestíbulo del castillo. El ambiente es muy \
+	[ "vestibulo", "habitacion", "estancia" ],
+	"Estás en el vestíbulo del castillo. El ambiente es muy \
         húmedo y frío. Estás en un pasillo que se extiende hacia el \
         ${norte, norte}. Al ${sur, sur} queda la \
-        ${puerta de entrada, ex puerta} al castillo.\nSalidas \
+        ${puerta de entrada, ex puerta} al castillo.<br>Salidas \
         visibles: ${norte, norte}.\n"
 );
-locVestBulo.pic = "res/vestibulo.jpg";
+locVestibulo.pic = "res/vestibulo.jpg";
+
+locVestibulo.preGo = function() {
+        var loc = ctrl.lugares.devLocActual();
+        var s = parser.sentencia;
+        var toret = "";
+
+        if ( s.term1 !== "sur" ) {
+                toret = acciones.devAccion( "go" ).exe( s, loc );
+        } else {
+                toret = objPuertaEntrada.desc;
+        }
+
+        return toret;
+}
 
 var objPuertaEntrada = ctrl.creaObj(
 	"puerta",
 	[ "entrada" ],
 	"No es el momento de irse, ¡acabas de llegar! Debes cumplir \
          tu misión.",
-	locVestBulo,
+	locVestibulo,
 	Ent.Escenario
 );
+
+objPuertaEntrada.preOpen = function() {
+        return objPuertaEntrada.desc;
+}
 
 
 // *** Compas --
 
-
 // -- locBiblioteca
 locBiblioteca.ponSalidaBi( "oeste", locPasillo );
-
-// -- locCocina
-
-// -- locDormitorio
 
 // -- locElFinal
 locElFinal.ponSalidaBi( "este", locEscalerasSuperiores );
@@ -166,31 +186,29 @@ locElFinal.ponSalidaBi( "este", locEscalerasSuperiores );
 locEscaleras.ponSalidaBi( "este", locSalaDeEstar );
 locEscaleras.ponSalidaBi( "oeste", locDormitorio );
 locEscaleras.ponSalidaBi( "arriba", locEscalerasSuperiores );
-locEscaleras.ponSalidaBi( "abajo", locSTano );
+locEscaleras.ponSalidaBi( "abajo", locSotano );
 
 // -- locEscalerasSuperiores
 locEscalerasSuperiores.ponSalidaBi( "oeste", locElFinal );
 
 // -- locPasillo
 locPasillo.ponSalidaBi( "norte", locEscaleras );
-locPasillo.ponSalidaBi( "sur", locVestBulo );
+locPasillo.ponSalidaBi( "sur", locVestibulo );
 locPasillo.ponSalidaBi( "este", locBiblioteca );
 locPasillo.ponSalidaBi( "oeste", locCocina );
 
 // -- locSalaDeEstar
 locSalaDeEstar.ponSalidaBi( "oeste", locEscaleras );
 
-// -- locSTano
-
-// -- locVestBulo
-locVestBulo.ponSalidaBi( "norte", locPasillo );
+// -- locVestibulo
+locVestibulo.ponSalidaBi( "norte", locPasillo );
 
 
 // *** Objs --
 
 var objAdornos = ctrl.creaObj(
 	"adornos",
-	[ "adornos" ],
+	[ "adorno", "adornos" ],
 	"Adornan.",
 	locSalaDeEstar,
 	Ent.Escenario
@@ -199,16 +217,17 @@ var objAdornos = ctrl.creaObj(
 var objAltar = ctrl.creaObj(
 	"altar",
 	[ "altar" ],
-	"Es un altar de dura piedra. Encima de éste está el ataud.",
+	"Es un altar de dura piedra. Encima de éste está el \
+         ${ataud, ex ataud}.",
 	locElFinal,
 	Ent.Escenario
 );
 
 var objArmario = ctrl.creaObj(
 	"armario",
-	[ "armario" ],
+	[ "armario", "aparador" ],
 	"Es un armario de los que se usa para la vajilla. \
-         La puerta tiene una pequeña cerradura: ",
+         La puerta tiene una pequeña cerradura. ",
 	locCocina,
 	Ent.Escenario
 );
@@ -268,7 +287,7 @@ var objArmarioRopero = ctrl.creaObj(
 
 var objAtaud = ctrl.creaObj(
 	"ataud",
-	[ "ataud" ],
+	[ "ataud", "sarcofago" ],
 	"Una sencilla caja de pino.",
 	locElFinal,
 	Ent.Escenario
@@ -283,7 +302,7 @@ objAtaud.preOpen = function() {
                 toret += "Necesitas un estaca que clavar en el \
                           corazón del vampiro.\n";
         } else {
-                if ( !objTrozoDeMadera.afilada ) {
+                if ( !objTrozoDeMadera.afilado ) {
                         toret += "Podrías utilizar el madero, como \
                                   estaca, pero no está afilado.\n";
                 }
@@ -316,8 +335,23 @@ objAtaud.preOpen = function() {
 
         // Es el final?
         if ( toret.length === 0 ) {
+				var dvFrame = getHtmlPart( "dvFrame", "missing frame div" );
+				dvFrame.style.display = "none";
+                ctrl.terminaJuego(
+                                "\
+                                Abres el ataúd, y, protegido por \
+                                los ajos y el crucifijo, comienzas \
+                                tu tarea. La cara de horror del \ vampiro cuando le clavas la estaca \
+                                solo es comparable al rostro \
+                                lleno de paz que puedes observar \
+                                unos cuantos martillazos después. \
+                                La reducción del cuerpo a cenizas \
+                                te confirma que tu misión está ya \
+                                cumplida.",
+                        "res/portada_vampiro.jpg"
+                );
         } else {
-                toret = "Revisas que tengas todo lo necesario...\n"
+                toret = "Revisas que tengas todo lo necesario...<br>"
                         + toret;
         }
 
@@ -329,9 +363,11 @@ var objBarril = ctrl.creaObj(
 	[ "barril", "tapa", "hendidura", "muesca" ],
 	"Se trata de un barril con tapa, que presenta una pequeña  \
         hendidura.",
-	locSTano,
+	locSotano,
 	Ent.Escenario
 );
+
+objBarril.ponAbierto( false );
 
 objBarril.preExamine = function() {
         var toret = objBarril.desc;
@@ -345,8 +381,6 @@ objBarril.preExamine = function() {
 
         return toret;
 }
-
-objBarril.estaAbierto( false );
 
 objBarril.preOpen = function() {
         var toret = "No puedes abrirlo con eso.";
@@ -365,15 +399,13 @@ objBarril.preOpen = function() {
 
                 if ( !objBarril.estaAbierto() ) {
                         toret = "Lo has abierto con la palanca, haciendo \
-                                 fuerza en uno de los bordes de la tapa.";
-                        objBarril.ponAbierto();
+                                 fuerza en uno de los bordes de \
+                                 la tapa, en donde la hendidura.";
 
-                        if ( objMartillo.owner === ctrl.lugares.limbo )
-                        {
-                                objMartillo.moveTo( objBarril.owner );
-                                toret += " Dentro hay una \
-                                           ${martillo, coge martillo}.";
-                        }
+                        objBarril.ponAbierto();
+                        objMartillo.mueveA( objBarril.owner );
+                        toret += " Dentro había un \
+                                   ${martillo, coge martillo}.";
                 }
         }
 
@@ -382,15 +414,7 @@ objBarril.preOpen = function() {
 
 var objCacerolas = ctrl.creaObj(
 	"cacerolas",
-	[ "cacerolas" ],
-	"Simples cacerolas y cacharros de cocina.",
-	locCocina,
-	Ent.Escenario
-);
-
-var objCacharros = ctrl.creaObj(
-	"cacharros",
-	[ "cacharros" ],
+	[ "cacerolas", "cacerola", "cacharro", "cacharros" ],
 	"Simples cacerolas y cacharros de cocina.",
 	locCocina,
 	Ent.Escenario
@@ -467,7 +491,7 @@ var objLlavecita = ctrl.creaObj(
 
 var objMartillo = ctrl.creaObj(
 	"martillo",
-	[ "martillo" ],
+	[ "martillo", "maza" ],
 	"Un martillo grande. Es uno de los elementos que me permitirán acabar con el vampiro.",
 	ctrl.lugares.limbo,
 	Ent.Portable
@@ -511,7 +535,7 @@ objRestos.preExamine = function() {
 
 var objRistraDeAjos = ctrl.creaObj(
 	"ristra de ajos",
-	[ "ristra" ],
+	[ "ristra", "ajos", "ajo" ],
 	"Es una ristra entera de ajos que expelen un olor un tanto asqueroso. Es uno de los cuatro elementos que me servirán para derrotar al vampiro.",
 	ctrl.lugares.limbo,
 	Ent.Portable
@@ -558,7 +582,7 @@ objTrajeBarato.ponPrenda();
 
 var objTrofeos = ctrl.creaObj(
 	"trofeos",
-	[ "trofeos" ],
+	[ "trofeos", "trofeo" ],
 	"Insignificantes trofeos.",
 	locSalaDeEstar,
 	Ent.Escenario
@@ -567,7 +591,7 @@ var objTrofeos = ctrl.creaObj(
 var objTrozoDeMadera = ctrl.creaObj(
 	"trozo de madera",
 	[ "trozo", "madera", "madero", "estaca", "palo" ],
-	"Un trozo de madera, rectangular y alargado",
+	"Un trozo de madera, rectangular y alargado.",
 	ctrl.lugares.limbo,
 	Ent.Portable
 );
@@ -612,7 +636,7 @@ objTrozoDeMadera.preSharpen = function() {
 var jugador = ctrl.personas.creaPersona( "reXXe",
                     [ "rexxe", "cazador", "cazavampiros" ],
                     "reXXe, un experimentado caza vampiros.",
-                    locVestBulo
+                    locVestibulo
 );
 
 // --- Acciones --------------------------------------------------------
@@ -663,5 +687,5 @@ sharpenAction.doIt = function(s) {
 
 // Arranque ------------------------------------------------------------
 ctrl.personas.cambiaJugador( jugador );
-ctrl.lugares.ponInicio( locVestBulo );
+ctrl.lugares.ponInicio( locVestibulo );
 

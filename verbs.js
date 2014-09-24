@@ -335,7 +335,9 @@ exitsAction.doIt = function(s) {
 };
 
 // ------------------------------------------------------------ Enter
-var enterAction = actions.crea( "enter", [ "entra", "entrar", "entro" ] );
+var enterAction = actions.crea( "enter",
+    [ "entra", "entrar", "entro", "adentro", "dentro" ]
+);
 
 enterAction.exe = function(s, obj) {
     var toret = "No hay de eso por aqu&iacute;.";
@@ -378,7 +380,10 @@ enterAction.doIt = function(s) {
 };
 
 // ------------------------------------------------------------ Exit
-var exitAction = actions.crea( "exit", [ "sal", "salir", "salgo" ] );
+var exitAction = actions.crea( "exit",
+    [ "sal", "salir", "salgo", "fuera", "afuera" ]
+);
+
 exitAction.exe = function(s, obj) {
     var toret = "No hay de eso por aqu&iacute;.";
 
