@@ -5,8 +5,6 @@
  * Licencia MIT (c) baltasar@gmail.com 201405
  */
 
-var pressTimer;
-
 var Ent = function() {
     this.isScenery = function()
     {
@@ -397,6 +395,7 @@ var Persona = function(n, i, l, d) {
 };
 
 var ctrl = ( function() {
+    var pressTimer;
 
     var tit = "Ficción interactiva";
     var intro = "¡Comienza la aventura!";
@@ -648,11 +647,12 @@ var ctrl = ( function() {
                 var txtLink = txt.slice( linkPos + 2, linkEndPos );
                 var parts = txtLink.split( ',' );
                 var link = "<a \
-								onMouseUp=\"javascript:clearTimeout( pressTimer ); \
+								onMouseUp=\"javascript:clearTimeout( ctrl.pressTimer ); \
 								return false;\" \
 								onMouseDown=\"javascript: \
-									pressTimer = window.setTimeout( function() { \
-									  dvContextMenu.style.display='block'; \
+									ctrl.pressTimer = window.setTimeout( function() { \
+									  ctrl.populateContextMenu( '" + parts[ 1 ] + "' ); \
+                                      dvContextMenu.style.display='block'; \
 									  return false;\
 								}, 1000);\" \
 								onClick=\"javascript: ctrl.inject('"
@@ -670,24 +670,66 @@ var ctrl = ( function() {
         return txt;
     }
 
+    function populateContextMenu(cmd)
+    {
+        var loc = ctrl.getCurrentLoc();
+        var cmdParts = cmd.split( ' ' );
+        var txtObj = cmdParts[ cmdParts.length - 1 ];
+        var isExit = ( loc.getExit( txtObj ) !== null );
+        var dvContextMenu = ctrl.getHtmlPart( "dvContextMenu" );
+        var txtHtml = "<p>";
+
+        if ( isExit ) {
+            var exits = ctrl.getValidExitsFor( loc );
+            for (var i = 0; i < exits.length; ++i) {
+                var strLink = "<a onClick=\"javascript: ctrl.inject('"
+                            + exits[ i ]
+                            + "')\" href='javascript:void(0)'>" + exits[ i ] + "</a>";
+
+                txtHtml += strLink + " ";
+            }
+        } else {
+            var actions = ctrl.getValidActionsFor( ctrl.lookUpObj( txtObj ) );
+
+            for (var i = 0; i < actions.length; ++i) {
+                var strLink = "<a onClick=\"javascript: ctrl.inject('"
+                            + actions[ i ].verbs[ 0 ] + ' ' + txtObj
+                            + "')\" href='javascript:void(0)'>" + exits[ i ] + "</a>";
+
+                txtHtml += strLink + " ";
+            }        }
+
+        txtHtml += "</p>";
+        dvContextMenu.innerHTML = txtHtml;
+        return false;
+    }
+
     /**
      * Creates the context menu, for a given loc.
      * @param loc Opt. The loc the context menu will be created for.
      */
-    function populateContextMenuWithExits(loc)
+    function getValidExitsFor(loc)
     {
+        var exits = [];
+
         if ( arguments.length < 1 ) {
             loc = ctrl.places.getCurrentLoc();
         }
 
+        for(var i = 0; i < loc.compas.length; ++i) {
+            if ( loc.getExit( i ) !== null ) {
+                exits.push( loc.compas[ i ] );
+            }
+        }
 
+        return exits;
     }
 
     /**
      * Creates the context menu, for a given object.
      * @param obj The object the context menu will be created for.
      */
-    function populateContextMenu(obj)
+    function getValidActionsFor(obj)
     {
         /*
          * ex                     [[take/drop:ifInv]:ifStatic]    [talkTo: ifPersona]
@@ -748,7 +790,7 @@ var ctrl = ( function() {
             }
         }
 
-
+        return listedActions;
     }
 
     var places = ( function() {
