@@ -335,7 +335,7 @@ objAtaud.preOpen = function() {
 
         // Es el final?
         if ( toret.length === 0 ) {
-				var dvFrame = getHtmlPart( "dvFrame", "missing frame div" );
+				var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
 				dvFrame.style.display = "none";
                 ctrl.terminaJuego(
                                 "\
@@ -609,19 +609,21 @@ objTrozoDeMadera.preExamine = function() {
 objTrozoDeMadera.afilado = false;
 
 objTrozoDeMadera.preSharpen = function() {
-        var toret = "No puedes abrirlo con eso.";
+        var toret = "No puedes afilarlo con eso.";
         var s = parser.sentencia;
 
-        if ( s.obj2 === null ) {
+        if ( s.obj2 === null
+          || s.obj2 === objTrozoDeMadera )
+        {
                 s.obj2 = objCuchillo;
         }
 
         if ( !ctrl.estaPresente( s.obj2 ) ) {
-                toret = "No puedes abrirlo así.";
+                toret = "No puedes afilarlo así.";
         }
         else
         if ( s.obj2 === objCuchillo ) {
-                toret = "Ya estaba abierto.";
+                toret = "Ya estaba afilado.";
 
                 if ( !objTrozoDeMadera.afilado ) {
                         toret = "Has afilado el madero con el cuchillo.";
