@@ -1775,7 +1775,7 @@ var parser = ( function() {
 			var code = ch.charCodeAt( 0 );
 
 			if ( posVowels > -1 ) {
-				toret += regularVowels[ pos % 5 ];
+				toret += regularVowels[ posVowels % 5 ];
 			}
 			else
 			if ( posSpecial > -1 ) {
