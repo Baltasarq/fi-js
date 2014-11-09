@@ -1435,7 +1435,7 @@ var ctrl = ( function() {
         var totalObjsListed = 0;
         var toret = "<br>";
         var isInventory = false;
-        var objs = loc.objs;
+        var portableObjs = [];
 
         if ( loc == player ) {
             isInventory = true;
@@ -1444,8 +1444,18 @@ var ctrl = ( function() {
             toret += "<br>Tambi&eacute;n puedes ver: ";
         }
 
-        for(var i = 0; i < objs.length; ++i) {
-            var obj = objs[ i ];
+        // Discard scenery objects
+        for(var i = 0; i < loc.objs.length; ++i) {
+            var obj = loc.objs[ i ];
+
+            if ( !obj.isScenery() ) {
+                portableObjs.push( obj );
+            }
+        }
+
+        // List them
+        for(var i = 0; i < portableObjs.length; ++i) {
+            var obj = portableObjs[ i ];
             var examineAction = actions.getAction( "examine" );
             var takeAction = actions.getAction( "take" );
             var disrobeAction = actions.getAction( "disrobe" );
@@ -1467,11 +1477,11 @@ var ctrl = ( function() {
                     toret += "}";
                 }
 
-                if ( i == ( objs.length - 2 ) ) {
+                if ( i == ( portableObjs.length - 2 ) ) {
 					toret += " y ";
 				}
 				else
-				if ( i < ( objs.length - 2 ) ) {
+				if ( i < ( portableObjs.length - 2 ) ) {
 					toret += ", ";
 				}
 
