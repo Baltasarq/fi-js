@@ -556,7 +556,7 @@ var ctrl = ( function() {
         return toret;
     }
 
-    function inject(txt, enter)
+    function inject(txt, enter, replace)
     {
         var edInput = getHtmlPart( "edInput", "missing input edit" );
         var btSend = getHtmlPart( "btSend", "missing send button" );
@@ -569,8 +569,18 @@ var ctrl = ( function() {
         if ( arguments.length < 2 ) {
             enter = true;
         }
+	else
+        if ( arguments.length < 3 ) {
+            replace = true;
+        }
 
-        edInput.value = txt;
+	if ( replace ) {
+	        edInput.value = txt;
+	} else {
+		edInput.value += txt;
+	}
+
+
         if ( enter ) {
             btSend.click();
         }
