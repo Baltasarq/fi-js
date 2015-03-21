@@ -123,6 +123,99 @@ attackAction.doIt = function(s) {
     return toret;
 };
 
+// ----------------------------------------------------------- Start
+var startAction = actions.crea( "start",
+        [ "enciende", "encender", "enciendo",
+          "arranca", "arrancar", "arranco",
+          "activa", "activar", "activo" ]
+);
+
+startAction.exe = function(s) {
+    var toret = "No veo de eso en derredor.";
+
+    if ( s.term1 === null ) {
+        toret = "Deber&iacute;as especificar qu&eacute;.";
+    }
+    else
+    if ( s.obj1 !== null ) {
+        if ( s.obj1.isReachable() ) {
+            toret = "Al final, decides no hacerlo.";
+        } else {
+            toret = "Demasiado lejos.";
+        }
+    }
+
+    return toret;
+};
+
+startAction.doIt = function(s) {
+    var toret = "No veo de eso en derredor.";
+
+    if ( s.term1 === null ) {
+        toret = "Deber&iacute;as especificar qu&eacute;.";
+    }
+    else
+    if ( s.obj1 != null ) {
+        if ( typeof( s.obj1.preStart ) === "function" ) {
+            toret = s.obj1.preStart();
+        } else {
+            toret = this.exe( s );
+        }
+
+        if ( typeof( s.obj1.postStart ) === "function" ) {
+            s.obj1.postStart();
+        }
+    }
+
+    return toret;
+};
+
+// ----------------------------------------------------------- Shutdown
+var shutdownAction = actions.crea( "shutdown",
+        [ "apaga", "apagar", "apaga",
+          "desactiva", "desactivar", "desactivo" ]
+);
+
+shutdownAction.exe = function(s) {
+    var toret = "No veo de eso en derredor.";
+
+    if ( s.term1 === null ) {
+        toret = "Deber&iacute;as especificar qu&eacute;.";
+    }
+    else
+    if ( s.obj1 !== null ) {
+        if ( s.obj1.isReachable() ) {
+            toret = "Al final, decides no hacerlo.";
+        } else {
+            toret = "Demasiado lejos.";
+        }
+    }
+
+    return toret;
+};
+
+shutdownAction.doIt = function(s) {
+    var toret = "No veo de eso en derredor.";
+
+    if ( s.term1 === null ) {
+        toret = "Deber&iacute;as especificar qu&eacute;.";
+    }
+    else
+    if ( s.obj1 != null ) {
+        if ( typeof( s.obj1.preShutdown ) === "function" ) {
+            toret = s.obj1.preShutdown();
+        } else {
+            toret = this.exe( s );
+        }
+
+        if ( typeof( s.obj1.postShutdown ) === "function" ) {
+            s.obj1.postShutdown();
+        }
+    }
+
+    return toret;
+};
+
 // ------------------------------------------------------------ Look
 var lookAction = actions.crea( "look", [ "m", "mira", "mirar", "miro" ] );
 
