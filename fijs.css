@@ -1,0 +1,28 @@
+body { background-color:black; color:white; font-familiy:Verdana,Arial,Helvetica; font-size:20px;}
+
+a  {color:#777700;text-decoration:none}
+a:hover {color:#ffff00;text-decoration:none}
+a:visited {color:#00ff00;text-decoration:none}
+
+#dvIntro {text-align:center}
+
+#dvTitle {font-size:28px; color: lightgray}
+
+#dvFi {width:100%;height:10%}
+
+#dvId {width:100%;height:10%;color: #77aaff; font-familiy: Verdana,Arial,Helvetica; font-size:22px}
+#dvPic {width:100%;height:40%;text-align:center}
+#dvDesc  {color: green;width:100%;height:10%;font-familiy: Verdana,Arial,Helvetica; font-size:20px;}
+#dvAnswer {width:100%;height:10%;font-familiy: Verdana,Arial,Helvetica; font-size:20px;}
+#dvInput {width:100%;height:10%;font-familiy: Verdana,Arial,Helvetica; font-size:20px;}
+#dvError {color:white;background-color : red;width:100%;height:10%;font-familiy:Verdana,Arial,Helvetica; font-size:20px;}
+
+#btBoot {color: #770000;font-weight:bold}
+
+#edInput{width:85%;color:black;background-color:white;border:none;font-size:20px}
+
+
+#hrIntroSeparator {color: #000044; background-color: #000044; height: 3px; border:0}
+#hrFiSeparator {color: #000044; background-color: #000044; height: 3px; border:0}
+
+#edInput {width:85%;color:white;background-color:black;border:1px dotted gray; -webkit-appearance: none;  border-radius: 10px; mozzilla-border-radius: 10px; padding:6px}
