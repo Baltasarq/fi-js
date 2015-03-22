@@ -926,7 +926,6 @@ var ctrl = ( function() {
             // Set loc's pic
             if ( loc.pic != null ) {
                 var pimg = document.createElement( "p" );
-                pimg.setAttribute( "align", "center" );
                 var img = document.createElement( "img" );
                 img.setAttribute( "src", loc.pic );
                 pimg.appendChild( img );
@@ -947,7 +946,6 @@ var ctrl = ( function() {
             // Set loc's desc
             var objsDesc = ctrl.list( loc );
             var pDesc = document.createElement( "p" );
-            pDesc.setAttribute( "style", "color:" + ctrl.media.getColor( "desc" ) );
             pDesc.innerHTML = ctrl.cnvtTextLinksToHtml( desc )
                     + ctrl.cnvtTextLinksToHtml( objsDesc );
 
@@ -1034,6 +1032,8 @@ var ctrl = ( function() {
 
         function setColor(id, v)
         {
+            // Now managed with CSS
+            /*
             var toret = false;
             var index = getIndexFromId( id );
 
@@ -1043,6 +1043,9 @@ var ctrl = ( function() {
             }
 
             return toret;
+            */
+
+            return true;
         }
 
         var audio = ( function() {
