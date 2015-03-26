@@ -13,7 +13,7 @@
         <div id="dvTop">
                 <table width="100%"><tr>
                         <td align="left"><div id="dvTitle"></div></td>
-                        <td align="right"><div style="font-style:italic; color:gray" id="dvId"></div></td>
+                        <td align="right"><div id="dvId"></div></td>
                 </tr></table>
         </div>
         <div id="dvIntro" style="display:block" onSubmit="return ctrl.boot();">
@@ -46,42 +46,20 @@
                 <div id="dvAnswer">
                 </div>
                 <p>
-                <div id="dvContextMenu" style="display:none">
-                       <hr>
-                        <h1>UALAAAAHHHH!!!!</h1>
-                </div>
                 <div id="dvInput" style="width:100%;display:block">
 					<div id="dvActs">
 							<table><tr>
 							<td>
-							<img id="btInv" alt="inv" width="16" height="16"
+							<img id="btInv" alt="inv" width="32" height="32"
 											style="vertical-align:middle;"
 											src="res/inv.png"
 											onClick="ctrl.inject( 'inv' ); return false;">
 							</td>
 							<td>
-							<img id="btEx" alt="ex" width="16" height="16"
-											style="vertical-align:middle;"
-											src="res/ex.png"
-											onClick="ctrl.inject( 'examina ', false ); return false;">
-							</td>
-							<td>
-							<img id="btExits" alt="exits" width="16" height="16"
+							<img id="btExits" alt="exits" width="32" height="32"
 											style="vertical-align:middle;"
 											src="res/compass.png"
 											onClick="ctrl.inject( 'exits' ); return false;">
-							</td>
-							<td>
-							<img id="btTake" alt="take" width="24" height="24"
-											style="vertical-align:middle;"
-											src="res/take.png"
-											onClick="ctrl.inject( 'coge ', false ); return false;">
-							</td>
-							<td>
-							<img id="btDrop" alt="drop" width="24" height="24"
-											style="vertical-align:middle;"
-											src="res/drop.png"
-											onClick="ctrl.inject( 'deja ', false ); return false;">
 							</td>
 							</tr></table>
 					</div>
@@ -91,17 +69,17 @@
                         &gt; <input type="text" class="txt" size="40"
                                 maxLength="80" id="edInput"
                                 placeholder="Tu orden..."
-                                style="width:85%;color:black;background-color:white;border:none">
+                                style="width:85%;border:none">
                         </td>
                         <td align="right"><table><tr>
 							<td>
-							<img id="btSend" alt="enter" width="16" height="16"
+							<img id="btSend" alt="enter" width="32" height="32"
 									style="vertical-align:middle;"
 									src="res/enter.png"
 									onClick="return parser.doParse();">
 							</td>
 							<td>
-							<img id="btReset" alt="reset" width="16" height="16"
+							<img id="btReset" alt="reset" width="32" height="32"
 									style="vertical-align:middle;"
 									src="res/del.png"
 									onClick="document.forms['frmInput'].reset();document.getElementById( 'edInput' ).focus();">

@@ -1309,13 +1309,6 @@ var ctrl = ( function() {
         dvFi.style.display = "block";
         frmInput.style.display = "block";
 
-        dvHeadStyle.innerHTML = "a:link {color:" + ctrl.media.getColor( "link" ) + ";}\
-                    a:visited {color:" + ctrl.media.getColor( "link" ) + ";}\
-                    a:hover {color:" + ctrl.media.getColor( "resaltedLink" ) + ";}\
-                    a:active {color:" + ctrl.media.getColor( "resaltedLink" ) + ";}";
-
-        dvHead.appendChild( dvHeadStyle );
-
         frmInput.reset();
         frmInput[ "edInput" ].focus();
         return false;
@@ -1341,10 +1334,6 @@ var ctrl = ( function() {
         document.title = ctrl.getTitle();
         hdTitle.innerHTML = ctrl.getTitle();
         dvTitle.appendChild( hdTitle );
-        body.style.color = ctrl.media.getColor( "foreground" );
-        body.style.backgroundColor = ctrl.media.getColor( "back" );
-        edInput.style.color = ctrl.media.getColor( "input" );
-        edInput.style.backgroundColor = ctrl.media.getColor( "back" );
 
         // Prepare intro
         var pIntro = document.createElement( "p" );
@@ -1648,7 +1637,6 @@ var parser = ( function() {
             var txtAnswer = ctrl.cnvtTextLinksToHtml( parse( cmd ) );
 
             var pAnswer = document.createElement( "p" );
-            pAnswer.setAttribute( "style", "color:" + ctrl.media.getColor( "answer" ) );
             pAnswer.innerHTML = txtAnswer;
             dvAnswer.appendChild( pAnswer );
         }
