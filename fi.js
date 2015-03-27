@@ -569,16 +569,16 @@ var ctrl = ( function() {
         if ( arguments.length < 2 ) {
             enter = true;
         }
-	else
+        else
         if ( arguments.length < 3 ) {
             replace = true;
         }
 
-	if ( replace ) {
-	        edInput.value = txt;
-	} else {
-		edInput.value += txt;
-	}
+        if ( replace ) {
+                edInput.value = txt;
+        } else {
+            edInput.value += txt;
+        }
 
 
         if ( enter ) {
@@ -678,129 +678,6 @@ var ctrl = ( function() {
         }
 
         return txt;
-    }
-
-    function populateContextMenu(cmd)
-    {
-        var loc = ctrl.getCurrentLoc();
-        var cmdParts = cmd.split( ' ' );
-        var txtObj = cmdParts[ cmdParts.length - 1 ];
-        var isExit = ( loc.getExit( txtObj ) !== null );
-        var dvContextMenu = ctrl.getHtmlPart( "dvContextMenu" );
-        var txtHtml = "<p>";
-
-        if ( isExit ) {
-            var exits = ctrl.getValidExitsFor( loc );
-            for (var i = 0; i < exits.length; ++i) {
-                var strLink = "<a onClick=\"javascript: ctrl.inject('"
-                            + exits[ i ]
-                            + "')\" href='javascript:void(0)'>" + exits[ i ] + "</a>";
-
-                txtHtml += strLink + " ";
-            }
-        } else {
-            var actions = ctrl.getValidActionsFor( ctrl.lookUpObj( txtObj ) );
-
-            for (var i = 0; i < actions.length; ++i) {
-                var strLink = "<a onClick=\"javascript: ctrl.inject('"
-                            + actions[ i ].verbs[ 0 ] + ' ' + txtObj
-                            + "')\" href='javascript:void(0)'>" + exits[ i ] + "</a>";
-
-                txtHtml += strLink + " ";
-            }        }
-
-        txtHtml += "</p>";
-        dvContextMenu.innerHTML = txtHtml;
-        return false;
-    }
-
-    /**
-     * Creates the context menu, for a given loc.
-     * @param loc Opt. The loc the context menu will be created for.
-     */
-    function getValidExitsFor(loc)
-    {
-        var exits = [];
-
-        if ( arguments.length < 1 ) {
-            loc = ctrl.places.getCurrentLoc();
-        }
-
-        for(var i = 0; i < loc.compas.length; ++i) {
-            if ( loc.getExit( i ) !== null ) {
-                exits.push( loc.compas[ i ] );
-            }
-        }
-
-        return exits;
-    }
-
-    /**
-     * Creates the context menu, for a given object.
-     * @param obj The object the context menu will be created for.
-     */
-    function getValidActionsFor(obj)
-    {
-        /*
-         * ex                     [[take/drop:ifInv]:ifStatic]    [talkTo: ifPersona]
-         * open[:ifReachable]     close                           push
-         * pull                   tomar                           atacar
-         * vestir[:ifPrenda]      desvestir[:ifPrenda]            sacudir
-         **/
-        var player = ctrl.personas.getCurrentPlayer();
-        var dvMenu = ctrl.getHtmlPart( "dvContextMenu", "missing context menu" );
-        var examineAction = actions.getActions( "ex" );
-        var takeAction = actions.getActions( "take" );
-        var dropAction = actions.getActions( "drop" );
-        var talkAction = actions.getActions( "talk" );
-        var openAction = actions.getActions( "open" );
-        var closeAction = actions.getActions( "close" );
-        var pushAction = actions.getActions( "push" );
-        var pullAction = actions.getActions( "pull" );
-        var haveAction = actions.getActions( "have" );
-        var attackAction = actions.getActions( "attack" );
-        var wearAction = actions.getActions( "wear" );
-        var disrobeAction = actions.getActions( "disrobe" );
-        var shakeAction = actions.getActions( "shake" );
-        var actions = [ takeAction, dropAction, talkAction, openAction,
-                        closeAction, pushAction, pullAction, haveAction,
-                        attackAction, wearAction, disrobeAction, shakeAction ];
-        var listedActions = [ examineAction ];
-
-        if ( obj.isReachable() ) {
-            for(var i = 0; i < actions.length; ++i) {
-                var act = actions[ i ];
-
-                if ( obj.owner !== player
-                  || act !== dropAction )
-                {
-                    continue;
-                }
-                else
-                if ( obj.isScenery()
-                  || obj.owner === player
-                  || act !== takeAction )
-                {
-                    continue;
-                }
-                else
-                if ( obj.isClothing() ) {
-                    if ( !obj.isWorn()
-                      || act !== disrobeAction )
-                    {
-                        continue;
-                    }
-                    else
-                    if ( act !== wearAction ) {
-                        continue;
-                    }
-                }
-
-                listedActions.push( act );
-            }
-        }
-
-        return listedActions;
     }
 
     var places = ( function() {
@@ -2041,3 +1918,9 @@ var actions = ( function() {
 })();
 
 var acciones = actions;
+
+// Start intro
+window.onload = function() {
+    ctrl.start();
+    document.getElementById( "btBoot" ).focus();
+}
