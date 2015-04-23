@@ -13,11 +13,11 @@ var examineAction = actions.crea( "examine",
 examineAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 !== null ) {
+    if ( s.obj1 != null ) {
         var takeAction = actions.getAction( "take" );
         toret = s.obj1.desc;
 
@@ -55,7 +55,7 @@ examineAction.exe = function(s) {
 examineAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
@@ -86,11 +86,11 @@ var attackAction = actions.crea( "attack",
 attackAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 !== null ) {
+    if ( s.obj1 != null ) {
         if ( s.obj1.isReachable() ) {
             toret = "La violencia no es la soluci&oacute;n.";
         } else {
@@ -104,7 +104,7 @@ attackAction.exe = function(s) {
 attackAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
@@ -133,11 +133,11 @@ var startAction = actions.crea( "start",
 startAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 !== null ) {
+    if ( s.obj1 != null ) {
         if ( s.obj1.isReachable() ) {
             toret = "Al final, decides no hacerlo.";
         } else {
@@ -151,7 +151,7 @@ startAction.exe = function(s) {
 startAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
@@ -179,11 +179,11 @@ var shutdownAction = actions.crea( "shutdown",
 shutdownAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 !== null ) {
+    if ( s.obj1 != null ) {
         if ( s.obj1.isReachable() ) {
             toret = "Al final, decides no hacerlo.";
         } else {
@@ -197,7 +197,7 @@ shutdownAction.exe = function(s) {
 shutdownAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
 
-    if ( s.term1 === null ) {
+    if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
@@ -222,8 +222,8 @@ var lookAction = actions.crea( "look", [ "m", "mira", "mirar", "miro" ] );
 lookAction.transInput = function(s) {
     // Look x "mirar x" = examine x
     if ( lookAction.match( s )
-      && s.term1 !== null
-      && s.prep === null )
+      && s.term1 != null
+      && s.prep == null )
     {
 		s.verb = examineAction.verbs[ 0 ];
     }
@@ -231,13 +231,8 @@ lookAction.transInput = function(s) {
     return "";
 }
 
-lookAction.exe = function(s, loc, desc) {
-    if ( arguments.length > 2 ) {
-        ctrl.places.doDesc( loc, desc );
-    } else {
-        ctrl.places.doDesc( loc );
-    }
-
+lookAction.exe = function(s, desc) {
+	ctrl.places.doDesc( ctrl.places.getCurrentLoc(), desc );
     return "";
 };
 
@@ -245,9 +240,9 @@ lookAction.doIt = function(s) {
     var loc = ctrl.places.getCurrentLoc();
 
     if ( typeof( loc.preLook ) === "function" ) {
-        this.exe( s, loc, loc.preLook() );
+        this.exe( s, loc.preLook() );
     } else {
-        this.exe( s, loc );
+        this.exe( s );
     }
 
     if ( typeof( loc.postLook ) === "function" )
@@ -262,9 +257,15 @@ lookAction.doIt = function(s) {
 var inventoryAction = actions.crea( "inv", [ "i", "inv", "inventario" ] );
 
 inventoryAction.exe = function(s, persona) {
-    var toret = persona.desc;
-
-    toret += "<br>" + ctrl.list( persona );
+	var toret = "";
+	
+	if ( arguments.length < 2
+	  || persona == null )
+	{
+		persona = ctrl.personas.getPlayer();
+	}
+	
+    toret += persona.desc + "<br />" + ctrl.list( persona );
     return toret;
 };
 
@@ -275,7 +276,7 @@ inventoryAction.doIt = function(s) {
     if ( typeof( player.preInv ) === "function" ) {
         toret = player.preInv();
     } else {
-        toret = this.exe( s, player );
+        toret = this.exe( s );
     }
 
     if ( typeof( player.postInv ) === "function" )
@@ -331,7 +332,14 @@ goAction.transInput = function(s) {
 }
 
 goAction.exe = function(s, loc) {
-    var toret = "";
+	var toret = "";
+	
+	if ( arguments.length < 2
+	  || loc == null )
+	{
+		loc = ctrl.places.getCurrentLoc();
+	}
+    
     var locDest = loc.getExit( s.term1 );
 
     if ( locDest != null ) {
@@ -349,7 +357,7 @@ goAction.doIt = function(s) {
     if ( typeof( loc.preGo ) === "function" ) {
         toret = loc.preGo();
     } else {
-        toret = this.exe( s, loc );
+        toret = this.exe( s );
     }
 
     if ( typeof( loc.postGo ) === "function" ) {
@@ -368,9 +376,11 @@ exitsAction.exe = function(s, loc) {
     var toret = "";
     var realExits = []
 
-    if ( arguments.length < 2 ) {
-        loc = ctrl.places.getCurrentLoc();
-    }
+    if ( arguments.length < 2
+	  || loc == null )
+	{
+		loc = ctrl.places.getCurrentLoc();
+	}
 
     if ( arguments.length === 0 ) {
         s = null;
@@ -417,7 +427,7 @@ exitsAction.doIt = function(s) {
     if ( typeof( loc.preExits ) === "function" ) {
         toret = loc.preExits();
     } else {
-        toret = this.exe( s, loc );
+        toret = this.exe( s );
     }
 
     if ( typeof( loc.postExits ) === "function" ) {
@@ -432,10 +442,30 @@ var enterAction = actions.crea( "enter",
     [ "entra", "entrar", "entro", "adentro", "dentro" ]
 );
 
+enterAction.getDestObj = function(s)
+{
+	var loc = ctrl.places.getCurrentLoc();
+    var objDest = s.obj1;
+
+    if ( objDest == null
+      && s.term1 == null )
+    {
+		objDest = loc;
+	}
+
+	return objDest;
+}
+
 enterAction.exe = function(s, obj) {
     var toret = "No hay de eso por aqu&iacute;.";
 
-    if ( obj !== null ) {
+    if ( arguments.length < 2
+      || obj == null )
+    {
+		obj = this.getDestObj();
+	}
+
+    if ( obj != null ) {
         if ( obj.isReachable() ) {
             toret = "No es posible.";
         } else {
@@ -448,20 +478,13 @@ enterAction.exe = function(s, obj) {
 
 enterAction.doIt = function(s) {
     var toret = "No hay de eso por aqu&iacute;.";
-    var loc = ctrl.places.getCurrentLoc();
-    var objDest = s.obj1;
-
-    if ( objDest == null
-      && s.term1 == null )
-    {
-		objDest = loc;
-	}
+    var objDest = this.getDestObj(s);
 
     if ( objDest != null ) {
       if ( typeof( objDest.preEnter ) === "function" ) {
           toret = objDest.preEnter();
       } else {
-          toret = this.exe( s, objDest );
+          toret = this.exe( s );
       }
 
       if ( typeof( objDest.postEnter ) === "function" ) {
@@ -477,10 +500,30 @@ var exitAction = actions.crea( "exit",
     [ "sal", "salir", "salgo", "fuera", "afuera" ]
 );
 
+exitAction.getDestObj = function(s)
+{
+	var loc = ctrl.places.getCurrentLoc();
+    var objDest = s.obj1;
+
+    if ( objDest == null
+      && s.term1 == null )
+    {
+		objDest = loc;
+	}
+
+	return objDest;
+}
+
 exitAction.exe = function(s, obj) {
     var toret = "No hay de eso por aqu&iacute;.";
 
-    if ( obj !== null ) {
+    if ( arguments.length < 2
+      || obj == null )
+    {
+		obj = this.getObjDest();
+	}
+
+    if ( obj != null ) {
         if ( obj.isReachable() ) {
             toret = "No es posible.";
         } else {
@@ -493,20 +536,13 @@ exitAction.exe = function(s, obj) {
 
 exitAction.doIt = function(s) {
     var toret = "No hay de eso por aqu&iacute;.";
-    var loc = ctrl.places.getCurrentLoc();
-    var objDest = s.obj1;
-
-    if ( objDest == null
-      && s.term1 == null )
-    {
-		objDest = loc;
-	}
+    var objDest = this.getDestObj( s );
 
     if ( objDest != null ) {
       if ( typeof( objDest.preExit ) === "function" ) {
           toret = objDest.preExit();
       } else {
-          toret = this.exe( s, objDest );
+          toret = this.exe( s );
       }
 
       if ( typeof( objDest.postExit ) === "function" ) {
@@ -528,6 +564,12 @@ var pushAction = actions.crea( "push",
 pushAction.exe = function(s, obj) {
     var toret = "";
 
+    if ( arguments.length < 2
+      || obj == null )
+    {
+		obj = s.obj1;
+	}
+
     if ( obj.isReachable() ) {
         toret = "No se puede.";
     } else {
@@ -539,14 +581,13 @@ pushAction.exe = function(s, obj) {
 
 pushAction.doIt = function(s) {
     var toret = "";
-    var loc = ctrl.places.getCurrentLoc();
     var objDest = s.obj1;
 
     if ( objDest != null ) {
       if ( typeof( objDest.prePush ) === "function" ) {
         toret = objDest.prePush();
       } else {
-        toret = this.exe( s, objDest );
+        toret = this.exe( s );
       }
 
       if ( typeof( objDest.postPush ) === "function" ) {
@@ -572,7 +613,7 @@ pullAction.transInput = function(s)
     var dropAction = actions.getAction( "drop" );
 
     if ( this.match( s )
-      && s.prep === null )
+      && s.prep == null )
     {
         s.verb = dropAction.verbs[ 0 ];
     }
@@ -582,6 +623,12 @@ pullAction.transInput = function(s)
 
 pullAction.exe = function(s, obj) {
     var toret = "";
+
+    if ( arguments.length < 2
+      || obj == null )
+    {
+		obj = s.obj1;
+	}
 
     if ( obj.isReachable() ) {
         toret = "No se puede.";
@@ -594,14 +641,13 @@ pullAction.exe = function(s, obj) {
 
 pullAction.doIt = function(s) {
     var toret = "";
-    var loc = ctrl.places.getCurrentLoc();
     var objDest = s.obj1;
 
     if ( objDest != null ) {
       if ( typeof( objDest.prePull ) === "function" ) {
         toret = objDest.prePull();
       } else {
-        toret = this.exe( s, objDest );
+        toret = this.exe( s );
       }
 
       if ( typeof( objDest.postPull ) === "function" ) {
@@ -620,19 +666,35 @@ var dropAction = actions.crea( "drop",
 	  "suelta", "soltar", "suelto" ]
 );
 
+dropAction.getContainer = function(s) {
+	var toret = s.obj2;
+	
+	if ( s.obj2 == null ) {
+		cont = ctrl.places.getCurrentLoc();
+	}
+	
+    return toret;
+}
+
 dropAction.exe = function(s, obj, cont, persona) {
     var toret = "";
 
-    if ( arguments.length < 4 ) {
+    if ( arguments.length < 4
+      || persona == null )
+    {
         persona = ctrl.personas.getPlayer();
     }
 
-    if ( arguments.length < 3 ) {
-        if ( s.obj2 === null ) {
-            cont = ctrl.places.getCurrentLoc();
-        } else {
-            cont = s.obj2;
-        }
+    if ( arguments.length < 3
+      || cont == null )
+    {
+        cont = this.getContainer();
+    }
+
+    if ( arguments.length < 2
+      || obj == null )
+    {
+        obj = s.obj1;
     }
 
     if ( obj != null ) {
@@ -665,17 +727,14 @@ dropAction.exe = function(s, obj, cont, persona) {
 
 dropAction.doIt = function(s) {
     var toret = "";
-    var cont = ctrl.places.getCurrentLoc();
+    var cont = this.getContainer();
     var objDest = s.obj1;
 
-    if ( s.term2 !== null
-      && s.obj2 === null  )
+	// No se encuentra el contenedor, pero se ha especificado
+    if ( s.term2 != null
+      && s.obj2 == null  )
     {
         objDest = null;
-    }
-
-    if ( s.obj2 !== null ) {
-        cont = s.obj2;
     }
 
     if ( objDest != null ) {
@@ -683,7 +742,7 @@ dropAction.doIt = function(s) {
             if ( typeof( objDest.preDrop ) === "function" ) {
                 toret = objDest.preDrop();
             } else {
-                toret = this.exe( s, objDest, cont );
+                toret = this.exe( s );
                 ctrl.lugares.updateDesc();
             }
 
@@ -711,16 +770,32 @@ var takeAction = actions.crea( "take",
 takeAction.exe = function(s, obj, persona) {
     var toret = "No hay de eso por aqu&iacute;.";
 
-    if ( obj !== null ) {
+    if ( arguments.length < 3
+      || persona == null )
+    {
+        persona = ctrl.personas.getPlayer();
+    }
+
+    if ( arguments.length < 2
+      || obj == null )
+    {
+        obj = s.obj1;
+    }
+
+    if ( obj != null ) {
         if ( obj.isReachable() ) {
             if ( !obj.isScenery() ) {
-                obj.moveTo( persona );
+				if ( !persona.has( obj ) ) {
+					obj.moveTo( persona );
 
-                if ( obj.isClothing() ) {
-                    obj.setWorn( false );
-                }
+					if ( obj.isClothing() ) {
+						obj.setWorn( false );
+					}
 
-                toret = "Cogido.";
+					toret = "Cogido.";
+				} else {
+					toret = "Ya lo tienes.";
+				}
             } else {
                 toret = "No servir&iacute;a de nada.";
             }
@@ -740,7 +815,7 @@ takeAction.doIt = function(s) {
       if ( typeof( objDest.preTake ) === "function" ) {
           toret = objDest.preTake();
       } else {
-          toret = this.exe( s, objDest, ctrl.personas.getPlayer() );
+          toret = this.exe( s );
       }
 
       ctrl.lugares.updateDesc();
@@ -762,6 +837,12 @@ var openAction = actions.crea( "open",
 
 openAction.exe = function(s, obj) {
     var toret = "";
+
+    if ( arguments.length < 2
+      || obj == null )
+    {
+        obj = s.obj1;
+    }
 
     if ( obj != null ) {
         if ( obj.isReachable() ) {
@@ -791,7 +872,7 @@ openAction.doIt = function(s) {
       if ( typeof( objDest.preOpen ) === "function" ) {
         toret = objDest.preOpen();
       } else {
-          toret = this.exe( s, objDest );
+          toret = this.exe( s );
       }
 
       if ( typeof( objDest.postOpen ) === "function" ) {
@@ -811,6 +892,12 @@ var closeAction = actions.crea( "close",
 
 closeAction.exe = function(s, obj) {
     var toret = "";
+
+    if ( arguments.length < 2
+      || obj == null )
+    {
+        obj = s.obj1;
+    }
 
     if ( obj != null ) {
         if ( obj.isReachable() ) {
@@ -840,7 +927,7 @@ closeAction.doIt = function(s) {
       if ( typeof( objDest.preClose ) === "function" ) {
         toret = objDest.preClose();
       } else {
-          toret = this.exe( s, objDest );
+          toret = this.exe( s );
       }
 
       if ( typeof( objDest.postClose ) === "function" ) {
@@ -886,11 +973,11 @@ talkAction.exe = function(s) {
 	var toret = "";
     var persona = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Hablas solo un rato.";
 	}
 	else
-	if ( persona === null ) {
+	if ( persona == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else
@@ -911,11 +998,11 @@ talkAction.doIt = function(s) {
     var toret = "";
     var persona = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Hablas solo un rato.";
 	}
 	else
-	if ( persona === null ) {
+	if ( persona == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -958,11 +1045,11 @@ searchAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacute;as especificar lo qu&eacute;.";
 	}
 	else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -981,11 +1068,11 @@ searchAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacute;as especificar lo qu&eacute;.";
 	}
 	else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1013,11 +1100,11 @@ listenAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		objDest = ctrl.places.getCurrentLoc();
 	}
 
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1036,11 +1123,11 @@ listenAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		objDest = ctrl.places.getCurrentLoc();
 	}
 
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1095,7 +1182,7 @@ jumpAction.transInput = function(s) {
 
     // "salta [a/sobre] x" => "sube a x"
     if ( this.match( s )
-      && s.term1 !== null )
+      && s.term1 != null )
     {
         s.verb = climbAction.verbs[ 0 ];
     }
@@ -1188,11 +1275,11 @@ tasteAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1211,11 +1298,11 @@ tasteAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1243,11 +1330,11 @@ touchAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1266,11 +1353,11 @@ touchAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1297,11 +1384,11 @@ smellAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1320,11 +1407,11 @@ smellAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1352,11 +1439,11 @@ haveAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1375,11 +1462,11 @@ haveAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1408,7 +1495,7 @@ descendAction.transInput = function(s) {
 
     // Baja => ir abajo
     if ( this.match( s )
-      && s.term1 === null )
+      && s.term1 == null )
     {
         s.verb = actions.getAction( "go" ).verbs[ 0 ];
         s.term1 = loc.compas[ 5 ];
@@ -1421,11 +1508,11 @@ descendAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar a d&oacute;nde.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1444,11 +1531,11 @@ descendAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar a d&oacute;nde.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1479,7 +1566,7 @@ climbAction.transInput = function(s) {
 
     // Sube => ir arriba
     if ( this.match( s )
-      && s.term1 === null )
+      && s.term1 == null )
     {
         s.verb = actions.getAction( "go" ).verbs[ 0 ];
         s.term1 = loc.compas[ 4 ];
@@ -1492,11 +1579,11 @@ climbAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar a qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1515,11 +1602,11 @@ climbAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar a qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1547,11 +1634,11 @@ shakeAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar a qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
     else {
@@ -1570,11 +1657,11 @@ shakeAction.doIt = function(s)
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar s qu&eacute;.";
 	}
     else
-	if ( objDest === null ) {
+	if ( objDest == null ) {
 		toret = "No lo veo en derredor.";
 	}
 	else {
@@ -1602,19 +1689,19 @@ showAction.exe = function(s) {
     var objDest = s.obj1;
     var pnjDest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar a qui&eacute;n.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else
-		if ( pnjDest === null ) {
+		if ( pnjDest == null ) {
 			toret = "No le veo en derredor.";
 		}
 		else {
@@ -1641,19 +1728,19 @@ showAction.doIt = function(s)
     var objDest = s.obj1;
     var pnjDest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar a qui&eacute;n.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else
-		if ( pnjDest === null ) {
+		if ( pnjDest == null ) {
 			toret = "No le veo en derredor.";
 		}
 		else {
@@ -1683,19 +1770,19 @@ giveAction.exe = function(s) {
     var objDest = s.obj1;
     var pnjDest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar a qui&eacute;n.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else
-		if ( pnjDest === null ) {
+		if ( pnjDest == null ) {
 			toret = "No le veo en derredor.";
 		}
 		else {
@@ -1722,19 +1809,19 @@ giveAction.doIt = function(s)
     var objDest = s.obj1;
     var pnjDest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar a qui&eacute;n.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else
-		if ( pnjDest === null ) {
+		if ( pnjDest == null ) {
 			toret = "No le veo en derredor.";
 		}
 		else {
@@ -1763,16 +1850,16 @@ tieAction.exe = function(s) {
     var obj1Dest = s.obj1;
     var obj2Dest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar con qu&eacute;.";
 	}
     else {
-		if ( obj1Dest === null
-          || obj2Dest === null )
+		if ( obj1Dest == null
+          || obj2Dest == null )
         {
 			toret = "No veo eso en derredor.";
 		}
@@ -1796,19 +1883,19 @@ tieAction.doIt = function(s)
     var obj1Dest = s.obj1;
     var obj2Dest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar con qu&eacute;.";
 	}
     else {
-		if ( obj1Dest === null ) {
+		if ( obj1Dest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else
-		if ( obj2Dest === null ) {
+		if ( obj2Dest == null ) {
 			toret = "No lo veo en derredor.";
 		}
 		else {
@@ -1837,16 +1924,16 @@ digAction.exe = function(s) {
     var obj1Dest = s.obj1;
     var obj2Dest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar con qu&eacute;.";
 	}
     else {
-		if ( obj1Dest === null
-          || obj2Dest === null )
+		if ( obj1Dest == null
+          || obj2Dest == null )
         {
 			toret = "No veo eso en derredor.";
 		}
@@ -1870,19 +1957,19 @@ digAction.doIt = function(s)
     var obj1Dest = s.obj1;
     var obj2Dest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else
-	if ( s.term2 === null ) {
+	if ( s.term2 == null ) {
 		toret = "Deber&iacuteas especificar con qu&eacute;.";
 	}
     else {
-		if ( obj1Dest === null ) {
+		if ( obj1Dest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else
-		if ( obj2Dest === null ) {
+		if ( obj2Dest == null ) {
 			toret = "No lo veo en derredor.";
 		}
 		else {
@@ -1979,11 +2066,11 @@ wearAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else {
@@ -2013,11 +2100,11 @@ wearAction.doIt = function(s)
     var objDest = s.obj1;
     var pnjDest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else {
@@ -2047,11 +2134,11 @@ disrobeAction.exe = function(s) {
     var toret = "";
     var objDest = s.obj1;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else {
@@ -2080,11 +2167,11 @@ disrobeAction.doIt = function(s)
     var objDest = s.obj1;
     var pnjDest = s.obj2;
 
-	if ( s.term1 === null ) {
+	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
 	}
     else {
-		if ( objDest === null ) {
+		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else {

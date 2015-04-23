@@ -57,7 +57,7 @@ var Ent = function() {
     this.moveTo = function(newOwner)
     {
         if ( arguments.length === 0
-          || newOwner === null )
+          || newOwner == null )
         {
             newOwner = ctrl.places.limbo;
         }
@@ -124,7 +124,7 @@ var Ent = function() {
         var loc = ctrl.places.getCurrentLoc();
 
         if ( arguments.length < 1
-          || persona === null )
+          || persona == null )
         {
             persona = ctrl.personas.getPlayer();
         }
@@ -370,7 +370,7 @@ var Persona = function(n, i, l, d) {
     this.moveTo = function(newOwner)
     {
         if ( arguments.length === 0
-          || newOwner === null )
+          || newOwner == null )
         {
             newOwner = ctrl.places.limbo;
         }
@@ -475,16 +475,16 @@ var ctrl = ( function() {
     {
         var toret = null;
 
-        if ( objName !== null ) {
+        if ( objName != null ) {
             var loc = ctrl.places.getCurrentLoc();
             var player = ctrl.personas.getPlayer();
 
             toret = ctrl.lookUpObj( player, objName );
 
-            if ( toret === null ) {
+            if ( toret == null ) {
                 toret = ctrl.lookUpObj( loc, objName );
 
-                if ( toret === null ) {
+                if ( toret == null ) {
                     toret = lookUpPersona( loc, objName );
                 }
             }
@@ -546,7 +546,7 @@ var ctrl = ( function() {
                 {
                     toret = lookUpObj( obj, w );
 
-                    if ( toret !== null ) {
+                    if ( toret != null ) {
                         break;
                     }
                 }
@@ -624,7 +624,7 @@ var ctrl = ( function() {
         // Show picture
         dvPic.innerHTML = "";
 
-        if ( pic !== null ) {
+        if ( pic != null ) {
             var pImg = document.createElement( "p" );
             var img = document.createElement( "img" );
 
@@ -726,7 +726,7 @@ var ctrl = ( function() {
         {
             var toret = current;
 
-            if ( toret === null ) {
+            if ( toret == null ) {
                 ctrl.showError( "current loc not found" );
                 throw "current loc not found";
             }
@@ -762,13 +762,13 @@ var ctrl = ( function() {
 
             // Desc
             if ( arguments.length < 1
-              || loc === null )
+              || loc == null )
             {
                 loc = ctrl.places.getCurrentLoc();
             }
 
             if ( arguments.length < 2
-              || desc === null )
+              || desc == null )
             {
                 desc = loc.desc;
             }
@@ -783,13 +783,13 @@ var ctrl = ( function() {
             var dvPic = ctrl.getHtmlPart( "dvPic", "missing div loc.pic" );
 
             if ( arguments.length < 1
-              || loc === null )
+              || loc == null )
             {
                 loc = ctrl.places.getCurrentLoc();
             }
 
             if ( arguments.length < 2
-              || desc === null )
+              || desc == null )
             {
                 desc = loc.desc;
             }
@@ -1080,7 +1080,7 @@ var ctrl = ( function() {
 
         function getPlayer()
         {
-            if ( player === null ) {
+            if ( player == null ) {
                 showError( "jugador no encontrado" );
                 throw "jugador no encontrado";
             }
@@ -1217,7 +1217,7 @@ var ctrl = ( function() {
         pIntro.innerHTML = ctrl.getIntro();
         dvIntro.insertBefore( pIntro, getHtmlPart( "frmIntro", "missing intro form" ) );
 
-        if ( ctrl.getPic() !== null ) {
+        if ( ctrl.getPic() != null ) {
             var dvImgIntro = document.createElement( "div" );
             var imgIntro = document.createElement( "img" );
             dvImgIntro.setAttribute( "align", "center" );
@@ -1239,7 +1239,7 @@ var ctrl = ( function() {
         if ( ctrl.getAuthor().length > 0 ) {
             var pInfo = document.getElementById( "versionInfo" );
 
-            if ( pInfo === null ) {
+            if ( pInfo == null ) {
                 pInfo = document.createElement( "p" );
                 pInfo.setAttribute( "id", "versionInfo" );
                 dvIntro.insertBefore( pInfo, pIntro );
@@ -1525,9 +1525,7 @@ var parser = ( function() {
 
     function canonical( w )
     {
-        if ( w === null
-          || w === undefined )
-        {
+        if ( w == null ) {
             w = "";
         }
 
@@ -1800,7 +1798,7 @@ var actions = ( function() {
         var toret = null;
 
         if ( arguments.length > 0
-          && id !== null )
+          && id != null )
         {
             id = id.trim().toLowerCase();
             if ( arguments.length < 2 ) {
@@ -1815,7 +1813,7 @@ var actions = ( function() {
             }
         }
 
-        if ( toret === null ) {
+        if ( toret == null ) {
             ctrl.showError( msgError );
             throw msgError;
         }
