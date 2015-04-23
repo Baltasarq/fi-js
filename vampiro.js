@@ -152,7 +152,7 @@ locVestibulo.preGo = function() {
         var toret = "";
 
         if ( s.term1 !== "sur" ) {
-                toret = acciones.devAccion( "go" ).exe( s, loc );
+                toret = acciones.devAccion( "go" ).exe( s );
         } else {
                 toret = objPuertaEntrada.desc;
         }
