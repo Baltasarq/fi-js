@@ -520,7 +520,7 @@ exitAction.exe = function(s, obj) {
     if ( arguments.length < 2
       || obj == null )
     {
-		obj = this.getObjDest();
+		obj = this.getDestObj( s );
 	}
 
     if ( obj != null ) {
@@ -669,8 +669,8 @@ var dropAction = actions.crea( "drop",
 dropAction.getContainer = function(s) {
 	var toret = s.obj2;
 	
-	if ( s.obj2 == null ) {
-		cont = ctrl.places.getCurrentLoc();
+	if ( toret == null ) {
+		toret = ctrl.places.getCurrentLoc();
 	}
 	
     return toret;
@@ -688,7 +688,7 @@ dropAction.exe = function(s, obj, cont, persona) {
     if ( arguments.length < 3
       || cont == null )
     {
-        cont = this.getContainer();
+        cont = this.getContainer( s );
     }
 
     if ( arguments.length < 2
@@ -727,7 +727,7 @@ dropAction.exe = function(s, obj, cont, persona) {
 
 dropAction.doIt = function(s) {
     var toret = "";
-    var cont = this.getContainer();
+    var cont = this.getContainer( s );
     var objDest = s.obj1;
 
 	// No se encuentra el contenedor, pero se ha especificado
@@ -974,7 +974,7 @@ talkAction.exe = function(s) {
     var persona = s.obj1;
 
 	if ( s.term1 == null ) {
-		toret = "Hablas solo un rato.";
+		toret = "Hablar solo no parece buena idea.";
 	}
 	else
 	if ( persona == null ) {
@@ -999,7 +999,7 @@ talkAction.doIt = function(s) {
     var persona = s.obj1;
 
 	if ( s.term1 == null ) {
-		toret = "Hablas solo un rato.";
+		toret = "Hablar solo no parece buena idea.";
 	}
 	else
 	if ( persona == null ) {
@@ -1151,7 +1151,7 @@ var singAction = actions.crea( "sing",
 );
 
 singAction.exe = function(s) {
-    return "Cantas fatal.";
+    return "Mejor no: cantas fatal.";
 }
 
 singAction.doIt = function(s)
@@ -1241,7 +1241,7 @@ shoutAction.doIt = function(s)
 
 // ------------------------------------------------------------- Sleep
 var sleepAction = actions.crea( "sleep",
-	[ "duerme", "dormir", "duermo" ]
+	[ "duerme", "duermete", "dormir", "dormirte", "dormirse", "duermo" ]
 );
 
 sleepAction.exe = function(s) {
@@ -1431,8 +1431,8 @@ smellAction.doIt = function(s)
 
 // ---------------------------------------------------------------- Have
 var haveAction = actions.crea( "have",
-	[ "come", "comer", "como",
-      "bebe", "beber", "bebo" ]
+	[ "come", "comete", "comer", "comerse", "como",
+      "bebe", "bebete", "beber", "beberse", "bebo" ]
 );
 
 haveAction.exe = function(s) {
