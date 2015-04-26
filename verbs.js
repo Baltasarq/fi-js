@@ -258,13 +258,13 @@ var inventoryAction = actions.crea( "inv", [ "i", "inv", "inventario" ] );
 
 inventoryAction.exe = function(s, persona) {
 	var toret = "";
-	
+
 	if ( arguments.length < 2
 	  || persona == null )
 	{
 		persona = ctrl.personas.getPlayer();
 	}
-	
+
     toret += persona.desc + "<br />" + ctrl.list( persona );
     return toret;
 };
@@ -333,13 +333,13 @@ goAction.transInput = function(s) {
 
 goAction.exe = function(s, loc) {
 	var toret = "";
-	
+
 	if ( arguments.length < 2
 	  || loc == null )
 	{
 		loc = ctrl.places.getCurrentLoc();
 	}
-    
+
     var locDest = loc.getExit( s.term1 );
 
     if ( locDest != null ) {
@@ -668,11 +668,11 @@ var dropAction = actions.crea( "drop",
 
 dropAction.getContainer = function(s) {
 	var toret = s.obj2;
-	
+
 	if ( toret == null ) {
 		toret = ctrl.places.getCurrentLoc();
 	}
-	
+
     return toret;
 }
 
@@ -729,6 +729,8 @@ dropAction.doIt = function(s) {
     var toret = "";
     var cont = this.getContainer( s );
     var objDest = s.obj1;
+    var verb = s.verb;
+    var objTerm = s.term1;
 
 	// No se encuentra el contenedor, pero se ha especificado
     if ( s.term2 != null
@@ -743,8 +745,15 @@ dropAction.doIt = function(s) {
                 toret = objDest.preDrop();
             } else {
                 toret = this.exe( s );
-                ctrl.lugares.updateDesc();
             }
+
+            actions.execute( "look" );
+
+            // Set 's' again back to "take"
+            s.act = this;
+            s.verb = verb;
+            s.obj1 = objDest;
+            s.term1 = objTerm;
 
             if ( typeof( objDest.postDrop ) === "function" ) {
                 objDest.postDrop();
@@ -810,6 +819,8 @@ takeAction.exe = function(s, obj, persona) {
 takeAction.doIt = function(s) {
     var toret = "";
     var objDest = s.obj1;
+    var objTerm = s.term1;
+    var verb = s.verb;
 
     if ( objDest != null ) {
       if ( typeof( objDest.preTake ) === "function" ) {
@@ -818,7 +829,14 @@ takeAction.doIt = function(s) {
           toret = this.exe( s );
       }
 
-      ctrl.lugares.updateDesc();
+      actions.execute( "look" );
+
+      // Set 's' again back to "take"
+      s.act = this;
+      s.verb = verb;
+      s.obj1 = objDest;
+      s.term1 = objTerm;
+
       if ( typeof( objDest.postTake ) === "function" ) {
         objDest.postTake();
       }
