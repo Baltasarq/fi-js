@@ -258,6 +258,12 @@ var Loc = function(n, i, s, d) {
     }
 
     this.devSalida = this.getExit;
+    
+    this.doEachTurn = function() {
+        return;
+    }
+    
+    this.hazCadaTurno = this.doEachTurn;
 };
 
 var Obj = function(n, i, s, l, d) {
@@ -395,13 +401,12 @@ var Persona = function(n, i, l, d) {
 };
 
 var ctrl = ( function() {
-    var pressTimer;
-
     var tit = "Ficción interactiva";
     var intro = "¡Comienza la aventura!";
     var pic = null;
     var aut = "";
     var version = "";
+    var turns = 1;
 
     function getAuthor()
     {
@@ -451,6 +456,14 @@ var ctrl = ( function() {
     function setIntro(i)
     {
         intro = i;
+    }
+    
+    function setNewTurn() {
+        ++turns;
+    }
+    
+    function getTurns() {
+        return turns;
     }
 
     /**
@@ -656,16 +669,7 @@ var ctrl = ( function() {
             if ( linkEndPos > -1 ) {
                 var txtLink = txt.slice( linkPos + 2, linkEndPos );
                 var parts = txtLink.split( ',' );
-                var link = "<a \
-								onMouseUp=\"javascript:clearTimeout( ctrl.pressTimer ); \
-								return false;\" \
-								onMouseDown=\"javascript: \
-									ctrl.pressTimer = window.setTimeout( function() { \
-									  ctrl.populateContextMenu( '" + parts[ 1 ] + "' ); \
-                                      dvContextMenu.style.display='block'; \
-									  return false;\
-								}, 1000);\" \
-								onClick=\"javascript: ctrl.inject('"
+                var link = "<a onClick=\"javascript: ctrl.inject('"
                             + parts[ 1 ]
                             + "')\" href='javascript:void(0)'>"
                             + parts[ 0 ]
@@ -1422,6 +1426,10 @@ var ctrl = ( function() {
         "cnvtTextLinksToHtml": cnvtTextLinksToHtml,
         "cnvtEnlacesHtml": cnvtTextLinksToHtml,
         "print": print,
+        "setNewTurn": setNewTurn,
+        "getTurns": getTurns,
+        "ponNuevoTurno": setNewTurn,
+        "devTurnos": getTurns,
         "endGame": endGame,
         "terminaJuego": endGame,
         "inject": inject,
@@ -1686,6 +1694,7 @@ var parser = ( function() {
         var words = [];
         var toret = "";
         var player = ctrl.personas.getPlayer();
+        var loc = ctrl.places.getCurrentLoc();
 
         cmd = prepareInput( cmd );
         words = cmd.split( ' ' );
@@ -1708,6 +1717,9 @@ var parser = ( function() {
                 } else {
                     toret = playerAnswer;
                 }
+                
+                loc.doEachTurn();
+                ctrl.setNewTurn();
             }
         }
 

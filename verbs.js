@@ -2141,7 +2141,7 @@ wearAction.doIt = function(s)
     return toret;
 }
 
-// ---------------------------------------------------------------- Wear
+// ----------------------------------------------------------- Disrobe
 var disrobeAction = actions.crea( "disrobe",
 	[ "desviste", "desvestir", "desvestirse", "desvisto",
       "quitate", "quitarse", "quitate", "quito", "quita"
@@ -2208,4 +2208,29 @@ disrobeAction.doIt = function(s)
     return toret;
 }
 
+// ---------------------------------------------------------------- Status
+var statusAction = actions.crea( "status",
+	[ "status", "stats", "estado" ]
+);
 
+statusAction.exe = function(s)
+{
+    return "Has jugado " + ctrl.getTurns() + " turnos.";
+}
+
+statusAction.doIt = function(s) {
+    var toret = "";
+    var player = ctrl.personas.getPlayer();
+    
+    if ( typeof( player.preStatus ) === "function" ) {
+        toret = player.preStatus();
+    } else {
+        toret = this.exe( s );
+    }
+
+    if ( typeof( player.postStatus ) === "function" ) {
+        objDest.postStatus();
+    }
+    
+    return toret;
+}
