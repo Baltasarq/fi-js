@@ -2210,12 +2210,26 @@ disrobeAction.doIt = function(s)
 
 // ---------------------------------------------------------------- Status
 var statusAction = actions.crea( "status",
-	[ "status", "stats", "estado" ]
+	[ "status", "stats", "estado", "turnos", "puntos", "puntuacion" ]
 );
 
 statusAction.exe = function(s)
 {
-    return "Has jugado " + ctrl.getTurns() + " turnos.";
+	var player = ctrl.personas.getPlayer();
+	var turns = ctrl.getTurns();
+	var toret = "Has jugado " + turns;
+
+	if ( turns == 1 ) {
+		toret += " turno.";
+	} else {
+		toret += " turnos.";
+	}
+
+	if ( ctrl.hasScore() ) {
+		toret += "<br> Tu puntuación es de: " + player.score;
+	}
+	
+    return toret;
 }
 
 statusAction.doIt = function(s) {

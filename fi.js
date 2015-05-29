@@ -1,5 +1,4 @@
 // fi.js
-
 /**
  * Motor de ficc. interactiva (fi.js IF Engine)
  * Licencia MIT (c) baltasar@gmail.com 201405
@@ -154,6 +153,7 @@ var Loc = function(n, i, s, d) {
     this.id = i.trim();
     this.syn = s;
     this.desc = d;
+    this.visits = 0;
 
     this.scenery = true;
     this.container = true;
@@ -343,6 +343,8 @@ var Persona = function(n, i, l, d) {
     this.base = Ent;
 
     this.num = n;
+    this.turns = 0;
+    this.score = 0;
     this.id = i.trim();
     this.desc = d;
     this.owner = l;
@@ -407,6 +409,29 @@ var ctrl = ( function() {
     var aut = "";
     var version = "";
     var turns = 1;
+    var useScore = false;
+    var alarms = [];
+
+    function Alarm(turns, trigger) {
+		this.turns = turns;
+		this.event = trigger;
+	}
+
+	function setAlarm(turns, f) {
+		alarms.push( new Alarm( turns, f ) );
+	}
+
+    function hasScore() {
+		return this.useScore;
+	}
+
+	function setUseScore(useIt) {
+		if ( arguments.length < 1 ) {
+			useIt = true;
+		}
+
+		this.useScore = useIt;
+	}
 
     function getAuthor()
     {
@@ -459,7 +484,21 @@ var ctrl = ( function() {
     }
     
     function setNewTurn() {
+		var player = personas.getPlayer();
+		
         ++turns;
+        ++player.turns;
+
+        for(var i = 0; i < alarms.length; ++i) {
+			--alarms[ i ].turns;
+
+			if ( alarms[ i ].turns <= 0
+			  && alarms[ i ].event != null )
+			{
+				alarms[ i ].event();
+				alarms.splice( i, 1 );
+			}
+		}
     }
     
     function getTurns() {
@@ -778,6 +817,7 @@ var ctrl = ( function() {
             }
 
             updateDesc( loc, desc );
+            ++loc.visits;
         }
 
         function updateDesc(loc, desc)
@@ -1428,7 +1468,6 @@ var ctrl = ( function() {
         "print": print,
         "setNewTurn": setNewTurn,
         "getTurns": getTurns,
-        "ponNuevoTurno": setNewTurn,
         "devTurnos": getTurns,
         "endGame": endGame,
         "terminaJuego": endGame,
@@ -1443,7 +1482,13 @@ var ctrl = ( function() {
         "lookUpObj": lookUpObj,
         "buscaObj": lookUpObj,
         "lookUpPersona": lookUpPersona,
-        "buscaPersona": lookUpPersona
+        "buscaPersona": lookUpPersona,
+        "setUseScore": setUseScore,
+        "hasScore": hasScore,
+        "ponUsaPuntuacion": setUseScore,
+        "usaPuntuacion": hasScore,
+        "setAlarm": setAlarm,
+        "ponAlarma": setAlarm
     };
 }() );
 
@@ -1711,6 +1756,7 @@ var parser = ( function() {
             // Execute action
             if ( sentence.act != null ) {
                 var playerAnswer = player.preAction();
+                
                 if ( playerAnswer == "" ) {
                     toret = sentence.act.doIt( sentence );
                     player.postAction();
