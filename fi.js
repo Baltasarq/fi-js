@@ -175,10 +175,20 @@ var Loc = function(n, i, s, d) {
     this.salidas = this.exits;
 
     this.setScenery = function (v) {}
+    this.ponEscenario = this.setScenery;
     this.setReachable = function(v) {}
+    this.ponAlcanzable = this.setReachable;
     this.setContainer = function(v) {}
+    this.ponContenedor = this.setcontainer;
     this.setOpen = function(v) {}
+    this.ponAbierto = this.setOpen;
     this.moveTo = function(x) {}
+    this.mueveA = this.moveTo;
+
+    this.has = function(obj) {
+        return ( this.objs.indexOf( obj ) > -1 ) || ( this.personas.indexOf( obj ) > -1 );
+    }
+    this.tiene = this.has;
 
     this.cnvtStrToExitOrd = function(s)
     {
@@ -258,11 +268,11 @@ var Loc = function(n, i, s, d) {
     }
 
     this.devSalida = this.getExit;
-    
+
     this.doEachTurn = function() {
         return;
     }
-    
+
     this.hazCadaTurno = this.doEachTurn;
 };
 
@@ -375,8 +385,7 @@ var Persona = function(n, i, l, d) {
     }
     this.di = this.say;
 
-    this.moveTo = function(newOwner)
-    {
+    this.moveTo = function(newOwner) {
         if ( arguments.length === 0
           || newOwner == null )
         {
@@ -400,6 +409,7 @@ var Persona = function(n, i, l, d) {
 
 		return;
     }
+    this.mueveA = this.moveTo;
 };
 
 var ctrl = ( function() {
@@ -411,15 +421,53 @@ var ctrl = ( function() {
     var turns = 1;
     var useScore = false;
     var alarms = [];
+    var daemons = {};
 
     function Alarm(turns, trigger) {
 		this.turns = turns;
 		this.event = trigger;
 	}
 
+    function Daemon(id, fn) {
+        this.id = id;
+        this.fn = fn;
+    }
+
 	function setAlarm(turns, f) {
 		alarms.push( new Alarm( turns, f ) );
 	}
+
+    function addDaemon(id, fn) {
+        if ( arguments.length != 2 ) {
+            ctrl.showError( "addDaemon(): need 2 args: id and fn" );
+            return;
+        }
+
+        daemons[ id ] = new Daemon( id, fn );
+    }
+
+    function getDaemon(id) {
+        if ( arguments.length != 1 ) {
+            ctrl.showError( "getDaemon(): need 1 arg: id" );
+            return;
+        }
+
+        return daemons[ id ];
+    }
+
+    function removeDaemon(id) {
+        if ( arguments.length != 1 ) {
+            ctrl.showError( "removeDaemon(): need 1 arg: id" );
+            return;
+        }
+
+        if ( !daemons.hasOwnProperty( id ) ) {
+            ctrl.showError( "missing daemon with id: " + id );
+            return;
+        }
+
+        delete daemons.id;
+    }
 
     function hasScore() {
 		return this.useScore;
@@ -482,13 +530,14 @@ var ctrl = ( function() {
     {
         intro = i;
     }
-    
+
     function setNewTurn() {
 		var player = personas.getPlayer();
-		
+
         ++turns;
         ++player.turns;
 
+        // Check alarms
         for(var i = 0; i < alarms.length; ++i) {
 			--alarms[ i ].turns;
 
@@ -499,8 +548,17 @@ var ctrl = ( function() {
 				alarms.splice( i, 1 );
 			}
 		}
+
+        // Run daemons
+        for(var key in daemons) {
+            if ( daemons.hasOwnProperty( key ) ) {
+                daemons[ key ].fn();
+            }
+        }
+
+        return;
     }
-    
+
     function getTurns() {
         return turns;
     }
@@ -654,7 +712,6 @@ var ctrl = ( function() {
     {
         var dvInput = getHtmlPart( "dvInput", "missing input div" );
         var dvDesc = getHtmlPart( "dvDesc", "missing desc div" );
-        var dvPic = getHtmlPart( "dvPic", "missing pic div" );
         var dvId = getHtmlPart( "dvId", "missing id div" );
 
         if ( arguments.length < 2 ) {
@@ -670,11 +727,13 @@ var ctrl = ( function() {
         dvId.style.display = "none";
         ctrl.media.audio.stop();
 
-        // Show end game text
-        dvDesc.innerHTML = msg;
+        // Erase desc
+        dvDesc.innerHTML = "";
 
         // Show picture
-        dvPic.innerHTML = "";
+        dvPic = document.createElement( "div" );
+        dvDesc.appendChild( dvPic );
+        dvPic.style.display = "none";
 
         if ( pic != null ) {
             var pImg = document.createElement( "p" );
@@ -685,7 +744,15 @@ var ctrl = ( function() {
             img.setAttribute( "alt", "game over" );
             pImg.appendChild( img );
             dvPic.appendChild( pImg );
+            dvPic.style.display = "block";
         }
+
+        // Show end game text
+        var pDesc = document.createElement( "p" );
+        pDesc.style.textAlign = "justify";
+        pDesc.textContent = msg;
+        dvDesc.appendChild( pDesc );
+
 
         return;
     }
@@ -1488,7 +1555,13 @@ var ctrl = ( function() {
         "ponUsaPuntuacion": setUseScore,
         "usaPuntuacion": hasScore,
         "setAlarm": setAlarm,
-        "ponAlarma": setAlarm
+        "ponAlarma": setAlarm,
+        "addDaemon": addDaemon,
+        "getDaemon": getDaemon,
+        "removeDaemon": removeDaemon,
+        "ponDaemon": addDaemon,
+        "devDaemon": getDaemon,
+        "borraDaemon": removeDaemon,
     };
 }() );
 
@@ -1756,14 +1829,14 @@ var parser = ( function() {
             // Execute action
             if ( sentence.act != null ) {
                 var playerAnswer = player.preAction();
-                
+
                 if ( playerAnswer == "" ) {
                     toret = sentence.act.doIt( sentence );
                     player.postAction();
                 } else {
                     toret = playerAnswer;
                 }
-                
+
                 loc.doEachTurn();
                 ctrl.setNewTurn();
             }
@@ -1979,4 +2052,21 @@ var acciones = actions;
 window.onload = function() {
     ctrl.start();
     document.getElementById( "btBoot" ).focus();
+}
+
+// Redirect key presses to the user prompt
+window.onkeypress = function(e) {
+    var dvIntro = document.getElementById( "dvIntro" );
+
+    if ( dvIntro.style.display == "block" ) {
+        if ( e.keyCode == 13 ) {
+            ctrl.boot();
+        } else {
+            document.getElementById( "btBoot" ).focus();
+        }
+    } else {
+        document.getElementById( "edInput" ).focus();
+    }
+
+    return;
 }

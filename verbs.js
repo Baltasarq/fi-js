@@ -2116,7 +2116,7 @@ wearAction.doIt = function(s)
 {
     var toret = "";
     var objDest = s.obj1;
-    var pnjDest = s.obj2;
+    var player = ctrl.personas.getPlayer();
 
 	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
@@ -2126,6 +2126,14 @@ wearAction.doIt = function(s)
 			toret = "No veo eso en derredor.";
 		}
 		else {
+            if ( !player.has( objDest ) ) {
+                actions.execute( "take", s.term1 );
+
+                if ( !player.has( objDest ) ) {
+                    return;
+                }
+            }
+
 			if ( typeof( objDest.preWear ) === "function" ) {
 				toret = objDest.preWear();
 			} else {
@@ -2213,8 +2221,7 @@ var statusAction = actions.crea( "status",
 	[ "status", "stats", "estado", "turnos", "puntos", "puntuacion" ]
 );
 
-statusAction.exe = function(s)
-{
+statusAction.exe = function(s) {
 	var player = ctrl.personas.getPlayer();
 	var turns = ctrl.getTurns();
 	var toret = "Has jugado " + turns;
@@ -2228,14 +2235,14 @@ statusAction.exe = function(s)
 	if ( ctrl.hasScore() ) {
 		toret += "<br> Tu puntuación es de: " + player.score;
 	}
-	
+
     return toret;
 }
 
 statusAction.doIt = function(s) {
     var toret = "";
     var player = ctrl.personas.getPlayer();
-    
+
     if ( typeof( player.preStatus ) === "function" ) {
         toret = player.preStatus();
     } else {
@@ -2245,6 +2252,33 @@ statusAction.doIt = function(s) {
     if ( typeof( player.postStatus ) === "function" ) {
         objDest.postStatus();
     }
-    
+
     return toret;
 }
+
+// ---------------------------------------------------------------- Wait
+var waitAction = actions.crea( "wait",
+	[ "espera", "z" ]
+);
+
+waitAction.exe = function(s) {
+    return "Esperas un rato.";
+}
+
+waitAction.doIt = function(s) {
+    var toret = "";
+    var player = ctrl.personas.getPlayer();
+
+    if ( typeof( player.preWait ) === "function" ) {
+        toret = player.preWait();
+    } else {
+        toret = this.exe( s );
+    }
+
+    if ( typeof( player.postWait ) === "function" ) {
+        objDest.postWait();
+    }
+
+    return toret;
+}
+

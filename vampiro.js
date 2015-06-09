@@ -338,7 +338,7 @@ objAtaud.preOpen = function() {
 				var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
 				dvFrame.style.display = "none";
                 ctrl.terminaJuego(
-                                "\
+                        "\
                                 Abres el ataúd, y, protegido por \
                                 los ajos y el crucifijo, comienzas \
                                 tu tarea. La cara de horror del \ vampiro cuando le clavas la estaca \
@@ -640,6 +640,44 @@ var jugador = ctrl.personas.creaPersona( "reXXe",
                     "reXXe, un experimentado caza vampiros.",
                     locVestibulo
 );
+
+var murcielagos = ctrl.personas.creaPersona( "murcielagos",
+                    [ "murcielago" ],
+                    "Varios murcielagos, no parecen saber muy bien qué pensar de ti.",
+                    ctrl.lugares.limbo
+);
+murcielagos.ponAlcanzable( false );
+
+murcielagos.preTalk = function() {
+        return "¿Pero para qué? ...no molestes a los pobres murciélagos...";
+}
+
+locPasillo.preSing = function() {
+        return "Buscas a algun incauto para tu perpretación...<br>"
+                + acciones.ejecuta( "talk", "murcielagos" );
+}
+
+murcielagos.daemon = function() {
+        if ( ctrl.getTurns() % 7 == 0 ) {
+                if ( ctrl.lugares.getCurrentLoc() == murcielagos.owner ) {
+                        ctrl.print( "Unos murciélagos se alborotan un tanto, chillando entre ellos..." );
+                } else {
+                        ctrl.print( "Ahogados, débiles chillidos provienen de alguna parte..." );
+                }
+        }
+}
+
+ctrl.ponAlarma( 3, function() {
+        murcielagos.mueveA( locPasillo );
+
+        if ( ctrl.lugares.devLocActual() == murcielagos.owner ) {
+                ctrl.print( "Despertados por tu presencia, los murcielagos chillan como comenzando a desperezarse..." );
+        } else {
+                ctrl.print( "Unos lejanos chillidos llegan a ti de forma apagada..." );
+        }
+
+        ctrl.ponDaemon( "bats", murcielagos.daemon );
+});
 
 // --- Acciones --------------------------------------------------------
 var sharpenAction = acciones.crea( "sharpen",
