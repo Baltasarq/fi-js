@@ -711,8 +711,10 @@ var ctrl = ( function() {
     function endGame(msg, pic)
     {
         var dvInput = getHtmlPart( "dvInput", "missing input div" );
+        var dvAnswer = getHtmlPart( "dvAnswer", "missing input div" );
         var dvDesc = getHtmlPart( "dvDesc", "missing desc div" );
         var dvId = getHtmlPart( "dvId", "missing id div" );
+        var dvPic = getHtmlPart( "dvPic", "missing pic div" );
 
         if ( arguments.length < 2 ) {
             pic = null;
@@ -725,12 +727,14 @@ var ctrl = ( function() {
         // Eliminate input possibilities and extra stuff
         dvInput.style.display = "none";
         dvId.style.display = "none";
+        dvAnswer.style.display = "none";
         ctrl.media.audio.stop();
 
         // Erase desc
         dvDesc.innerHTML = "";
 
-        // Show picture
+        // Hide the old picture and display the new one
+        dvPic.style.display = "none";
         dvPic = document.createElement( "div" );
         dvDesc.appendChild( dvPic );
         dvPic.style.display = "none";
@@ -750,7 +754,7 @@ var ctrl = ( function() {
         // Show end game text
         var pDesc = document.createElement( "p" );
         pDesc.style.textAlign = "justify";
-        pDesc.textContent = msg;
+        pDesc.innerHTML = msg;
         dvDesc.appendChild( pDesc );
 
 
