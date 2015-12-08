@@ -613,7 +613,8 @@ pullAction.transInput = function(s)
     var dropAction = actions.getAction( "drop" );
 
     if ( this.match( s )
-      && s.prep == null )
+      && s.term2 != null
+      && s.term1 != null )
     {
         s.verb = dropAction.verbs[ 0 ];
     }
@@ -662,8 +663,9 @@ pullAction.doIt = function(s) {
 
 // ------------------------------------------------------------ Drop
 var dropAction = actions.crea( "drop",
-	[ "deja", "dejar", "dejo", "tira", "tirar", "tiro",
-    "lanzar", "lanza", "lanza",
+	[ "deja", "dejar", "dejo",
+    "tira", "tirar", "tiro",
+    "lanzar", "lanza", "lanzo",
 	  "suelta", "soltar", "suelto" ]
 );
 
