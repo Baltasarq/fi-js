@@ -147,7 +147,6 @@ Ent.Portable = false;
 
 var Loc = function(n, i, s, d) {
     Ent.call( this );
-    this.base = Ent;
 
     this.num = n;
     this.id = i.trim();
@@ -278,7 +277,6 @@ var Loc = function(n, i, s, d) {
 
 var Obj = function(n, i, s, l, d) {
     Ent.call( this );
-    this.base = Ent;
 
     this.num = n;
     this.id = i.trim();
@@ -350,7 +348,6 @@ var Obj = function(n, i, s, l, d) {
 
 var Persona = function(n, i, l, d) {
     Ent.call( this );
-    this.base = Ent;
 
     this.num = n;
     this.turns = 0;

@@ -663,6 +663,7 @@ pullAction.doIt = function(s) {
 // ------------------------------------------------------------ Drop
 var dropAction = actions.crea( "drop",
 	[ "deja", "dejar", "dejo", "tira", "tirar", "tiro",
+    "lanzar", "lanza", "lanza",
 	  "suelta", "soltar", "suelto" ]
 );
 
@@ -673,7 +674,7 @@ dropAction.getContainer = function(s) {
 		toret = ctrl.places.getCurrentLoc();
 	}
 
-    return toret;
+  return toret;
 }
 
 dropAction.exe = function(s, obj, cont, persona) {
@@ -732,7 +733,7 @@ dropAction.doIt = function(s) {
     var verb = s.verb;
     var objTerm = s.term1;
 
-	// No se encuentra el contenedor, pero se ha especificado
+  	// No se encuentra el contenedor, pero se ha especificado
     if ( s.term2 != null
       && s.obj2 == null  )
     {
@@ -2281,4 +2282,3 @@ waitAction.doIt = function(s) {
 
     return toret;
 }
-
