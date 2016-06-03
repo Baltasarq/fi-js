@@ -682,11 +682,10 @@ var ctrl = ( function() {
         }
 
         if ( replace ) {
-                edInput.value = txt;
-        } else {
-            edInput.value += txt;
+            edInput.value = "";
         }
 
+        edInput.value += txt;
 
         if ( enter ) {
             btSend.click();
@@ -778,7 +777,7 @@ var ctrl = ( function() {
                 var parts = txtLink.split( ',' );
                 var link = "<a onClick=\"javascript: ctrl.inject('"
                             + parts[ 1 ]
-                            + "')\" href='javascript:void(0)'>"
+                            + "', true, true)\" href='javascript:void(0)'>"
                             + parts[ 0 ]
                             + "</a>";
                 txt = txt.slice( 0, linkPos ) + link
