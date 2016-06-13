@@ -487,7 +487,7 @@ var ctrl = ( function() {
                 for(var i = 0; i < personas.length; ++i) {
                         if ( personas[ i ] != ctrl.personas.getPlayer() ) {
                                 strEntitiesList +=
-                                        "<a href=\"javascript:addTerm('"
+                                        "<a href=\"javascript:ctrl.addTerm('"
                                         + personas[ i ].id
                                         + "');\">"
                                         + personas[ i ].id
@@ -503,7 +503,7 @@ var ctrl = ( function() {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < inventory.length; ++i) {
                         strEntitiesList +=
-                                "<a href=\"javascript:addTerm('"
+                                "<a href=\"javascript:ctrl.addTerm('"
                                 + inventory[ i ].id
                                 + "');\">"
                                 + inventory[ i ].id
@@ -518,7 +518,7 @@ var ctrl = ( function() {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < reachable.length; ++i) {
                         strEntitiesList +=
-                                "<a href=\"javascript:addTerm('"
+                                "<a href=\"javascript:ctrl.addTerm('"
                                 + reachable[ i ].id
                                 + "');\">"
                                 + reachable[ i ].id
