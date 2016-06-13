@@ -1,7 +1,7 @@
 // fi.js
 /**
  * Motor de ficc. interactiva (fi.js IF Engine)
- * Licencia MIT (c) baltasar@gmail.com 201405
+ * Licencia MIT (c) baltasar@gmail.com 2014, 2015, 2016
  */
 
 var Ent = function() {
@@ -410,8 +410,8 @@ var Persona = function(n, i, l, d) {
 };
 
 var ctrl = ( function() {
-    var tit = "Ficción interactiva";
-    var intro = "¡Comienza la aventura!";
+    var tit = "Ficci&oacute;n interactiva";
+    var intro = "&iexcl;Comienza la aventura!";
     var pic = null;
     var aut = "";
     var version = "";
@@ -464,6 +464,86 @@ var ctrl = ( function() {
         }
 
         delete daemons.id;
+    }
+
+    var prepBuildingOrder = "";
+
+    function updateObjects()
+    {
+        var dvObjects = document.getElementById( "dvObjects" );
+
+        if ( dvObjects == null ) {
+            return;
+        }
+
+        var inventory = ctrl.personas.getPlayer().objs;
+        var reachable = ctrl.lugares.getCurrentLoc().objs;
+        var personas = ctrl.lugares.getCurrentLoc().personas;
+        var pObjects = document.createElement( "p" );
+        var strEntitiesList = "";
+
+        if ( personas.length > 1 ) {
+                strEntitiesList += "/ ";
+                for(var i = 0; i < personas.length; ++i) {
+                        if ( personas[ i ] != ctrl.personas.getPlayer() ) {
+                                strEntitiesList +=
+                                        "<a href=\"javascript:addTerm('"
+                                        + personas[ i ].id
+                                        + "');\">"
+                                        + personas[ i ].id
+                                        + "</a>  / ";
+                        }
+                }
+
+
+                strEntitiesList += "<br />";
+        }
+
+        if ( inventory.length > 0 ) {
+                strEntitiesList += "/ ";
+                for(var i = 0; i < inventory.length; ++i) {
+                        strEntitiesList +=
+                                "<a href=\"javascript:addTerm('"
+                                + inventory[ i ].id
+                                + "');\">"
+                                + inventory[ i ].id
+                                + "</a>  / ";
+                }
+
+                strEntitiesList += "<br />";
+        }
+
+
+        if ( reachable.length > 0 ) {
+                strEntitiesList += "/ ";
+                for(var i = 0; i < reachable.length; ++i) {
+                        strEntitiesList +=
+                                "<a href=\"javascript:addTerm('"
+                                + reachable[ i ].id
+                                + "');\">"
+                                + reachable[ i ].id
+                                + "</a>  / ";
+                }
+        }
+
+        dvObjects.innerHTML = "";
+        dvObjects.appendChild( pObjects );
+        pObjects.innerHTML = strEntitiesList;
+
+        return;
+    }
+
+    function addTerm(w)
+    {
+        var doEnter = ( prepBuildingOrder.length == 0 );
+
+        ctrl.inject( w, doEnter, false );
+
+        if ( !doEnter ) {
+                ctrl.inject( prepBuildingOrder, false, false );
+        }
+
+        prepBuildingOrder = "";
     }
 
     function hasScore() {
@@ -1562,6 +1642,8 @@ var ctrl = ( function() {
         "ponDaemon": addDaemon,
         "devDaemon": getDaemon,
         "borraDaemon": removeDaemon,
+        "updateObjects": updateObjects,
+        "actualizaObjetos": updateObjects,
     };
 }() );
 
@@ -1839,6 +1921,7 @@ var parser = ( function() {
 
                 loc.doEachTurn();
                 ctrl.setNewTurn();
+                ctrl.updateObjects();
             }
         }
 
