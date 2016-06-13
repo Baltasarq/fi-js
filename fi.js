@@ -481,13 +481,14 @@ var ctrl = ( function() {
         var personas = ctrl.lugares.getCurrentLoc().personas;
         var pObjects = document.createElement( "p" );
         var strEntitiesList = "";
+        var refPrefix = "<a href=\"javascript:ctrl.addTerm('";
 
         if ( personas.length > 1 ) {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < personas.length; ++i) {
                         if ( personas[ i ] != ctrl.personas.getPlayer() ) {
                                 strEntitiesList +=
-                                        "<a href=\"javascript:ctrl.addTerm('"
+                                        refPrefix
                                         + personas[ i ].id
                                         + "');\">"
                                         + personas[ i ].id
@@ -503,7 +504,7 @@ var ctrl = ( function() {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < inventory.length; ++i) {
                         strEntitiesList +=
-                                "<a href=\"javascript:ctrl.addTerm('"
+                                refPrefix
                                 + inventory[ i ].id
                                 + "');\">"
                                 + inventory[ i ].id
@@ -518,7 +519,7 @@ var ctrl = ( function() {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < reachable.length; ++i) {
                         strEntitiesList +=
-                                "<a href=\"javascript:ctrl.addTerm('"
+                                refPrefix
                                 + reachable[ i ].id
                                 + "');\">"
                                 + reachable[ i ].id
