@@ -1645,6 +1645,7 @@ var ctrl = ( function() {
         "borraDaemon": removeDaemon,
         "updateObjects": updateObjects,
         "actualizaObjetos": updateObjects,
+        "addTerm": addTerm,
     };
 }() );
 
