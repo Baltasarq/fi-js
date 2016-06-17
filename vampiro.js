@@ -33,7 +33,7 @@ ctrl.ponVersion( "20140831" );
 var locBiblioteca = ctrl.lugares.creaLoc(
 	"Biblioteca",
 	[ "biblioteca" ],
-	"Te hallas en la biblioteca del castillo. Obviamente está \
+	"Te hallas en la biblioteca del castillo. Obviamente est&aacute; \
         llena de ${libros, ex libros} interesantes, pero \
         desgraciadamente no tienes \
         tiempo para leerlos.<br>Salidas visibles: ${oeste, oeste}."
@@ -43,10 +43,10 @@ locBiblioteca.pic = "res/biblioteca.jpg";
 var locCocina = ctrl.lugares.creaLoc(
 	"Cocina",
 	[ "cocina", "habitacion", "estancia" ],
-	"Estás en la cocina del castillo. Esto está lleno de \
+	"Est&aacute;s en la cocina del castillo. Esto est&aacute; lleno de \
         ${cacerolas, ex cacerolas} y de ${cacharros, ex cacharros} \
         para cocinar. Hay un ${horno, ex horno}, un \
-        ${fregadero, ex fregadero} y un ${armario, ex armario} pequeño.\
+        ${fregadero, ex fregadero} y un ${armario, ex armario} peque&ntilde;o.\
         <br>Salidas visibles: \
         ${este, este}."
 );
@@ -55,8 +55,8 @@ locCocina.pic = "res/cocina.jpg";
 var locDormitorio = ctrl.lugares.creaLoc(
 	"Dormitorio",
 	[ "dormitorio", "habitacion", "estancia" ],
-	"Estás en un dormitorio no muy grande ni tampoco muy pequeño. \
-        Es bastante austero. Sólo hay una ${cama, ex cama} \
+	"Est&aacute;s en un dormitorio no muy grande ni tampoco muy peque&ntilde;o. \
+        Es bastante austero. S&oacute;lo hay una ${cama, ex cama} \
         y un ${armario, ex armario}.\
         <br>Salidas visibles: ${este, este}."
 );
@@ -66,7 +66,7 @@ locDormitorio.pic = "res/dormitorio.jpg";
 var locElFinal = ctrl.lugares.creaLoc(
 	"El Final",
 	[ "habitacion", "estancia" ],
-	"Estás en una habitación desnuda. Unicamente hay un \
+	"Est&aacute;s en una habitaci&oacute;n desnuda. Unicamente hay un \
          ${altar, ex altar} en el centro. \
          Encima del altar puedes ver un ${ataud, ex ataud}.\
          <br>Salidas visibles: ${este, este}."
@@ -76,9 +76,9 @@ locElFinal.pic = "res/final.jpg";
 var locEscaleras = ctrl.lugares.creaLoc(
 	"Escaleras",
 	[ "escaleras" ],
-	"Te hallas en el final del pasillo. Delante de tí ves unas \
+	"Te hallas en el final del pasillo. Delante de t&iacute; ves unas \
         escaleras que ${suben, sube} y otras que ${bajan, baja}. \
-        Al ${oeste, oeste} está el ${dormitorio, oeste} y al ${este, este} \
+        Al ${oeste, oeste} est&aacute; el ${dormitorio, oeste} y al ${este, este} \
         la ${sala de estar, este}.<br>Salidas visibles: \
         ${sur, sur}, ${este, este}, ${oeste, oeste}, \
         ${arriba, arriba}, ${abajo, abajo}."
@@ -88,10 +88,10 @@ locEscaleras.pic = "res/escaleras.jpg";
 var locEscalerasSuperiores = ctrl.lugares.creaLoc(
 	"Escaleras superiores",
 	[ "escaleras", "rellano" ],
-	"Estás en el piso superior del castillo. Aquí hace aún más \
-        frío que ${abajo, abajo}. Detrás de tí están las \
+	"Est&aacute;s en el piso superior del castillo. Aqu&iacute; hace m&aacute;s \
+        fr&iacute;o que ${abajo, abajo}. Detr&aacute;s d e&iacute; est&aacute;n las \
         escaleras que ${bajan, baja} y \
-        hacia el ${oeste, oeste} está la ${habitación, oeste} del \
+        hacia el ${oeste, oeste} est&aacute; la ${habitaci&oacute;n, oeste} del \
         vampiro.<br>Salidas visibles: ${oeste, oeste}, ${abajo, abajo}."
 );
 locEscalerasSuperiores.pic = "res/escaleras_superiores.jpg";
@@ -100,7 +100,7 @@ var locPasillo = ctrl.lugares.creaLoc(
 	"Pasillo",
 	[ "pasillo" ],
 	"Te encuentras en medio del pasillo principal de este piso. \
-         Al ${oeste, oeste} está la ${cocina, oeste} y al ${este, este} \
+         Al ${oeste, oeste} est&aacute; la ${cocina, oeste} y al ${este, este} \
          la ${biblioteca, este}. El pasillo sigue hacia el \
          ${norte, norte}.<br>Salidas visibles: \
          ${norte, norte}, ${sur, sur}, ${este, este}, ${oeste, oeste}."
@@ -111,9 +111,9 @@ locPasillo.pic = "res/pasillo.jpg";
 var locSalaDeEstar = ctrl.lugares.creaLoc(
 	"Sala de estar",
 	[ "sala", "habitacion", "estancia" ],
-	"Es la sala más acogedora de todo el castillo. \
+	"Es la sala m&aacute;s acogedora de todo el castillo. \
         En la ${chimenea, ex chimenea} \
-        los últimos ${restos de algún fuego, ex fuego} \
+        los &uacute;ltimos ${restos de alg&uacute;n fuego, ex fuego} \
         chisporrotean alegremente. \
         Hay una ${mesa, ex mesa} grande con una ${silla, ex silla} al \
         lado. De la pared cuelgan \
@@ -124,22 +124,22 @@ var locSalaDeEstar = ctrl.lugares.creaLoc(
 locSalaDeEstar.pic = "res/sala_estar.jpg";
 
 var locSotano = ctrl.lugares.creaLoc(
-	"Sótano",
+	"S&oacute;tano",
 	[ "sotano" ],
-	"En este pequeño sótano hace mucho calor, sientes una \
-        sensación de recogimiento. Está todo muy sucio. Hay un \
+	"En este peque&ntilde;o s&oacute;tano hace mucho calor, sientes una \
+        sensaci&oacute;n de recogimiento. Est&aacute; todo muy sucio. Hay un \
         ${barril, ex barril} \
-        aquí, también hay unas ${escaleras, ex escaleras} que \
+        aqu&iacute;, tambi&eacute;n hay unas ${escaleras, ex escaleras} que \
         ${suben, arriba}.<br>Salidas visibles: \
         ${arriba, arriba}.\n"
 );
 locSotano.pic = "res/sotano.jpg";
 
 var locVestibulo = ctrl.lugares.creaLoc(
-	"Vestíbulo",
+	"Vest&iacute;bulo",
 	[ "vestibulo", "habitacion", "estancia" ],
-	"Estás en el vestíbulo del castillo. El ambiente es muy \
-        húmedo y frío. Estás en un pasillo que se extiende hacia el \
+	"Est&aacute;s en el vest&iacute;bulo del castillo. El ambiente es muy \
+        h&uacute;medo y fr&iacute;o. Est&aacute;s en un pasillo que se extiende hacia el \
         ${norte, norte}. Al ${sur, sur} queda la \
         ${puerta de entrada, ex puerta} al castillo.<br>Salidas \
         visibles: ${norte, norte}.\n"
@@ -163,8 +163,8 @@ locVestibulo.preGo = function() {
 var objPuertaEntrada = ctrl.creaObj(
 	"puerta",
 	[ "entrada" ],
-	"No es el momento de irse, ¡acabas de llegar! Debes cumplir \
-         tu misión.",
+	"No es el momento de irse, &iexcl;acabas de llegar! Debes cumplir \
+         tu misi&oacute;n.",
 	locVestibulo,
 	Ent.Escenario
 );
@@ -217,7 +217,7 @@ var objAdornos = ctrl.creaObj(
 var objAltar = ctrl.creaObj(
 	"altar",
 	[ "altar" ],
-	"Es un altar de dura piedra. Encima de éste está el \
+	"Es un altar de dura piedra. Encima de &eacute;ste est&aacute; el \
          ${ataud, ex ataud}.",
 	locElFinal,
 	Ent.Escenario
@@ -227,7 +227,7 @@ var objArmario = ctrl.creaObj(
 	"armario",
 	[ "armario", "aparador" ],
 	"Es un armario de los que se usa para la vajilla. \
-         La puerta tiene una pequeña cerradura. ",
+         La puerta tiene una peque&ntilde;a cerradura. ",
 	locCocina,
 	Ent.Escenario
 );
@@ -238,9 +238,9 @@ objArmario.preExamine = function() {
         var toret = objArmario.desc;
 
         if ( objArmario.estaAbierto() ) {
-                toret += "Está abierto.";
+                toret += "Est&aacute; abierto.";
         } else {
-                toret += "Está cerrado.";
+                toret += "Est&aacute; cerrado.";
         }
 
         return toret;
@@ -255,7 +255,7 @@ objArmario.preOpen = function() {
         }
 
         if ( !ctrl.estaPresente( s.obj2 ) ) {
-                toret = "No puedes abrirlo así.";
+                toret = "No puedes abrirlo as&iacute;.";
         }
         else
         if ( s.obj2 === objLlavecita ) {
@@ -280,7 +280,7 @@ objArmario.preOpen = function() {
 var objArmarioRopero = ctrl.creaObj(
 	"armario ropero",
 	[ "armario", "ropero" ],
-	"El armario ropero está vacío.",
+	"El armario ropero est&aacute; vac&iacute;o.",
 	locDormitorio,
 	Ent.Escenario
 );
@@ -300,11 +300,11 @@ objAtaud.preOpen = function() {
         if ( !ctrl.estaPresente( objTrozoDeMadera ) )
         {
                 toret += "Necesitas un estaca que clavar en el \
-                          corazón del vampiro.\n";
+                          coraz&oacute;n del vampiro.\n";
         } else {
                 if ( !objTrozoDeMadera.afilado ) {
-                        toret += "Podrías utilizar el madero, como \
-                                  estaca, pero no está afilado.\n";
+                        toret += "Podr&iacute;as utilizar el madero, como \
+                                  estaca, pero no est&aacute; afilado.\n";
                 }
         }
 
@@ -315,20 +315,20 @@ objAtaud.preOpen = function() {
 
         // El crucifijo
         if ( !ctrl.estaPresente( objCrucifijoPlateado ) ) {
-                toret += "Es básica una protección religiosa.\n";
+                toret += "Es b&aacute;sica una protecci&oacute;n religiosa.\n";
         } else {
                 if ( !objCrucifijoPlateado.estaPuesto() ) {
-                        toret += "El crucifijo debería colgar de tu \
+                        toret += "El crucifijo deber&iacute;a colgar de tu \
                                   cuello.\n";
                 }
         }
 
         // La ristra de ajos
         if ( !ctrl.estaPresente( objRistraDeAjos ) ) {
-                toret += "Es básica una protección pagana.\n";
+                toret += "Es b&aacute;sica una protecci&oacute;n pagana.\n";
         } else {
                 if ( !objRistraDeAjos.estaPuesto() ) {
-                        toret += "La protección del ajo solamente se \
+                        toret += "La protecci&oacute;n del ajo solamente se \
                                   logra si cuelga de tu cuello.\n";
                 }
         }
@@ -337,16 +337,18 @@ objAtaud.preOpen = function() {
         if ( toret.length === 0 ) {
 				var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
 				dvFrame.style.display = "none";
+                document.getElementById( "dvObjects" ).style.display = "none";
+                document.getElementById( "dvActions" ).style.display = "none";
                 ctrl.terminaJuego(
                         "\
-                                Abres el ataúd, y, protegido por \
+                                Abres el ata&uacute;d, y, protegido por \
                                 los ajos y el crucifijo, comienzas \
                                 tu tarea. La cara de horror del \ vampiro cuando le clavas la estaca \
                                 solo es comparable al rostro \
                                 lleno de paz que puedes observar \
-                                unos cuantos martillazos después. \
-                                La reducción del cuerpo a cenizas \
-                                te confirma que tu misión está ya \
+                                unos cuantos martillazos despu&eacute;s. \
+                                La reducci&oacute;n del cuerpo a cenizas \
+                                te confirma que tu misi&oacute;n est&aacute; ya \
                                 cumplida.",
                         "res/portada_vampiro.jpg"
                 );
@@ -361,7 +363,7 @@ objAtaud.preOpen = function() {
 var objBarril = ctrl.creaObj(
 	"barril",
 	[ "barril", "tapa", "hendidura", "muesca" ],
-	"Se trata de un barril con tapa, que presenta una pequeña  \
+	"Se trata de un barril con tapa, que presenta una peque&ntilde;a  \
         hendidura.",
 	locSotano,
 	Ent.Escenario
@@ -373,10 +375,10 @@ objBarril.preExamine = function() {
         var toret = objBarril.desc;
 
         if ( objBarril.estaAbierto() ) {
-                toret += " Está vacío.";
+                toret += " Est&aacute; vac&iacute;o.";
         } else {
                 toret += " No puedes ver lo que hay dentro del barril \
-                     porque está cerrado.";
+                     porque est&aacute; cerrado.";
         }
 
         return toret;
@@ -391,7 +393,7 @@ objBarril.preOpen = function() {
         }
 
         if ( !ctrl.estaPresente( s.obj2 ) ) {
-                toret = "No puedes abrirlo así.";
+                toret = "No puedes abrirlo as&iacute;.";
         }
         else
         if ( s.obj2 === objPalanca ) {
@@ -404,7 +406,7 @@ objBarril.preOpen = function() {
 
                         objBarril.ponAbierto();
                         objMartillo.mueveA( objBarril.owner );
-                        toret += " Dentro había un \
+                        toret += " Dentro hab&iacute;a un \
                                    ${martillo, coge martillo}.";
                 }
         }
@@ -423,7 +425,7 @@ var objCacerolas = ctrl.creaObj(
 var objCama = ctrl.creaObj(
 	"cama",
 	[ "cama" ],
-	"Está cubierta de ${sábanas, ex sabanas}.",
+	"Est&aacute; cubierta de ${s&aacute;banas, ex sabanas}.",
 	locDormitorio,
 	Ent.Escenario
 );
@@ -440,7 +442,7 @@ var objChimenea = ctrl.creaObj(
 var objCrucifijoPlateado = ctrl.creaObj(
 	"crucifijo plateado",
 	[ "crucifijo" ],
-	"Es un pequeño crucifijo plateado. Es uno de los cuatro elementos que nos servirán para derrotar al vampiro.",
+	"Es un peque&ntilde;o crucifijo plateado. Es uno de los cuatro elementos que nos servir&aacute;n para derrotar al vampiro.",
 	locBiblioteca,
 	Ent.Portable
 );
@@ -458,7 +460,7 @@ var objCuchillo = ctrl.creaObj(
 var objFregadero = ctrl.creaObj(
 	"fregadero",
 	[ "fregadero" ],
-	"Es un fregadero de piedra. El fregadero está vacío.",
+	"Es un fregadero de piedra. El fregadero est&aacute; vac&iacute;o.",
 	locCocina,
 	Ent.Escenario
 );
@@ -475,7 +477,7 @@ var objLibros = ctrl.creaObj(
 	"libros",
 	[ "libro", "libros", "volumenes", "volumen",
           "estantes", "estante", "estanterias", "estanteria",
-          "librería" ],
+          "librer&iacute;a" ],
 	"Montones de libros, pero no tengo tiempo para leer ahora.",
 	locBiblioteca,
 	Ent.Escenario
@@ -484,7 +486,7 @@ var objLibros = ctrl.creaObj(
 var objLlavecita = ctrl.creaObj(
 	"llavecita",
 	[ "llavecita", "llave" ],
-	"Esta pequeña llavecita tiene la pinta de abrir un armario o algo así.",
+	"Esta peque&ntilde;a llavecita tiene la pinta de abrir un armario o algo as&iacute;.",
 	ctrl.lugares.limbo,
 	Ent.Portable
 );
@@ -492,7 +494,7 @@ var objLlavecita = ctrl.creaObj(
 var objMartillo = ctrl.creaObj(
 	"martillo",
 	[ "martillo", "maza" ],
-	"Un martillo grande. Es uno de los elementos que me permitirán acabar con el vampiro.",
+	"Un martillo grande. Es uno de los elementos que me permitir&aacute;n acabar con el vampiro.",
 	ctrl.lugares.limbo,
 	Ent.Portable
 );
@@ -516,7 +518,7 @@ var objPalanca = ctrl.creaObj(
 var objRestos = ctrl.creaObj(
 	"restos",
 	[ "restos", "fuego" ],
-	"Chisporrotean algunas brasas entre madera aún por quemar.",
+	"Chisporrotean algunas brasas entre madera a&uacute;n por quemar.",
 	locSalaDeEstar,
 	Ent.Escenario
 );
@@ -536,7 +538,7 @@ objRestos.preExamine = function() {
 var objRistraDeAjos = ctrl.creaObj(
 	"ristra de ajos",
 	[ "ristra", "ajos", "ajo" ],
-	"Es una ristra entera de ajos que expelen un olor un tanto asqueroso. Es uno de los cuatro elementos que me servirán para derrotar al vampiro.",
+	"Es una ristra entera de ajos que expelen un olor un tanto asqueroso. Es uno de los cuatro elementos que me servir&aacute;n para derrotar al vampiro.",
 	ctrl.lugares.limbo,
 	Ent.Portable
 );
@@ -556,7 +558,7 @@ objSabanas.preExamine = function() {
 
         if ( objLlavecita.owner = ctrl.lugares.limbo ) {
                 objLlavecita.moveTo( locDormitorio );
-                toret += " Entre ellas encuentras una pequeña \
+                toret += " Entre ellas encuentras una peque&ntilde;a \
                 ${llavecita, coge llavecita}.";
         }
 
@@ -566,7 +568,7 @@ objSabanas.preExamine = function() {
 var objSilla = ctrl.creaObj(
 	"silla",
 	[ "silla" ],
-	"Una cómoda silla.",
+	"Una c&oacute;moda silla.",
 	locSalaDeEstar,
 	Ent.Escenario
 );
@@ -608,6 +610,10 @@ objTrozoDeMadera.preExamine = function() {
 
 objTrozoDeMadera.afilado = false;
 
+objTrozoDeMadera.preAttack = function() {
+    return actions.execute( "sharpen", "madero" );
+}
+
 objTrozoDeMadera.preSharpen = function() {
         var toret = "No puedes afilarlo con eso.";
         var s = parser.sentencia;
@@ -619,7 +625,7 @@ objTrozoDeMadera.preSharpen = function() {
         }
 
         if ( !ctrl.estaPresente( s.obj2 ) ) {
-                toret = "No puedes afilarlo así.";
+                toret = "No puedes afilarlo as&iacute;.";
         }
         else
         if ( s.obj2 === objCuchillo ) {
@@ -641,28 +647,28 @@ var jugador = ctrl.personas.creaPersona( "reXXe",
                     locVestibulo
 );
 
-var murcielagos = ctrl.personas.creaPersona( "murcielagos",
+var murcielagos = ctrl.personas.creaPersona( "murci&eacute;lagos",
                     [ "murcielago" ],
-                    "Varios murcielagos, no parecen saber muy bien qué pensar de ti.",
+                    "Varios murci&eacute;lagos, no parecen saber muy bien qu&eacute; pensar de ti.",
                     ctrl.lugares.limbo
 );
 murcielagos.ponAlcanzable( false );
 
 murcielagos.preTalk = function() {
-        return "¿Pero para qué? ...no molestes a los pobres murciélagos...";
+        return "¿Pero para qu&eacute;? ...no molestes a los pobres murci&eacute;lagos...";
 }
 
 locPasillo.preSing = function() {
-        return "Buscas a algun incauto para tu perpretación...<br>"
+        return "Buscas a algun incauto para tu perpretaci&oacute;n...<br>"
                 + acciones.ejecuta( "talk", "murcielagos" );
 }
 
 murcielagos.daemon = function() {
         if ( ctrl.getTurns() % 7 == 0 ) {
                 if ( ctrl.lugares.getCurrentLoc() == murcielagos.owner ) {
-                        ctrl.print( "Unos murciélagos se alborotan un tanto, chillando entre ellos..." );
+                        ctrl.print( "Unos murci&eacute;lagos se alborotan un tanto, chillando entre ellos..." );
                 } else {
-                        ctrl.print( "Ahogados, débiles chillidos provienen de alguna parte..." );
+                        ctrl.print( "Ahogados, d&eacute;biles chillidos provienen de alguna parte..." );
                 }
         }
 }
@@ -671,7 +677,7 @@ ctrl.ponAlarma( 3, function() {
         murcielagos.mueveA( locPasillo );
 
         if ( ctrl.lugares.devLocActual() == murcielagos.owner ) {
-                ctrl.print( "Despertados por tu presencia, los murcielagos chillan como comenzando a desperezarse..." );
+                ctrl.print( "Despertados por tu presencia, los murci&eacute;lagos chillan como comenzando a desperezarse..." );
         } else {
                 ctrl.print( "Unos lejanos chillidos llegan a ti de forma apagada..." );
         }

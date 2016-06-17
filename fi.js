@@ -536,15 +536,15 @@ var ctrl = ( function() {
 
     function addTerm(w)
     {
-        var doEnter = ( prepBuildingOrder.length == 0 );
+        var doEnter = ( this.prepBuildingOrder.length == 0 );
 
         ctrl.inject( w, doEnter, false );
 
         if ( !doEnter ) {
-                ctrl.inject( prepBuildingOrder, false, false );
+                ctrl.inject( this.prepBuildingOrder, false, false );
         }
 
-        prepBuildingOrder = "";
+        this.prepBuildingOrder = "";
     }
 
     function hasScore() {
@@ -1645,6 +1645,7 @@ var ctrl = ( function() {
         "borraDaemon": removeDaemon,
         "updateObjects": updateObjects,
         "actualizaObjetos": updateObjects,
+        "prepBuildingOrder": prepBuildingOrder,
         "addTerm": addTerm,
     };
 }() );
