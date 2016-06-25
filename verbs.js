@@ -2123,29 +2123,24 @@ wearAction.doIt = function(s)
 
 	if ( s.term1 == null ) {
 		toret = "Deber&iacuteas especificar lo qu&eacute;.";
-	}
-    else {
+	} else {
 		if ( objDest == null ) {
 			toret = "No veo eso en derredor.";
 		}
 		else {
             if ( !player.has( objDest ) ) {
-                actions.execute( "take", s.term1 );
+                toret = "No llevas eso contigo.";
+            } else {
+                if ( typeof( objDest.preWear ) === "function" ) {
+                    toret = objDest.preWear();
+                } else {
+                    toret = this.exe( s );
+                }
 
-                if ( !player.has( objDest ) ) {
-                    return;
+                if ( typeof( objDest.postWear ) === "function" ) {
+                    objDest.postWear();
                 }
             }
-
-			if ( typeof( objDest.preWear ) === "function" ) {
-				toret = objDest.preWear();
-			} else {
-				toret = this.exe( s );
-			}
-
-			if ( typeof( objDest.postWear ) === "function" ) {
-				objDest.postWear();
-			}
 		}
 	}
 
