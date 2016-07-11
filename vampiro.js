@@ -648,7 +648,7 @@ var jugador = ctrl.personas.creaPersona( "reXXe",
 );
 
 var murcielagos = ctrl.personas.creaPersona( "murci&eacute;lagos",
-                    [ "murcielago" ],
+                    [ "murcielago", "murcielagos" ],
                     "Varios murci&eacute;lagos, no parecen saber muy bien qu&eacute; pensar de ti.",
                     ctrl.lugares.limbo
 );

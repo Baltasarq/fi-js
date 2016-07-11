@@ -1925,6 +1925,12 @@ var parser = ( function() {
                 loc.doEachTurn();
                 ctrl.setNewTurn();
                 ctrl.updateObjects();
+            } else {
+                var objectInPlaceOfVerb = ctrl.isObjAround( sentence.verb );
+
+                if ( objectInPlaceOfVerb != null ) {
+                    toret = actions.execute( "examine", sentence.verb );
+                }
             }
         }
 

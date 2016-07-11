@@ -462,7 +462,7 @@ enterAction.exe = function(s, obj) {
     if ( arguments.length < 2
       || obj == null )
     {
-		obj = this.getDestObj();
+		obj = this.getDestObj( s );
 	}
 
     if ( obj != null ) {
@@ -478,7 +478,7 @@ enterAction.exe = function(s, obj) {
 
 enterAction.doIt = function(s) {
     var toret = "No hay de eso por aqu&iacute;.";
-    var objDest = this.getDestObj(s);
+    var objDest = this.getDestObj( s );
 
     if ( objDest != null ) {
       if ( typeof( objDest.preEnter ) === "function" ) {
