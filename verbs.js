@@ -127,7 +127,9 @@ attackAction.doIt = function(s) {
 var startAction = actions.crea( "start",
         [ "enciende", "encender", "enciendo",
           "arranca", "arrancar", "arranco",
-          "activa", "activar", "activo" ]
+          "activa", "activar", "activo",
+          "quema", "quemar", "quemo"
+        ]
 );
 
 startAction.exe = function(s) {
@@ -1934,6 +1936,49 @@ tieAction.doIt = function(s)
 
     return toret;
 }
+
+// --------------------------------------------------------- Untie
+var untieAction = actions.crea( "untie",
+        [ "desata", "desatar", "desato",
+          "desanudar", "desanuda", "desanudo"
+        ]
+);
+
+untieAction.exe = function(s) {
+    var toret = "No veo de eso en derredor.";
+
+    if ( s.term1 == null ) {
+        toret = "Deber&iacute;as especificar qu&eacute;.";
+    }
+    else
+    if ( s.obj1 != null ) {
+        toret = "No tiene sentido.";
+    }
+
+    return toret;
+};
+
+untieAction.doIt = function(s) {
+    var toret = "No veo de eso en derredor.";
+
+    if ( s.term1 == null ) {
+        toret = "Deber&iacute;as especificar qu&eacute;.";
+    }
+    else
+    if ( s.obj1 != null ) {
+        if ( typeof( s.obj1.preUntie ) === "function" ) {
+            toret = s.obj1.preUntie();
+        } else {
+            toret = this.exe( s );
+        }
+
+        if ( typeof( s.obj1.postUntie ) === "function" ) {
+            s.obj1.postUntie();
+        }
+    }
+
+    return toret;
+};
 
 // ---------------------------------------------------------------- Dig
 var digAction = actions.crea( "dig",
