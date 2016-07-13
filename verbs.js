@@ -706,16 +706,20 @@ dropAction.exe = function(s, obj, cont, persona) {
         // The very same place?
         if ( obj.owner === persona ) {
             if ( cont.isReachable() ) {
-                if ( cont.isContainer() ) {
+                if ( cont.isOpen() ) {
+                    if ( cont.isContainer() ) {
 
-                    if ( obj.isClothing() ) {
-                        obj.setWorn( false );
+                        if ( obj.isClothing() ) {
+                            obj.setWorn( false );
+                        }
+
+                        obj.moveTo( cont );
+                        toret = "Hecho.";
+                    } else {
+                        toret = "No parece apropiado.";
                     }
-
-                    obj.moveTo( cont );
-                    toret = "Hecho.";
                 } else {
-                    toret = "No parece apropiado.";
+                    toret = "Est&aacute; cerrado.";
                 }
             } else {
                 toret = "Demasiado lejos.";
