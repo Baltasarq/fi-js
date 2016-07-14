@@ -7,7 +7,9 @@
 
 // --------------------------------------------------------- Examine
 var examineAction = actions.crea( "examine",
-        [ "x", "ex", "examina", "examinar", "examino" ]
+        [ "x", "ex", "examina", "examinar", "examino",
+          "leer", "lee", "leo"
+        ]
 );
 
 examineAction.exe = function(s) {
