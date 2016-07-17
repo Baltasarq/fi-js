@@ -419,6 +419,7 @@ var ctrl = ( function() {
     var useScore = false;
     var alarms = [];
     var daemons = {};
+    var history = "";
 
     function Alarm(turns, trigger) {
 		this.turns = turns;
@@ -428,6 +429,51 @@ var ctrl = ( function() {
     function Daemon(id, fn) {
         this.id = id;
         this.fn = fn;
+    }
+
+    function addToHistory(cmd) {
+        if ( history.length > 0 ) {
+            history += "\n";
+        }
+
+        history += cmd;
+    }
+
+    function save() {
+        var toret = false;
+
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem( "fi_js-SaveGame", history );
+            toret = true;
+        }
+
+        return toret;
+    }
+
+    function load() {
+        var toret = false;
+
+        if (typeof(Storage) !== "undefined") {
+            history = "";
+            var newHistory = localStorage.getItem( "fi_js-SaveGame" );
+            if ( newHistory != null ) {
+                cmds = newHistory.split( '\n' );
+                history = newHistory;
+                ctrl.boot();
+                for(var i = 0; i < cmds.length; ++i) {
+                    var cmd = cmds[ i ];
+
+                    if ( !saveAction.match( cmd )
+                      && !loadAction.match( cmd ) )
+                    {
+                        parser.parse( cmd );
+                    }
+                }
+                toret = true;
+            }
+        }
+
+        return toret;
     }
 
 	function setAlarm(turns, f) {
@@ -1380,6 +1426,7 @@ var ctrl = ( function() {
 
         frmInput.reset();
         frmInput[ "edInput" ].focus();
+        history = "";
         return false;
     }
 
@@ -1647,6 +1694,9 @@ var ctrl = ( function() {
         "actualizaObjetos": updateObjects,
         "prepBuildingOrder": prepBuildingOrder,
         "addTerm": addTerm,
+        "addToHistory": addToHistory,
+        "save": save,
+        "load": load
     };
 }() );
 
@@ -1851,7 +1901,6 @@ var parser = ( function() {
 	 */
     function prepareInput(cmd)
 	{
-
 		var accentedVowels = "áéíóúäëïöüâêîôûàèìòùÁÉÍÓÚÄËÏÖÜÂÊÎÔÛÀÈÌÒÙ";
 		var regularVowels = "aeiou";
 		var specialChars = "ñÑçÇ";
@@ -1911,6 +1960,7 @@ var parser = ( function() {
             identifyObjects();
             toret = "No puedes hacer eso.";
 
+            ctrl.addToHistory( cmd );
             // Execute action
             if ( sentence.act != null ) {
                 var playerAnswer = player.preAction();

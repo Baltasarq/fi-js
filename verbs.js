@@ -2305,6 +2305,48 @@ statusAction.doIt = function(s) {
     return toret;
 }
 
+// ---------------------------------------------------------------- Save
+var saveAction = actions.crea( "save",
+	[ "save" ]
+);
+
+saveAction.exe = function(s) {
+    var toret = "";
+
+    if ( ctrl.save() ) {
+        toret += "Juego guardado.";
+    } else {
+        toret += "Error guardando situaci&oacute;n (localStorage no soportado?).";
+    }
+
+    return toret;
+}
+
+saveAction.doIt = function(s) {
+    return this.exe( s )
+}
+
+// ---------------------------------------------------------------- Load
+var loadAction = actions.crea( "load",
+	[ "load" ]
+);
+
+loadAction.exe = function(s) {
+    var toret = "";
+
+    if ( ctrl.load() ) {
+        toret += "Situaci&oacute;n recuperada.";
+    } else {
+        toret += "No se ha encontrado ninguna situaci&oacute;n guardada.";
+    }
+
+    return toret;
+}
+
+loadAction.doIt = function(s) {
+    return this.exe( s )
+}
+
 // ---------------------------------------------------------------- Wait
 var waitAction = actions.crea( "wait",
 	[ "espera", "z" ]
@@ -2329,4 +2371,39 @@ waitAction.doIt = function(s) {
     }
 
     return toret;
+}
+
+// ---------------------------------------------------------------- Help
+var helpAction = actions.crea( "help",
+	[ "ayuda", "help", "pistas", "pista" ]
+);
+
+helpAction.exe = function(s) {
+    return "Te encuentras ante un <b>relato <i>interactivo</i></b>.<br>\
+            Puedes utilizar el rat&oacute;n con los iconos inferiores, \
+            y los objetos a su derecha. Por otra parte, tambi&eacute;n \
+            puedes lanzar acciones con los enlaces dentro del texto (las \
+            m&aacute;s comunes son examinar o coger).<br>\
+            <br>\
+            Las acciones m&aacute;s comunes son:<br><ul>\
+            <li><b>(n)orte, (s)ur, (e)ste, (o)este</b>: Mueve al personaje hacia \
+            adelante, atr&aacute;s, derecha e izquierda.</li>\
+            <li><b>arriba, abajo</b>: Mueve al personaje hacia arriba o abajo.</li>\
+            <li><b>(ex)amina objeto</b>: Da una descripci&oacute;n m&aacute;s \
+            detallada del objeto.</li>\
+            <li><b>coge objeto/deja objeto</b>: Recoge o suelta un objeto.</li>\
+            <li><b>(i)nventario</b>: Muestra los objetos recogidos.</li>\
+            <li><b>empuja objeto / tira de objeto</b>: Empuja o tira de un objeto</li>\
+            <li><b>abrir objeto / cerrar objeto</b>: Abre o cierra un objeto</li>\
+            <li><b>golpea objeto / ataca personaje</b>: Golpea a un objeto o personaje.</li>\
+            <li><b>habla con personaje</b>: Entabla una conversaci&oacute;n.</li>\
+            <li><b>enciende objeto/apaga objeto</b>: Enciende o apaga un objeto.</li>\
+            <li><b>save</b>: Guarda la situación actual.</li>\
+            <li><b>load</b>: recupera una situación guardada previamente.</li>\
+            </ul><br>\
+            Las &oacute;rdenes pueden darse en infinitivo o imperativo.<br>";
+}
+
+helpAction.doIt = function(s) {
+    return this.exe( s )
 }

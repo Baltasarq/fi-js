@@ -89,7 +89,7 @@ var locEscalerasSuperiores = ctrl.lugares.creaLoc(
 	"Escaleras superiores",
 	[ "escaleras", "rellano" ],
 	"Est&aacute;s en el piso superior del castillo. Aqu&iacute; hace m&aacute;s \
-        fr&iacute;o que ${abajo, abajo}. Detr&aacute;s d e&iacute; est&aacute;n las \
+        fr&iacute;o que ${abajo, abajo}. Detr&aacute;s de t&iacute; est&aacute;n las \
         escaleras que ${bajan, baja} y \
         hacia el ${oeste, oeste} est&aacute; la ${habitaci&oacute;n, oeste} del \
         vampiro.<br>Salidas visibles: ${oeste, oeste}, ${abajo, abajo}."
