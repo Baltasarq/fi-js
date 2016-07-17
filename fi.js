@@ -437,7 +437,20 @@ var ctrl = ( function() {
             history += "\n";
         }
 
-        history += cmd;
+        if ( cmd != null ) {
+            cmd = cmd.trim();
+            var s = { "verb": cmd };
+
+            if ( !saveAction.match( s )
+            &&   !loadAction.match( s ) )
+            {
+                console.log( history );
+                console.log( cmd );
+                history += cmd;
+            }
+        }
+
+        return;
     }
 
     function setRndSeed(x) {
@@ -481,24 +494,38 @@ var ctrl = ( function() {
         var toret = false;
 
         if (typeof(Storage) !== "undefined") {
-            history = "";
-            var savegame = JSON.parse( localStorage.getItem( "fi_js-SaveGame" ) );
-            seed = savegame.seed;
-            var newHistory = savegame.history;
-            if ( newHistory != null ) {
+            var strSavegame = localStorage.getItem( "fi_js-SaveGame" );
+
+            if ( strSavegame != null ) {
+                var savegame = JSON.parse( strSavegame );
+                var newSeed = savegame.seed;
+                var newHistory = savegame.history;
                 ctrl.boot();
-                history = newHistory;
-                cmds = newHistory.split( '\n' );
+
+                // Restore command history
+                if ( newHistory != null ) {
+                    history = "";
+                    history = newHistory;
+                }
+
+                // Restore seed
+                if ( newSeed != null ) {
+                    seed = newSeed;
+                }
+
+                cmds = history.split( '\n' );
 
                 for(var i = 0; i < cmds.length; ++i) {
                     var cmd = cmds[ i ];
+                    var s = { "verb": cmd };
 
-                    if ( !saveAction.match( cmd )
-                      && !loadAction.match( cmd ) )
+                    if ( !saveAction.match( s )
+                      && !loadAction.match( s ) )
                     {
                         parser.parse( cmd );
                     }
                 }
+
                 toret = true;
             }
         }
