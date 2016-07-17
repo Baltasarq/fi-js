@@ -444,8 +444,6 @@ var ctrl = ( function() {
             if ( !saveAction.match( s )
             &&   !loadAction.match( s ) )
             {
-                console.log( history );
-                console.log( cmd );
                 history += cmd;
             }
         }
