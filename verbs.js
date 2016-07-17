@@ -2314,7 +2314,7 @@ saveAction.exe = function(s) {
     var toret = "";
 
     if ( ctrl.save() ) {
-        toret += "Juego guardado.";
+        toret += "Situaci&oacute;n guardada.";
     } else {
         toret += "Error guardando situaci&oacute;n (localStorage no soportado?).";
     }

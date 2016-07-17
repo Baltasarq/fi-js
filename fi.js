@@ -420,6 +420,7 @@ var ctrl = ( function() {
     var alarms = [];
     var daemons = {};
     var history = "";
+    var seed = 1;
 
     function Alarm(turns, trigger) {
 		this.turns = turns;
@@ -439,11 +440,37 @@ var ctrl = ( function() {
         history += cmd;
     }
 
+    function setRndSeed(x) {
+        if ( arguments.length == 0 ) {
+            x = new Date().getTime();
+        }
+
+        seed = x;
+    }
+
+    function rnd(min, max) {
+        if ( arguments.length < 2 ) {
+            max = 100;
+        }
+
+        if ( arguments.length < 1 ) {
+            min = 1;
+        }
+
+        var x = Math.sin( seed++ ) * 10000;
+        x -= Math.floor( x );
+        return Math.floor( ( x * ( max - min ) ) + min );
+    }
+
     function save() {
         var toret = false;
+        var savegame = {
+            "seed": seed,
+            "history": history
+        };
 
         if (typeof(Storage) !== "undefined") {
-            localStorage.setItem( "fi_js-SaveGame", history );
+            localStorage.setItem( "fi_js-SaveGame", JSON.stringify( savegame ) );
             toret = true;
         }
 
@@ -455,11 +482,14 @@ var ctrl = ( function() {
 
         if (typeof(Storage) !== "undefined") {
             history = "";
-            var newHistory = localStorage.getItem( "fi_js-SaveGame" );
+            var savegame = JSON.parse( localStorage.getItem( "fi_js-SaveGame" ) );
+            seed = savegame.seed;
+            var newHistory = savegame.history;
             if ( newHistory != null ) {
-                cmds = newHistory.split( '\n' );
-                history = newHistory;
                 ctrl.boot();
+                history = newHistory;
+                cmds = newHistory.split( '\n' );
+
                 for(var i = 0; i < cmds.length; ++i) {
                     var cmd = cmds[ i ];
 
@@ -1696,7 +1726,9 @@ var ctrl = ( function() {
         "addTerm": addTerm,
         "addToHistory": addToHistory,
         "save": save,
-        "load": load
+        "load": load,
+        "rnd": rnd,
+        "setRndSeed": setRndSeed,
     };
 }() );
 
