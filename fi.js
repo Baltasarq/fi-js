@@ -421,6 +421,11 @@ var ctrl = ( function() {
     var daemons = {};
     var history = "";
     var seed = 1;
+    var gameEnded = false;
+
+    function isGameOver() {
+        return this.gameEnded;
+    }
 
     function Alarm(turns, trigger) {
 		this.turns = turns;
@@ -936,6 +941,7 @@ var ctrl = ( function() {
         dvDesc.appendChild( pDesc );
 
 
+        gameEnded = true;
         return;
     }
 
@@ -1049,6 +1055,10 @@ var ctrl = ( function() {
 
         function doDesc(loc, desc)
         {
+            if ( ctrl.isGameOver() ) {
+                return;
+            }
+
             // Remove any pending answer
             ctrl.getHtmlPart( "dvAnswer", "missing div answer" ).innerHTML = "";
 
@@ -1754,6 +1764,7 @@ var ctrl = ( function() {
         "load": load,
         "rnd": rnd,
         "setRndSeed": setRndSeed,
+        "isGameOver": isGameOver
     };
 }() );
 
@@ -1831,9 +1842,13 @@ var parser = ( function() {
         if ( cmd.length > 0 ) {
             var txtAnswer = ctrl.cnvtTextLinksToHtml( parse( cmd ) );
 
-            var pAnswer = document.createElement( "p" );
-            pAnswer.innerHTML = txtAnswer;
-            dvAnswer.appendChild( pAnswer );
+            if ( txtAnswer != null
+              && txtAnswer != "" )
+            {
+                var pAnswer = document.createElement( "p" );
+                pAnswer.innerHTML = txtAnswer;
+                dvAnswer.appendChild( pAnswer );
+            }
         }
 
         frmInput.reset();
@@ -2039,6 +2054,10 @@ var parser = ( function() {
                     toret = actions.execute( "examine", sentence.verb );
                 }
             }
+        }
+
+        if ( ctrl.isGameOver() ) {
+            toret = "";
         }
 
         return toret;
