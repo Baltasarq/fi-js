@@ -427,6 +427,10 @@ var ctrl = ( function() {
         return this.gameEnded;
     }
 
+    function setGameOver() {
+        this.gameEnded = true;
+    }
+
     function Alarm(turns, trigger) {
 		this.turns = turns;
 		this.event = trigger;
@@ -902,7 +906,7 @@ var ctrl = ( function() {
         if ( arguments.length < 2 ) {
             pic = null;
         }
-        else
+
         if ( arguments.length < 1 ) {
             msg = "Has ganado.";
         }
@@ -941,7 +945,7 @@ var ctrl = ( function() {
         dvDesc.appendChild( pDesc );
 
 
-        gameEnded = true;
+        setGameOver();
         return;
     }
 
@@ -954,6 +958,12 @@ var ctrl = ( function() {
      */
     function cnvtTextLinksToHtml(txt)
     {
+        if ( arguments.length < 1
+          || txt == null )
+        {
+            txt = "";
+        }
+
         var linkEndPos = 0;
         var linkPos = txt.indexOf( "${" );
 
@@ -1764,7 +1774,10 @@ var ctrl = ( function() {
         "load": load,
         "rnd": rnd,
         "setRndSeed": setRndSeed,
-        "isGameOver": isGameOver
+        "isGameOver": isGameOver,
+        "setGameOver": setGameOver,
+        "esFinJuego": isGameOver,
+        "ponFinJuego": setGameOver
     };
 }() );
 
@@ -2044,9 +2057,11 @@ var parser = ( function() {
                     toret = playerAnswer;
                 }
 
-                loc.doEachTurn();
-                ctrl.setNewTurn();
-                ctrl.updateObjects();
+                if ( !ctrl.isGameOver() ) {
+                    loc.doEachTurn();
+                    ctrl.setNewTurn();
+                    ctrl.updateObjects();
+                }
             } else {
                 var objectInPlaceOfVerb = ctrl.isObjAround( sentence.verb );
 
@@ -2172,36 +2187,40 @@ var actions = ( function() {
 
     function execute(actionId, noun1, noun2)
     {
-        var toret = "No tiene sentido";
+        var toret = "";
 
-        if ( arguments.length === 0 ) {
-            actionId = null;
-            noun1 = null;
-            noun2 = null;
+        if ( !ctrl.isGameOver() ) {
+            toret = "No tiene sentido";
+
+            if ( arguments.length === 0 ) {
+                actionId = null;
+                noun1 = null;
+                noun2 = null;
+            }
+            else
+            if ( arguments.length === 1 ) {
+                noun1 = null;
+                noun2 = null;
+            }
+            else
+            if ( arguments.length === 2 ) {
+                noun2 = null;
+            }
+
+            var action = getAction( actionId,
+                    "trying: actions.execute() with '" + actionId + "'"
+            );
+
+            if ( action != null ) {
+                parser.sentence.init();
+                parser.sentence.verb = action.verbs[ 0 ];
+                parser.sentence.term1 = noun1;
+                parser.sentence.term2 = noun2;
+                parser.idObjs();
+
+                toret = action.doIt( parser.sentence );
+            }
         }
-        else
-        if ( arguments.length === 1 ) {
-            noun1 = null;
-            noun2 = null;
-        }
-        else
-        if ( arguments.length === 2 ) {
-            noun2 = null;
-        }
-
-		var action = getAction( actionId,
-                "trying: actions.execute() with '" + actionId + "'"
-        );
-
-		if ( action != null ) {
-			parser.sentence.init();
-			parser.sentence.verb = action.verbs[ 0 ];
-			parser.sentence.term1 = noun1;
-			parser.sentence.term2 = noun2;
-			parser.idObjs();
-
-			toret = action.doIt( parser.sentence );
-		}
 
         return toret;
     }

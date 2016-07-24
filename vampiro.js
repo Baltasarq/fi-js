@@ -337,8 +337,6 @@ objAtaud.preOpen = function() {
         if ( toret.length === 0 ) {
 				var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
 				dvFrame.style.display = "none";
-                document.getElementById( "dvObjects" ).style.display = "none";
-                document.getElementById( "dvActions" ).style.display = "none";
                 ctrl.terminaJuego(
                         "\
                                 Abres el ata&uacute;d, y, protegido por \
