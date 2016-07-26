@@ -925,6 +925,7 @@ var ctrl = ( function() {
         dvPic = document.createElement( "div" );
         dvDesc.appendChild( dvPic );
         dvPic.style.display = "none";
+        dvDesc.style = "scroll-y: hidden; scroll-x: hidden; height: 75%";
 
         if ( pic != null ) {
             var pImg = document.createElement( "p" );
@@ -936,7 +937,6 @@ var ctrl = ( function() {
             pImg.appendChild( img );
             dvPic.appendChild( pImg );
             dvPic.style.display = "block";
-            dvDesc.style = "block";
         }
 
         // Show end game text
