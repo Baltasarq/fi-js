@@ -424,11 +424,11 @@ var ctrl = ( function() {
     var gameEnded = false;
 
     function isGameOver() {
-        return this.gameEnded;
+        return gameEnded;
     }
 
     function setGameOver() {
-        this.gameEnded = true;
+        gameEnded = true;
     }
 
     function Alarm(turns, trigger) {
@@ -936,6 +936,7 @@ var ctrl = ( function() {
             pImg.appendChild( img );
             dvPic.appendChild( pImg );
             dvPic.style.display = "block";
+            dvDesc.style = "block";
         }
 
         // Show end game text

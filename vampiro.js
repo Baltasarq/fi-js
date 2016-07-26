@@ -732,4 +732,3 @@ sharpenAction.doIt = function(s) {
 // Arranque ------------------------------------------------------------
 ctrl.personas.cambiaJugador( jugador );
 ctrl.lugares.ponInicio( locVestibulo );
-
