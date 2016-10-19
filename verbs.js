@@ -227,7 +227,7 @@ lookAction.transInput = function(s) {
     // Look x "mirar x" = examine x
     if ( lookAction.match( s )
       && s.term1 != null
-      && s.prep == null )
+      && s.prep != "en" )
     {
 		s.verb = examineAction.verbs[ 0 ];
     }
@@ -1060,8 +1060,9 @@ searchAction.transInput = function(s) {
     var searchAction = actions.getAction( "search" );
 
     // Look in "mirar en" = search "registra"
-    if ( lookAction.match( s )
-      && s.prep === "en" )
+    if ( ( lookAction.match( s )
+        || examineAction.match( s ) )
+      && s.prep != null )
     {
 		s.prep = "";
 		s.verb = searchAction.verbs[ 0 ];

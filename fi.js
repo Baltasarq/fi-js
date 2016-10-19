@@ -1814,12 +1814,12 @@ var parser = ( function() {
     var IgnoredWords = ( function() {
         var Particles = [
             "el", "la", "las", "los", "un", "una", "uno", "y", "o",
-            "pero", "dentro", "cuidadosamente", "lentamente", "rapidamente"
+            "pero", "cuidadosamente", "lentamente", "rapidamente"
         ];
 
         var Prepositions = [
             "a", "al", "ante", "bajo", "cabe", "con", "contra", "de", "del",
-            "desde", "en", "entre", "hacia", "hasta", "para", "por",
+            "dentro", "desde", "en", "entre", "hacia", "hasta", "para", "por",
             "segun", "sin", "so", "sobre", "tras"
         ];
 
@@ -1903,47 +1903,41 @@ var parser = ( function() {
 
     function setSentenceParticles(ws)
     {
-        sentence.init();
+        // 0 == verb, 1 == term1, 2 == term2
+        var status = 0;
 
+        sentence.init();
         for(var i = 0; i < ws.length; ++i )
         {
             var w = canonical( ws[ i ] );
 
-            // Set verb
-            if ( i == 0 ) {
-                if ( !IgnoredWords.isPreposition( w ) ) {
+            // First particle must be mandatorily a verb
+            if ( i == 0
+              && IgnoredWords.isPreposition( w ) )
+            {
+                break;
+            }
+
+            // Set all particles
+            if ( !IgnoredWords.isPreposition( w ) ) {
+                if ( status == 0 ) {
                     sentence.verb = w;
-                } else {
+                    ++status;
+                }
+                else
+                if ( status == 1 ) {
+                    sentence.term1 = w;
+                    ++status;
+                }
+                else
+                if ( status == 2 ) {
+                    sentence.term2 = w;
                     break;
                 }
-            }
-            else
-            // Set noun1
-            if ( i == 1 ) {
-                if ( !IgnoredWords.isPreposition( w ) ) {
-                    sentence.term1 = w;
-                } else {
-                    sentence.prep = w;
-                }
-            }
-            // Set noun2
-            else
-            if ( i == 2 ) {
-                if ( IgnoredWords.isPreposition( w ) ) {
-                    sentence.prep = w;
-                } else {
-                    if ( sentence.term1 != null ) {
-                        sentence.term2 = w;
-                        break;
-                    } else {
-                        sentence.term1 = w;
-                    }
-                }
             } else {
-				if ( !IgnoredWords.isPreposition( w ) ) {
-					sentence.term2 = w;
-					break;
-				}
+                if ( sentence.prep == null ) {
+                    sentence.prep = w;
+                }
             }
         }
 

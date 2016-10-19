@@ -287,7 +287,7 @@ var objArmarioRopero = ctrl.creaObj(
 
 var objAtaud = ctrl.creaObj(
 	"ataud",
-	[ "ataud", "sarcofago" ],
+	[ "ataud", "sarcofago", "caja", "cajon" ],
 	"Una sencilla caja de pino.",
 	locElFinal,
 	Ent.Escenario
