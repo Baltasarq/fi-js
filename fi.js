@@ -268,11 +268,17 @@ var Loc = function(n, i, s, d) {
 
     this.devSalida = this.getExit;
 
-    this.doEachTurn = function() {
-        return;
+    this.postExamine = function() {
+        if ( typeof( this.postExamina ) === "function" ) {
+            this.postExamina();
+        }
     }
 
-    this.hazCadaTurno = this.doEachTurn;
+    this.doEachTurn = function() {
+        if ( typeof( this.hazCadaTurno ) === "function" ) {
+            this.hazCadaTurno();
+        }
+    }
 };
 
 var Obj = function(n, i, s, l, d) {
@@ -489,7 +495,7 @@ var ctrl = ( function() {
             "history": history
         };
 
-        if (typeof(Storage) !== "undefined") {
+        if ( typeof( Storage ) !== "undefined" ) {
             localStorage.setItem( "fi_js-SaveGame", JSON.stringify( savegame ) );
             toret = true;
         }
@@ -500,7 +506,7 @@ var ctrl = ( function() {
     function load() {
         var toret = false;
 
-        if (typeof(Storage) !== "undefined") {
+        if ( typeof( Storage ) !== "undefined" ) {
             var strSavegame = localStorage.getItem( "fi_js-SaveGame" );
 
             if ( strSavegame != null ) {
@@ -1088,6 +1094,7 @@ var ctrl = ( function() {
 
             updateDesc( loc, desc );
             ++loc.visits;
+            loc.postExamine();
         }
 
         function updateDesc(loc, desc)
@@ -1785,11 +1792,13 @@ var ctrl = ( function() {
 var parser = ( function() {
 
     var sentence = {
+        // Objects (only filled after parsing)
         persona: null,
         act: null,
         obj1: null,
         obj2: null,
 
+        // Terms employed by the user
         verb: null,
         term1: null,
         prep: null,
@@ -2037,32 +2046,31 @@ var parser = ( function() {
         toret = inputTransformation();
 
         if ( toret == "" ) {
-            identifyObjects();
             toret = "No puedes hacer eso.";
 
-            ctrl.addToHistory( cmd );
+            if ( ctrl.isObjAround( sentence.verb ) != null ) {
+                    var examineAction = actions.getAction( "examine" );
+
+                    sentence.term1 = sentence.verb;
+                    sentence.verb = examineAction.verbs[ 0 ];
+            }
+
             // Execute action
-            if ( sentence.act != null ) {
-                var playerAnswer = player.preAction();
+            ctrl.addToHistory( cmd );
+            var playerAnswer = player.preAction();
 
-                if ( playerAnswer == "" ) {
-                    toret = sentence.act.doIt( sentence );
-                    player.postAction();
-                } else {
-                    toret = playerAnswer;
-                }
-
-                if ( !ctrl.isGameOver() ) {
-                    loc.doEachTurn();
-                    ctrl.setNewTurn();
-                    ctrl.updateObjects();
-                }
+            if ( playerAnswer == "" ) {
+                identifyObjects();
+                toret = sentence.act.doIt( sentence );
+                player.postAction();
             } else {
-                var objectInPlaceOfVerb = ctrl.isObjAround( sentence.verb );
+                toret = playerAnswer;
+            }
 
-                if ( objectInPlaceOfVerb != null ) {
-                    toret = actions.execute( "examine", sentence.verb );
-                }
+            if ( !ctrl.isGameOver() ) {
+                loc.doEachTurn();
+                ctrl.setNewTurn();
+                ctrl.updateObjects();
             }
         }
 
