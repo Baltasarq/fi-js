@@ -898,7 +898,11 @@ var ctrl = ( function() {
         var pAnswer = document.createElement( "p" );
 
         pAnswer.innerHTML = cnvtTextLinksToHtml( msg );
-        dvAnswer.appendChild( pAnswer );
+
+        // Delay text appearance to make clear something changed.
+        setTimeout(
+            function() { dvAnswer.appendChild( pAnswer ); },
+            100 );
     }
 
     function endGame(msg, pic)
@@ -1860,17 +1864,14 @@ var parser = ( function() {
         var dvAnswer = ctrl.getHtmlPart( "dvAnswer", "missing div answer" );
         var cmd = frmInput[ "edInput" ].value.trim().toLowerCase();
 
-        dvAnswer.innerHTML = "";
-
         if ( cmd.length > 0 ) {
             var txtAnswer = ctrl.cnvtTextLinksToHtml( parse( cmd ) );
 
             if ( txtAnswer != null
               && txtAnswer != "" )
             {
-                var pAnswer = document.createElement( "p" );
-                pAnswer.innerHTML = txtAnswer;
-                dvAnswer.appendChild( pAnswer );
+                dvAnswer.innerHTML = "";
+                ctrl.print( txtAnswer );
             }
         }
 
