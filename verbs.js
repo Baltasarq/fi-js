@@ -2,7 +2,7 @@
 
 /**
  * Acciones (fi.js IF Engine)
- * Licencia MIT (c) baltasar@gmail.com 201405
+ * Licencia MIT (c) baltasar@gmail.com 201405, 201506, 201701
  */
 
 // --------------------------------------------------------- Examine
@@ -14,28 +14,29 @@ var examineAction = actions.crea( "examine",
 
 examineAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDesc = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
+    if ( objDesc != null ) {
         var takeAction = actions.getAction( "take" );
-        toret = s.obj1.desc;
+        toret = objDesc.desc;
 
-        if ( s.obj1.isOpen()
-          && s.obj1.objs.length > 0 )
+        if ( objDesc.isOpen()
+          && objDesc.objs.length > 0 )
         {
             var vCogibles = [];
             var vExaminables = [];
 
             // Crear vector de objetos cogibles
             // y otro con aquellos solo examinables
-            for(var i = 0; i < s.obj1.objs.length; ++i) {
-                if ( s.obj1.objs[ i ].isScenery() ) {
-                    vExaminables.push( s.obj1.objs[ i ] );
+            for(var i = 0; i < objDesc.objs.length; ++i) {
+                if ( objDesc.objs[ i ].isScenery() ) {
+                    vExaminables.push( objDesc.objs[ i ] );
                 } else {
-                    vCogibles.push( s.obj1.objs[ i ] );
+                    vCogibles.push( objDesc.objs[ i ] );
                 }
             }
 
@@ -56,20 +57,21 @@ examineAction.exe = function(s) {
 
 examineAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( typeof( s.obj1.preExamine ) === "function" ) {
-            toret = s.obj1.preExamine();
+    if ( objDest != null ) {
+        if ( typeof( objDest.preExamine ) === "function" ) {
+            toret = objDest.preExamine();
         } else {
             toret = this.exe( s );
         }
 
-        if ( typeof( s.obj1.postExamine ) === "function" ) {
-            s.obj1.postExamine();
+        if ( typeof( objDest.postExamine ) === "function" ) {
+            objDest.postExamine();
         }
     }
 
@@ -87,13 +89,14 @@ var attackAction = actions.crea( "attack",
 
 attackAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( s.obj1.isReachable() ) {
+    if ( objDest != null ) {
+        if ( objDest.isReachable() ) {
             toret = "La violencia no es la soluci&oacute;n.";
         } else {
             toret = "Demasiado lejos.";
@@ -105,20 +108,23 @@ attackAction.exe = function(s) {
 
 attackAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( typeof( s.obj1.preAttack ) === "function" ) {
-            toret = s.obj1.preAttack();
+    if ( objDest != null ) {
+        if ( typeof( objDest.preAttack ) === "function" )
+        {
+            toret = objDest.preAttack();
         } else {
             toret = this.exe( s );
         }
 
-        if ( typeof( s.obj1.postAttack ) === "function" ) {
-            s.obj1.postAttack();
+        if ( typeof( objDest.postAttack ) === "function" )
+        {
+            objDest.postAttack();
         }
     }
 
@@ -136,13 +142,14 @@ var startAction = actions.crea( "start",
 
 startAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( s.obj1.isReachable() ) {
+    if ( objDest != null ) {
+        if ( objDest.isReachable() ) {
             toret = "Al final, decides no hacerlo.";
         } else {
             toret = "Demasiado lejos.";
@@ -154,20 +161,20 @@ startAction.exe = function(s) {
 
 startAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
-    else
-    if ( s.obj1 != null ) {
-        if ( typeof( s.obj1.preStart ) === "function" ) {
-            toret = s.obj1.preStart();
+    else {
+        if ( typeof( objDest.preStart ) === "function" ) {
+            toret = objDest.preStart();
         } else {
             toret = this.exe( s );
         }
 
-        if ( typeof( s.obj1.postStart ) === "function" ) {
-            s.obj1.postStart();
+        if ( typeof( objDest.postStart ) === "function" ) {
+            objDest.postStart();
         }
     }
 
@@ -182,13 +189,14 @@ var shutdownAction = actions.crea( "shutdown",
 
 shutdownAction.exe = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( s.obj1.isReachable() ) {
+    if ( objDest != null ) {
+        if ( objDest.isReachable() ) {
             toret = "Al final, decides no hacerlo.";
         } else {
             toret = "Demasiado lejos.";
@@ -200,20 +208,22 @@ shutdownAction.exe = function(s) {
 
 shutdownAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( typeof( s.obj1.preShutdown ) === "function" ) {
-            toret = s.obj1.preShutdown();
+    if ( objDest != null ) {
+        if ( typeof( objDest.preShutdown ) === "function" ) {
+            toret = objDest.preShutdown();
         } else {
             toret = this.exe( s );
         }
 
-        if ( typeof( s.obj1.postShutdown ) === "function" ) {
-            s.obj1.postShutdown();
+        if ( typeof( objDest.postShutdown ) === "function" )
+        {
+            objDest.postShutdown();
         }
     }
 
@@ -249,8 +259,7 @@ lookAction.doIt = function(s) {
         this.exe( s );
     }
 
-    if ( typeof( loc.postLook ) === "function" )
-    {
+    if ( typeof( loc.postLook ) === "function" ) {
         loc.postLook();
     }
 
@@ -283,8 +292,8 @@ inventoryAction.doIt = function(s) {
         toret = this.exe( s );
     }
 
-    if ( typeof( player.postInv ) === "function" )
-    {
+    player = ctrl.personas.getPlayer(); // In case it changed...
+    if ( typeof( player.postInv ) === "function" ) {
         player.postInv();
     }
 
@@ -485,15 +494,15 @@ enterAction.doIt = function(s) {
     var objDest = this.getDestObj( s );
 
     if ( objDest != null ) {
-      if ( typeof( objDest.preEnter ) === "function" ) {
-          toret = objDest.preEnter();
-      } else {
-          toret = this.exe( s );
-      }
+        if ( typeof( objDest.preEnter ) === "function" ) {
+            toret = objDest.preEnter();
+        } else {
+            toret = this.exe( s );
+        }
 
-      if ( typeof( objDest.postEnter ) === "function" ) {
-        objDest.postEnter();
-      }
+        if ( typeof( objDest.postEnter ) === "function" ) {
+            objDest.postEnter();
+        }
     }
 
     return toret;
@@ -543,15 +552,15 @@ exitAction.doIt = function(s) {
     var objDest = this.getDestObj( s );
 
     if ( objDest != null ) {
-      if ( typeof( objDest.preExit ) === "function" ) {
-          toret = objDest.preExit();
-      } else {
-          toret = this.exe( s );
-      }
+        if ( typeof( objDest.preExit ) === "function" ) {
+            toret = objDest.preExit();
+        } else {
+            toret = this.exe( s );
+        }
 
-      if ( typeof( objDest.postExit ) === "function" ) {
-        objDest.postExit();
-      }
+        if ( typeof( objDest.postExit ) === "function" ) {
+            objDest.postExit();
+        }
     }
 
     return toret;
@@ -588,15 +597,15 @@ pushAction.doIt = function(s) {
     var objDest = s.obj1;
 
     if ( objDest != null ) {
-      if ( typeof( objDest.prePush ) === "function" ) {
-        toret = objDest.prePush();
-      } else {
-        toret = this.exe( s );
-      }
+        if ( typeof( objDest.prePush ) === "function" ) {
+            toret = objDest.prePush();
+        } else {
+            toret = this.exe( s );
+        }
 
-      if ( typeof( objDest.postPush ) === "function" ) {
-        objDest.postPush();
-      }
+        if ( typeof( objDest.postPush ) === "function" ) {
+            objDest.postPush();
+        }
     } else {
         toret = "No hay de eso por aqu&iacute;.";
     }
@@ -649,15 +658,15 @@ pullAction.doIt = function(s) {
     var objDest = s.obj1;
 
     if ( objDest != null ) {
-      if ( typeof( objDest.prePull ) === "function" ) {
-        toret = objDest.prePull();
-      } else {
-        toret = this.exe( s );
-      }
+        if ( typeof( objDest.prePull ) === "function" ) {
+            toret = objDest.prePull();
+        } else {
+            toret = this.exe( s );
+        }
 
-      if ( typeof( objDest.postPull ) === "function" ) {
-          objDest.postPull();
-      }
+        if ( typeof( objDest.postPull ) === "function" ) {
+            objDest.postPull();
+        }
     } else {
         toret = "No hay de eso por aqu&iacute;.";
     }
@@ -1967,20 +1976,21 @@ untieAction.exe = function(s) {
 
 untieAction.doIt = function(s) {
     var toret = "No veo de eso en derredor.";
+    var objDest = s.obj1;
 
     if ( s.term1 == null ) {
         toret = "Deber&iacute;as especificar qu&eacute;.";
     }
     else
-    if ( s.obj1 != null ) {
-        if ( typeof( s.obj1.preUntie ) === "function" ) {
-            toret = s.obj1.preUntie();
+    if ( objDest != null ) {
+        if ( typeof( objDest.preUntie ) === "function" ) {
+            toret = objDest.preUntie();
         } else {
             toret = this.exe( s );
         }
 
-        if ( typeof( s.obj1.postUntie ) === "function" ) {
-            s.obj1.postUntie();
+        if ( typeof( objDest.postUntie ) === "function" ) {
+            objDesc.postUntie();
         }
     }
 
