@@ -905,6 +905,11 @@ var ctrl = ( function() {
             100 );
     }
 
+    function clearAnswers()
+    {
+        getHtmlPart( "dvAnswer", "missing answer div" ).innerHTML = "";
+    }
+
     function endGame(msg, pic)
     {
         var dvInput = getHtmlPart( "dvInput", "missing input div" );
@@ -1748,6 +1753,8 @@ var ctrl = ( function() {
         "cnvtTextLinksToHtml": cnvtTextLinksToHtml,
         "cnvtEnlacesHtml": cnvtTextLinksToHtml,
         "print": print,
+        "clearAnswers": clearAnswers,
+        "eliminaRespuestas": clearAnswers,
         "setNewTurn": setNewTurn,
         "getTurns": getTurns,
         "devTurnos": getTurns,
