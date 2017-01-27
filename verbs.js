@@ -73,9 +73,10 @@ examineAction.doIt = function(s) {
         if ( typeof( objDest.postExamine ) === "function" ) {
             objDest.postExamine();
         }
+
+        objDest.examinations++;
     }
 
-    this.examinations++;
     return toret;
 };
 
