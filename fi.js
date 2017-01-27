@@ -291,6 +291,7 @@ var Obj = function(n, i, s, l, d) {
     this.owner = l;
 
     this.objs = [];
+    this.examinations = 0;
     this.container = false;
     this.scenery = false;
     this.reachable = true;

@@ -75,6 +75,7 @@ examineAction.doIt = function(s) {
         }
     }
 
+    this.examinations++;
     return toret;
 };
 
