@@ -69,12 +69,11 @@ examineAction.doIt = function(s) {
         } else {
             toret = this.exe( s );
         }
-
+        
+        objDest.examinations++;
         if ( typeof( objDest.postExamine ) === "function" ) {
             objDest.postExamine();
         }
-
-        objDest.examinations++;
     }
 
     return toret;
