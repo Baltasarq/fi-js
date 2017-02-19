@@ -1089,7 +1089,7 @@ var ctrl = ( function() {
             // Remove any pending answer
             ctrl.getHtmlPart( "dvAnswer", "missing div answer" ).innerHTML = "";
 
-            // Desc
+            // Find loc
             if ( arguments.length < 1
               || loc == null )
             {
@@ -1102,8 +1102,16 @@ var ctrl = ( function() {
                 desc = loc.desc;
             }
 
+            // Update description and visits
             updateDesc( loc, desc );
             ++loc.visits;
+
+            // Got to top, if first visit
+            if ( loc.visits == 1 ) {
+                window.scrollTo( 0, 0 );
+            }
+
+            // Execute "postExamine" in loc
             loc.postExamine();
         }
 

@@ -96,6 +96,7 @@ a:visited {
 	height:10%;
 	font-familiy: Verdana,Arial,Helvetica;
 	font-size:22px;
+    text-align: justify
 }
 
 /* Game's answer text */
@@ -104,6 +105,7 @@ a:visited {
 	height:10%;
 	font-familiy: Verdana,Arial,Helvetica;
 	font-size:20px;
+    text-align: justify
 }
 
 /* Input section, prompt, icons... */
