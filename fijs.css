@@ -1,14 +1,11 @@
 /* Default colors and sizes */
 body {
+    margin: 5%;
 	background-color:black;
 	color:white;
 	font-familiy:Verdana,Arial,Helvetica;
-	font-size:20px;
+	font-size:16pt;
     cursor: crosshair;
-    width:70%;
-	height:10%;
-    margin-left: 15%;
-    margin-right: 15%
 }
 
 /* Hiperenlaces */
@@ -32,7 +29,9 @@ a:visited {
 
 /* Intro div, before game */
 #dvIntro {
-	text-align:center
+    width: 70%;
+	text-align:center;
+    display: block
 }
 
 #hrIntroSeparator {
@@ -50,19 +49,22 @@ a:visited {
 /* Game title */
 #dvTitle {
     width:70%;
-	height:10%;
-    margin-left: 15%;
-    margin-right: 15%;
-	font-size:28px;
+	margin:5%;
+	font-size:18pt;
 	color:lightgray
+}
+
+@media screen and (max-width: 800px) {
+    #dvTitle, #dvId {
+        display: none !important;
+    }
 }
 
 /* Game div */
 #dvFi {
-    width:70%;
-	height:10%;
-    margin-left: 15%;
-    margin-right: 15%;
+    width:80%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 #hrFiSeparator {
@@ -75,10 +77,8 @@ a:visited {
 /* Name of the room */
 #dvId {
 	width:100%;
-	height:10%;
 	color:#77aaff;
 	font-familiy:Verdana,Arial,Helvetica;
-	font-size:22px;
 	font-style:italic
 }
 
@@ -92,20 +92,17 @@ a:visited {
 /* Description text for current room */
 #dvDesc  {
 	color: green;
-	width:100%;
-	height:10%;
-	font-familiy: Verdana,Arial,Helvetica;
-	font-size:22px;
+    width: 100%;
     text-align: justify
 }
 
 /* Game's answer text */
 #dvAnswer {
-	width:100%;
-	height:10%;
 	font-familiy: Verdana,Arial,Helvetica;
-	font-size:20px;
-    text-align: justify
+    height: 150px;
+	font-size:14pt;
+    text-align: justify;
+    overflow-y: auto
 }
 
 /* Input section, prompt, icons... */
@@ -113,8 +110,6 @@ a:visited {
 	color:white;
 	background-color:black;
 	width:100%;
-	height:10%;
-	font-familiy: Verdana,Arial,Helvetica;
 	font-size:20px;
 }
 
@@ -131,7 +126,6 @@ a:visited {
 
 #dvObjects {
     font-familiy: monospace;
-    font-size: 20px;
     font-size: 16pt;
     text-align: center;
     color: white;
@@ -142,7 +136,6 @@ a:visited {
 	color:white;
 	background-color:red;
 	width:100%;
-	height:10%;
 	font-familiy:Verdana,Arial,Helvetica;
 	font-size:24px;
 }
