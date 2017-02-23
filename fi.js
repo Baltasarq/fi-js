@@ -936,7 +936,7 @@ var ctrl = ( function() {
         dvInput.style.display = "none";
         dvId.style.display = "none";
         dvAnswer.style.display = "none";
-        ctrl.media.audio.stop();
+        ctrl.audio.stop();
 
         // Erase desc
         dvDesc.innerHTML = "";
