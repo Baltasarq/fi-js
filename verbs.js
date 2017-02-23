@@ -2328,7 +2328,8 @@ saveAction.exe = function(s) {
     if ( ctrl.save() ) {
         toret += "Situaci&oacute;n guardada.";
     } else {
-        toret += "Error guardando situaci&oacute;n (localStorage no soportado?).";
+        toret += "Error guardando situaci&oacute;n \
+                  (localStorage no soportado?).";
     }
 
     return toret;
@@ -2398,18 +2399,24 @@ helpAction.exe = function(s) {
             m&aacute;s comunes son examinar o coger).<br>\
             <br>\
             Las acciones m&aacute;s comunes son:<br><ul>\
-            <li><b>(n)orte, (s)ur, (e)ste, (o)este</b>: Mueve al personaje hacia \
-            adelante, atr&aacute;s, derecha e izquierda.</li>\
-            <li><b>arriba, abajo</b>: Mueve al personaje hacia arriba o abajo.</li>\
+            <li><b>(n)orte, (s)ur, (e)ste, (o)este</b>: Mueve al personaje \
+            hacia adelante, atr&aacute;s, derecha e izquierda.</li>\
+            <li><b>arriba, abajo</b>: Mueve al personaje hacia arriba o abajo.\
+            </li>\
             <li><b>(ex)amina objeto</b>: Da una descripci&oacute;n m&aacute;s \
             detallada del objeto.</li>\
             <li><b>coge objeto/deja objeto</b>: Recoge o suelta un objeto.</li>\
             <li><b>(i)nventario</b>: Muestra los objetos recogidos.</li>\
-            <li><b>empuja objeto / tira de objeto</b>: Empuja o tira de un objeto</li>\
-            <li><b>abrir objeto / cerrar objeto</b>: Abre o cierra un objeto</li>\
-            <li><b>golpea objeto / ataca personaje</b>: Golpea a un objeto o personaje.</li>\
-            <li><b>habla con personaje</b>: Entabla una conversaci&oacute;n.</li>\
-            <li><b>enciende objeto/apaga objeto</b>: Enciende o apaga un objeto.</li>\
+            <li><b>empuja objeto / tira de objeto</b>: Empuja o tira de un \
+            objeto</li>\
+            <li><b>abrir objeto / cerrar objeto</b>: Abre o cierra un objeto \
+            </li>\
+            <li><b>golpea objeto / ataca personaje</b>: Golpea a un objeto o \
+            personaje.</li>\
+            <li><b>habla con personaje</b>: Entabla una conversaci&oacute;n.\
+            </li>\
+            <li><b>enciende objeto/apaga objeto</b>: Enciende o apaga \
+            un objeto.</li>\
             <li><b>save</b>: Guarda la situación actual.</li>\
             <li><b>load</b>: recupera una situación guardada previamente.</li>\
             </ul><br>\

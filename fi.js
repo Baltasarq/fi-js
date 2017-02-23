@@ -429,6 +429,7 @@ var ctrl = ( function() {
     var history = "";
     var seed = 1;
     var gameEnded = false;
+    var booted = false;
 
     function isGameOver() {
         return gameEnded;
@@ -514,11 +515,15 @@ var ctrl = ( function() {
                 var savegame = JSON.parse( strSavegame );
                 var newSeed = savegame.seed;
                 var newHistory = savegame.history;
-                ctrl.boot();
+                var startLoc = ctrl.places.getStart();
+                
+                // Start from the beginning
+                ctrl.places.setCurrentLoc( startLoc );
+                goto( startLoc );
 
                 // Restore command history
+                history = "";
                 if ( newHistory != null ) {
-                    history = "";
                     history = newHistory;
                 }
 
@@ -1152,9 +1157,9 @@ var ctrl = ( function() {
             }
 
             // Set loc's audio
-            media.audio.stop();
+            audio.stop();
             if ( loc.audio.src != null ) {
-                media.audio.set(
+                audio.set(
                     loc.audio.src, loc.audio.volume, loc.audio.loop
                 );
             }
@@ -1202,148 +1207,77 @@ var ctrl = ( function() {
         };
     })();
 
-    var media = ( function() {
-        var colorIdsEn = [ "input",   "back",  "foreground", "desc", "answer",    "link",      "resaltedlink" ];
-        var colorIdsEs = [ "entrada", "fondo", "tinta",      "desc", "respuesta", "enlace",    "enlaceresaltado" ];
-        var colors     = [ "white",   "black", "white",      "white", "gray",     "lightgray", "white" ];
+    var audio = ( function() {
+        var playing = null;
 
-        function getIndexFromId(id)
+        function play()
         {
-            var toret = -1;
-
-            id = id.trim().toLowerCase();
-
-            // Chk for english ids
-            for(var i = 0; i < colorIdsEn.length; ++i) {
-                if ( colorIdsEn[ i ] === id ) {
-                    toret = i;
-                    break;
-                }
+            if ( playing != null ) {
+                playing.play();
             }
 
-            if ( toret === -1 ) {
-                // Chk for spanish ids
-                for(var i = 0; i < colorIdsEs.length; ++i) {
-                    if ( colorIdsEs[ i ] === id ) {
-                        toret = i;
-                        break;
-                    }
-                }
-            }
-
-            return toret;
+            return;
         }
 
-        function getColor(id)
+        function stop()
         {
-            var toret = "black";
-            var index = getIndexFromId( id );
-
-            if ( index >= 0 ) {
-                toret = colors[ index ];
-            }
-
-            return toret;
+            pause();
+            playing = null;
         }
 
-        function setColor(id, v)
+        function pause()
         {
-            // Now managed with CSS
+            if ( playing != null ) {
+                playing.pause();
+            }
+
+            return;
+        }
+
+        function setVolume(v)
+        {
+            if ( playing != null ) {
+
+                v = parseFloat( v );
+                if ( isNaN( v ) ) {
+                    v = 0;
+                }
+
+                playing.volume = v;
+            }
+
+            return;
+        }
+
+        function set(src, v, loop)
+        {
             /*
-            var toret = false;
-            var index = getIndexFromId( id );
+            stop();
+            playing = new Audio( src );
+            setVolume( v );
 
-            if ( index >= 0 ) {
-                colors[ index ] = v;
-                toret = true;
-            }
-
-            return toret;
-            */
-
-            return true;
-        }
-
-        var audio = ( function() {
-            var playing = null;
-
-            function play()
-            {
-                if ( playing != null ) {
+            if ( loop ) {
+                playing.addEventListener( 'ended', function() {
+                    playing.currentTime = 0;
                     playing.play();
-                }
-
-                return;
+                }, false);
             }
 
-            function stop()
-            {
-                pause();
-                playing = null;
-            }
-
-            function pause()
-            {
-                if ( playing != null ) {
-                    playing.pause();
-                }
-
-                return;
-            }
-
-            function setVolume(v)
-            {
-                if ( playing != null ) {
-
-                    v = parseFloat( v );
-                    if ( isNaN( v ) ) {
-                        v = 0;
-                    }
-
-                    playing.volume = v;
-                }
-
-                return;
-            }
-
-            function set(src, v, loop)
-            {
-				/*
-                stop();
-                playing = new Audio( src );
-                setVolume( v );
-
-                if ( loop ) {
-                    playing.addEventListener( 'ended', function() {
-                        playing.currentTime = 0;
-                        playing.play();
-                    }, false);
-                }
-
-                play();
-                */
-            }
-
-            return {
-                "playing": playing,
-                "reproduce": play,
-                "play": play,
-                "stop": stop,
-                "para": stop,
-                "pause": pause,
-                "pausa": pause,
-                "setVolume": setVolume,
-                "ponVolumen": setVolume,
-                "set": set,
-            };
-        })();
+            play();
+            */
+        }
 
         return {
-            "getColor": getColor,
-            "setColor": setColor,
-            "cambiaColor": setColor,
-            "devColor": getColor,
-            "audio": audio,
+            "playing": playing,
+            "reproduce": play,
+            "play": play,
+            "stop": stop,
+            "para": stop,
+            "pause": pause,
+            "pausa": pause,
+            "setVolume": setVolume,
+            "ponVolumen": setVolume,
+            "set": set,
         };
     })();
 
@@ -1512,22 +1446,26 @@ var ctrl = ( function() {
      */
     function boot()
     {
-        var dvFi = getHtmlPart( "dvFi", "div Fi not found" );
-        var dvIntro = getHtmlPart( "dvIntro", "div Intro not found" );
-        var frmInput = getHtmlPart( "frmInput", "form Input not found" );
-        var dvHead = document.getElementsByTagName( "head" )[ 0 ];
-        var dvHeadStyle = document.createElement( "style" );
-        var startLoc = ctrl.places.getStart();
+        if ( !booted ) {
+            booted = true;
+            var dvFi = getHtmlPart( "dvFi", "div Fi not found" );
+            var dvIntro = getHtmlPart( "dvIntro", "div Intro not found" );
+            var frmInput = getHtmlPart( "frmInput", "form Input not found" );
+            var dvHead = document.getElementsByTagName( "head" )[ 0 ];
+            var dvHeadStyle = document.createElement( "style" );
+            var startLoc = ctrl.places.getStart();
 
-        ctrl.places.setCurrentLoc( startLoc );
-        goto( startLoc );
-        dvIntro.style.display = "none";
-        dvFi.style.display = "block";
-        frmInput.style.display = "block";
+            ctrl.places.setCurrentLoc( startLoc );
+            goto( startLoc );
+            dvIntro.style.display = "none";
+            dvFi.style.display = "block";
+            frmInput.style.display = "block";
 
-        frmInput.reset();
-        frmInput[ "edInput" ].focus();
-        history = "";
+            frmInput.reset();
+            frmInput[ "edInput" ].focus();
+            history = "";
+        }
+        
         return false;
     }
 
@@ -1592,6 +1530,7 @@ var ctrl = ( function() {
 
 
 
+        booted = false;
         return;
     }
 
@@ -1725,7 +1664,7 @@ var ctrl = ( function() {
         "personas": personas,
         "places": places,
         "lugares": places,
-        "media": media,
+        "audio": audio,
         "boot": boot,
         "start": start,
         "inicia": start,
@@ -2051,48 +1990,52 @@ var parser = ( function() {
     {
         var words = [];
         var toret = "";
-        var player = ctrl.personas.getPlayer();
-        var loc = ctrl.places.getCurrentLoc();
-
+        
         cmd = prepareInput( cmd );
-        words = cmd.split( ' ' );
+        
+        if ( cmd != "" ) {
+            var player = ctrl.personas.getPlayer();
+            var loc = ctrl.places.getCurrentLoc();
 
-        // Interpret input
-        words = stripIgnoredWords( words );
-        setSentenceParticles( words );
-        toret = inputTransformation();
+            words = cmd.split( ' ' );
 
-        if ( toret == "" ) {
-            toret = "No puedes hacer eso.";
+            // Interpret input
+            words = stripIgnoredWords( words );
+            setSentenceParticles( words );
+            toret = inputTransformation();
 
-            if ( ctrl.isObjAround( sentence.verb ) != null ) {
-                    var examineAction = actions.getAction( "examine" );
+            if ( toret == "" ) {
+                toret = "No puedes hacer eso.";
 
-                    sentence.term1 = sentence.verb;
-                    sentence.verb = examineAction.verbs[ 0 ];
+                if ( ctrl.isObjAround( sentence.verb ) != null ) {
+                        var examineAction = actions.getAction( "examine" );
+
+                        sentence.term1 = sentence.verb;
+                        sentence.verb = examineAction.verbs[ 0 ];
+                }
+
+                // Execute action
+                ctrl.addToHistory( cmd );
+                var playerAnswer = player.preAction();
+
+                if ( playerAnswer == "" ) {
+                    identifyObjects();
+                    toret = sentence.act.doIt( sentence );
+                    player.postAction();
+                } else {
+                    toret = playerAnswer;
+                }
+
+                if ( !ctrl.isGameOver() ) {
+                    loc.doEachTurn();
+                    ctrl.setNewTurn();
+                    ctrl.updateObjects();
+                }
             }
 
-            // Execute action
-            ctrl.addToHistory( cmd );
-            var playerAnswer = player.preAction();
-
-            if ( playerAnswer == "" ) {
-                identifyObjects();
-                toret = sentence.act.doIt( sentence );
-                player.postAction();
-            } else {
-                toret = playerAnswer;
+            if ( ctrl.isGameOver() ) {
+                toret = "";
             }
-
-            if ( !ctrl.isGameOver() ) {
-                loc.doEachTurn();
-                ctrl.setNewTurn();
-                ctrl.updateObjects();
-            }
-        }
-
-        if ( ctrl.isGameOver() ) {
-            toret = "";
         }
 
         return toret;
@@ -2316,11 +2259,7 @@ window.onkeypress = function(e) {
     var dvIntro = document.getElementById( "dvIntro" );
 
     if ( dvIntro.style.display == "block" ) {
-        if ( e.keyCode == 13 ) {
-            ctrl.boot();
-        } else {
-            document.getElementById( "btBoot" ).focus();
-        }
+        document.getElementById( "btBoot" ).focus();
     } else {
         document.getElementById( "edInput" ).focus();
     }
