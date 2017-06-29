@@ -376,11 +376,26 @@ var Persona = function(n, i, l, d) {
     this.postAction = function() {
     }
 
-    this.getNameForPrinting = function()
-    {
+    this.getNameForPrinting = function() {
         var toret = this.id.toLowerCase();
+        
+        if ( toret.length > 0 ) {
+          // First letter in uppercase
+          toret = toret[ 0 ].toUpperCase() + toret.slice( 1 );
 
-        return toret[ 0 ].toUpperCase() + toret.slice( 1 );
+          // Next letters after space in uppercase
+          var spacePos = toret.indexOf( " " );
+          while( spacePos > 0 ) {
+              ++spacePos;
+              toret = toret.slice( 0, spacePos )
+                      + toret[ spacePos ].toUpperCase()
+                      + toret.slice( spacePos + 1 );
+
+              spacePos = toret.indexOf( " ", spacePos );
+          }
+        }
+        
+        return toret;
     }
 
     this.say = function(txt) {

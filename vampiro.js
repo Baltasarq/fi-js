@@ -645,7 +645,8 @@ var jugador = ctrl.personas.creaPersona( "reXXe",
                     locVestibulo
 );
 
-var murcielagos = ctrl.personas.creaPersona( "murci&eacute;lagos",
+var murcielagos = ctrl.personas.creaPersona(
+                    "murci&eacute;lagos",
                     [ "murcielago", "murcielagos" ],
                     "Varios murci&eacute;lagos, no parecen saber muy bien qu&eacute; pensar de ti.",
                     ctrl.lugares.limbo
@@ -653,40 +654,40 @@ var murcielagos = ctrl.personas.creaPersona( "murci&eacute;lagos",
 murcielagos.ponAlcanzable( false );
 
 murcielagos.preTalk = function() {
-        return "¿Pero para qu&eacute;? ...no molestes a los pobres murci&eacute;lagos...";
+    return "¿Pero para qu&eacute;? ...no molestes a los pobres murci&eacute;lagos...";
 }
 
 locPasillo.preSing = function() {
-        return "Buscas a algun incauto para tu perpretaci&oacute;n...<br>"
+    return "Buscas a algun incauto para tu perpretaci&oacute;n...<br>"
                 + acciones.ejecuta( "talk", "murcielagos" );
 }
 
 murcielagos.daemon = function() {
-        if ( ctrl.getTurns() % 7 == 0 ) {
-                if ( ctrl.lugares.getCurrentLoc() == murcielagos.owner ) {
-                        ctrl.print( "Unos murci&eacute;lagos se alborotan un tanto, chillando entre ellos..." );
-                } else {
-                        ctrl.print( "Ahogados, d&eacute;biles chillidos provienen de alguna parte..." );
-                }
-        }
+    if ( ctrl.getTurns() % 7 == 0 ) {
+            if ( ctrl.lugares.getCurrentLoc() == murcielagos.owner ) {
+                    ctrl.print( "Unos murci&eacute;lagos se alborotan un tanto, chillando entre ellos..." );
+            } else {
+                    ctrl.print( "Ahogados, d&eacute;biles chillidos provienen de alguna parte..." );
+            }
+    }
 }
 
 ctrl.ponAlarma( 3, function() {
-        murcielagos.mueveA( locPasillo );
+    murcielagos.mueveA( locPasillo );
 
-        if ( ctrl.lugares.devLocActual() == murcielagos.owner ) {
-                ctrl.print( "Despertados por tu presencia, los murci&eacute;lagos chillan como comenzando a desperezarse..." );
-        } else {
-                ctrl.print( "Unos lejanos chillidos llegan a ti de forma apagada..." );
-        }
+    if ( ctrl.lugares.devLocActual() == murcielagos.owner ) {
+            ctrl.print( "Despertados por tu presencia, los murci&eacute;lagos chillan como comenzando a desperezarse..." );
+    } else {
+            ctrl.print( "Unos lejanos chillidos llegan a ti de forma apagada..." );
+    }
 
-        ctrl.ponDaemon( "bats", murcielagos.daemon );
+    ctrl.ponDaemon( "bats", murcielagos.daemon );
 });
 
 // --- Acciones --------------------------------------------------------
 var sharpenAction = acciones.crea( "sharpen",
-        [ "afila", "afilar", "afilo",
-          "pule", "pulir", "pulo"]
+    [ "afila", "afilar", "afilo",
+        "pule", "pulir", "pulo"]
 );
 
 sharpenAction.exe = function(s) {
