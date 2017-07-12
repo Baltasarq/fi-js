@@ -9,7 +9,7 @@ body {
 }
 
 /* Hiperenlaces */
-a {
+a:link, a:visited {
 	color:#777700;
 	text-decoration: none;
     cursor: crosshair
@@ -21,8 +21,28 @@ a:hover {
     cursor: crosshair
 }
 
-a:visited {
-	color:#00ff00;
+/* Hiperenlaces: objetos */
+a.linkObj:link, a.linkObj:visited {
+	color: lightblue;
+	text-decoration: none;
+    cursor: crosshair
+}
+
+a.linkObj:hover {
+	color: cyan;
+	text-decoration: none;
+    cursor: crosshair
+}
+
+/* Hiperenlaces: pnjs */
+a.linkPnj:link, a.linkPnj:visited {
+	color: darkmagenta;
+	text-decoration: none;
+    cursor: crosshair
+}
+
+a.linkPnj:hover {
+	color: magenta;
 	text-decoration: none;
     cursor: crosshair
 }

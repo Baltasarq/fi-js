@@ -618,16 +618,17 @@ var ctrl = ( function() {
         var personas = ctrl.lugares.getCurrentLoc().personas;
         var pObjects = document.createElement( "p" );
         var strEntitiesList = "";
-        var refPrefix = "<a href=\"javascript:ctrl.addTerm('";
+        var objRefPrefix = "<a class=\"linkObj\" onclick=\"javascript:ctrl.addTerm('";
+        var pnjRefPrefix = "<a class=\"linkPnj\" onclick=\"javascript:ctrl.addTerm('";
 
         if ( personas.length > 1 ) {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < personas.length; ++i) {
                         if ( personas[ i ] != ctrl.personas.getPlayer() ) {
                                 strEntitiesList +=
-                                        refPrefix
+                                        pnjRefPrefix
                                         + personas[ i ].id
-                                        + "');\">"
+                                        + "');\" href=\"#\">"
                                         + personas[ i ].id
                                         + "</a>  / ";
                         }
@@ -641,9 +642,9 @@ var ctrl = ( function() {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < inventory.length; ++i) {
                         strEntitiesList +=
-                                refPrefix
+                                objRefPrefix
                                 + inventory[ i ].id
-                                + "');\">"
+                                + "');\" href=\"#\">"
                                 + inventory[ i ].id
                                 + "</a>  / ";
                 }
@@ -656,9 +657,9 @@ var ctrl = ( function() {
                 strEntitiesList += "/ ";
                 for(var i = 0; i < reachable.length; ++i) {
                         strEntitiesList +=
-                                refPrefix
+                                objRefPrefix
                                 + reachable[ i ].id
-                                + "');\">"
+                                + "');\"  href=\"#\">"
                                 + reachable[ i ].id
                                 + "</a>  / ";
                 }
@@ -986,10 +987,54 @@ var ctrl = ( function() {
         return;
     }
 
+     /**
+     * Decides de links class, which could be of movement, objects or pnj's.
+     * Returns, for example: "<a class=\"linkObj\""
+     * Possibilities are: linkObj, linkPnj, linkMov
+     * @param txt The text with the command.
+     * @return A string with the HTML link prefix.
+     */
+    function decideLinkClass(cmd)
+    {
+        var toret = "<a class=\"linkMov\"";
+        var pnjRefPrefix = "<a class=\"linkPnj\"";
+        var objRefPrefix = "<a class=\"linkObj\"";
+
+        if ( cmd != null ) {
+            cmd = cmd.trim();
+
+            if ( cmd.length > 0 ) {
+                var words = cmd.split( " " );
+
+                if ( words.length > 0 ) {
+                    var firstWord = words[ 0 ];
+
+                    var objs = [
+                            "ex", "examina", "examinar", "examino",
+                            "m", "mirar", "mira", "miro",
+                            "look", "x", "take", "get", "pick",
+                            "coger", "coge", "cojo", "tomar", "toma", "tomo" ];
+
+                    var pnjs = [ "habla", "hablar", "hablo", "talk" ];
+
+                    if ( objs.indexOf( firstWord ) > -1 ) {
+                        toret = objRefPrefix;
+                    }
+                    else
+                    if ( pnjs.indexOf( firstWord ) > -1 ) {
+                        toret = pnjRefPrefix;
+                    }
+                }
+            }
+        }
+
+        return toret;
+    }
+
     /**
      * Converts text links to HTML
      * i.e., from ${perro, ex perro} embedded in text to
-     * <a href="javascript:ctrl.inject('ex perro')">perro</a>
+     * <a onClick="javascript:ctrl.inject( 'ex perro' )">perro</a>
      * @param txt The text with the link
      * @return A string with the HTML link
      */
@@ -1010,9 +1055,14 @@ var ctrl = ( function() {
             if ( linkEndPos > -1 ) {
                 var txtLink = txt.slice( linkPos + 2, linkEndPos );
                 var parts = txtLink.split( ',' );
-                var link = "<a onClick=\"javascript: ctrl.inject('"
+                parts[ 0 ] = parts[ 0 ].trim();
+                parts[ 1 ] = parts[ 1 ].trim();
+
+                var link = decideLinkClass( parts[ 1 ] )
+                            + " href=\"javascript:void(0)\""
+                            + " onClick=\"javascript: ctrl.inject('"
                             + parts[ 1 ]
-                            + "', true, true)\" href='javascript:void(0)'>"
+                            + "', true, true)\">"
                             + parts[ 0 ]
                             + "</a>";
                 txt = txt.slice( 0, linkPos ) + link
