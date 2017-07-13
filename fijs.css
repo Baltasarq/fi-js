@@ -8,6 +8,10 @@ body {
     cursor: crosshair;
 }
 
+.clsAchieved {
+    font-style: italic
+}
+
 /* Hiperenlaces */
 a:link, a:visited {
 	color:#777700;
@@ -22,26 +26,26 @@ a:hover {
 }
 
 /* Hiperenlaces: objetos */
-a.linkObj:link, a.linkObj:visited {
+a.clsLinkObj:link, a.clsLinkObj:visited {
 	color: lightblue;
 	text-decoration: none;
     cursor: crosshair
 }
 
-a.linkObj:hover {
+a.clsLinkObj:hover {
 	color: cyan;
 	text-decoration: none;
     cursor: crosshair
 }
 
 /* Hiperenlaces: pnjs */
-a.linkPnj:link, a.linkPnj:visited {
+a.clsLinkPnj:link, a.clsLinkPnj:visited {
 	color: darkmagenta;
 	text-decoration: none;
     cursor: crosshair
 }
 
-a.linkPnj:hover {
+a.clsLinkPnj:hover {
 	color: magenta;
 	text-decoration: none;
     cursor: crosshair

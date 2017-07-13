@@ -378,7 +378,7 @@ var Persona = function(n, i, l, d) {
 
     this.getNameForPrinting = function() {
         var toret = this.id.toLowerCase();
-        
+
         if ( toret.length > 0 ) {
           // First letter in uppercase
           toret = toret[ 0 ].toUpperCase() + toret.slice( 1 );
@@ -394,7 +394,7 @@ var Persona = function(n, i, l, d) {
               spacePos = toret.indexOf( " ", spacePos );
           }
         }
-        
+
         return toret;
     }
 
@@ -445,6 +445,237 @@ var ctrl = ( function() {
     var seed = 1;
     var gameEnded = false;
     var booted = false;
+
+    var HtmlClassRef = {
+        "links": {
+            "obj": "clsLinkObj",
+            "mov": "clsLinkMov",
+            "pnj": "clsLinkPnj",
+        },
+        "achievements": "clsAchieved",
+    };
+
+    var achievements = (function(){
+        var prefix = "Logro: ";
+        var achieves = {};
+
+        /** Creates a new achievement
+         *  @param id The id of the achievement, such as "rockclimber".
+         *  @param explanation The explanation of the achievement.
+         */
+        var Achievement = function(id, explanation) {
+            this.id = id;
+            this.explica = explanation;
+            this.complet = false;
+            this.pts = -1;
+        };
+
+        /** Add achievement
+         *  @param id An id for the achievement.
+         *  @param explica An explanation for the player.
+         */
+        function add(id, explica, completed, pts) {
+            if ( arguments.length < 4 ) {
+                pts = -1;
+            }
+
+            if ( arguments.length < 4 ) {
+                completed = false;
+            }
+
+            ach = new Achievement( id, explica );
+            ach.pts = pts;
+            ach.complet = completed;
+
+            achieves[ id ] = ach;
+        }
+
+        /** Sets an achievement as completed (or not).
+         *  @param id The id of the achievement.
+         *  @param completed True if completed, false otherwise. Optional.
+         *  @param pts Points if this achievement deserves a score. Optional.
+         */
+        function set(id, completed, pts)
+        {
+            var ach = achieves[ id ];
+
+            if ( arguments.length < 3 ) {
+                pts = -1;
+            }
+
+            if ( arguments.length < 2 ) {
+                completed = true;
+            }
+
+            ach.complet = completed;
+            ach.pts = pts;
+            return;
+        }
+
+        /** Eliminates an achievement.
+         *  @param id The id of the achievement.
+         */
+        function erase(id)
+        {
+            delete achieves[ id ];
+        }
+
+        function filterAchieves(filter)
+        {
+            var toret = [];
+
+            for (var id in achieves) {
+                if ( !achieves.hasOwnProperty( id ) ) {
+                    continue;
+                }
+
+                var ach = achieves[ id ];
+
+                if ( filter( ach ) ) {
+                    toret.push( ach );
+                }
+            }
+
+            return toret;
+        }
+
+        /** Get all completed or uncompleted achievements
+         *  @param complet true for all completed achievements.
+         */
+        function getRange(complet)
+        {
+            if ( arguments.length == 0 ) {
+                complet = true;
+            }
+
+            return filterAchieves( function(x) { return x.complet == complet; } );
+        }
+
+        /** Returns a given achievement, by its id
+         *  @param id The id of the achievement.
+         */
+        function get(id)
+        {
+            var toret = null;
+
+            if ( ( id in achieves )
+              && achieves.hasOwnProperty( id ) )
+            {
+                toret = achieves[ id ];
+            }
+
+            return toret;
+        }
+
+        /** Return a percentage between [0.0-1.0] of completed achievements. */
+        function complet()
+        {
+            var completed_achs = 0;
+            var total_achs = 0;
+            var toret = { "achs": [] };
+            var pts = 0;
+
+            for (var id in achieves) {
+                if ( !achieves.hasOwnProperty( id ) ) {
+                    continue;
+                }
+
+                ++total_achs;
+                var ach = achieves[ id ];
+
+                if ( ach.complet ) {
+                    ++completed_achs;
+                    toret.achs.push( ach );
+
+                    if ( ach.pts > 0 ) {
+                        pts += ach.pts;
+                    }
+                }
+            }
+
+            if ( pts > 0 ) {
+                toret.pts = pts;
+            }
+
+            toret.complet = completed_achs / total_achs;
+            return toret;
+        }
+
+        /** Returns the information of complet() as a textual list. */
+        function completAsText()
+        {
+            var totals = complet();
+            var toret = "<ul>";
+
+            for(ach of totals.achs) {
+                toret += "<li>" + ach.explica + "</li>";
+            }
+
+            toret += "</ul><br/>─ Total: " + ( totals.complet * 100 ) +"%";
+
+            if ( totals.pts > 0 ) {
+                toret += " ─" + totals.pts+ "pts.─";
+            }
+
+            return toret;
+        }
+
+        /** Marks the achievement and shows the corresponding explanation
+         *  @param id The id of the given achievement
+         *  @param pts Points if this achievement deserves a score. Optional.
+         */
+        function achieved(id, pts)
+        {
+            var ach = get( id );
+
+            if ( !ach.complet ) {
+                var suffix = "";
+
+                if ( arguments.length > 1 ) {
+                    ach.pts = pts;
+                }
+
+                if ( ach.pts > 0 ) {
+                    suffix = " ─" + ach.pts + "pts.─";
+                }
+
+                set( id, true, pts );
+                ctrl.print( "<span class=\"" + HtmlClassRef.achievements + "\">"
+                            + prefix
+                            + get( id ).explica
+                            + "</span>"
+                            + suffix );
+            }
+
+            return;
+        }
+
+        return {
+            "Achievement": Achievement,
+            "Logro": Achievement,
+            "add": add,
+            "inserta": add,
+            "set": set,
+            "marca": set,
+            "erase": erase,
+            "borra": erase,
+            "getRange": getRange,
+            "devRango": getRange,
+            "get": get,
+            "busca": get,
+            "complet": complet,
+            "completados": complet,
+            "completed": complet,
+            "completAsText": completAsText,
+            "completedAsText": completAsText,
+            "completadosComoTexto": completAsText,
+            "achieved": achieved,
+            "logrado": achieved,
+            "prefix": prefix
+        };
+    })();
+
+
 
     function isGameOver() {
         return gameEnded;
@@ -531,7 +762,7 @@ var ctrl = ( function() {
                 var newSeed = savegame.seed;
                 var newHistory = savegame.history;
                 var startLoc = ctrl.places.getStart();
-                
+
                 // Start from the beginning
                 ctrl.places.setCurrentLoc( startLoc );
                 goto( startLoc );
@@ -618,8 +849,12 @@ var ctrl = ( function() {
         var personas = ctrl.lugares.getCurrentLoc().personas;
         var pObjects = document.createElement( "p" );
         var strEntitiesList = "";
-        var objRefPrefix = "<a class=\"linkObj\" onclick=\"javascript:ctrl.addTerm('";
-        var pnjRefPrefix = "<a class=\"linkPnj\" onclick=\"javascript:ctrl.addTerm('";
+        var objRefPrefix = "<a class=\""
+                            + HtmlClassRef.links.obj
+                            + "\" onclick=\"javascript:ctrl.addTerm('";
+        var pnjRefPrefix = "<a class=\""
+                            + HtmlClassRef.links.pnj
+                            + "\" onclick=\"javascript:ctrl.addTerm('";
 
         if ( personas.length > 1 ) {
                 strEntitiesList += "/ ";
@@ -996,9 +1231,9 @@ var ctrl = ( function() {
      */
     function decideLinkClass(cmd)
     {
-        var toret = "<a class=\"linkMov\"";
-        var pnjRefPrefix = "<a class=\"linkPnj\"";
-        var objRefPrefix = "<a class=\"linkObj\"";
+        var toret = "<a class=\"" + HtmlClassRef.links.mov + "\"";
+        var pnjRefPrefix = "<a class=\"" + HtmlClassRef.links.pnj + "\"";
+        var objRefPrefix = "<a class=\"" + HtmlClassRef.links.obj + "\"";
 
         if ( cmd != null ) {
             cmd = cmd.trim();
@@ -1530,7 +1765,7 @@ var ctrl = ( function() {
             frmInput[ "edInput" ].focus();
             history = "";
         }
-        
+
         return false;
     }
 
@@ -1809,7 +2044,9 @@ var ctrl = ( function() {
         "isGameOver": isGameOver,
         "setGameOver": setGameOver,
         "esFinJuego": isGameOver,
-        "ponFinJuego": setGameOver
+        "ponFinJuego": setGameOver,
+        "achievements": achievements,
+        "logros": achievements
     };
 }() );
 
@@ -2055,9 +2292,9 @@ var parser = ( function() {
     {
         var words = [];
         var toret = "";
-        
+
         cmd = prepareInput( cmd );
-        
+
         if ( cmd != "" ) {
             var player = ctrl.personas.getPlayer();
             var loc = ctrl.places.getCurrentLoc();
@@ -2080,21 +2317,24 @@ var parser = ( function() {
                 }
 
                 // Execute action
-                ctrl.addToHistory( cmd );
-                var playerAnswer = player.preAction();
+                identifyObjects();
 
-                if ( playerAnswer == "" ) {
-                    identifyObjects();
-                    toret = sentence.act.doIt( sentence );
-                    player.postAction();
-                } else {
-                    toret = playerAnswer;
-                }
+                if ( sentence.act != null ) {
+                    ctrl.addToHistory( cmd );
+                    var playerAnswer = player.preAction();
 
-                if ( !ctrl.isGameOver() ) {
-                    loc.doEachTurn();
-                    ctrl.setNewTurn();
-                    ctrl.updateObjects();
+                    if ( playerAnswer == "" ) {
+                        toret = sentence.act.doIt( sentence );
+                        player.postAction();
+                    } else {
+                        toret = playerAnswer;
+                    }
+
+                    if ( !ctrl.isGameOver() ) {
+                        loc.doEachTurn();
+                        ctrl.setNewTurn();
+                        ctrl.updateObjects();
+                    }
                 }
             }
 
