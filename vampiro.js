@@ -335,21 +335,25 @@ objAtaud.preOpen = function() {
 
         // Es el final?
         if ( toret.length === 0 ) {
-				var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
-				dvFrame.style.display = "none";
-                ctrl.terminaJuego(
-                        "\
-                                Abres el ata&uacute;d, y, protegido por \
-                                los ajos y el crucifijo, comienzas \
-                                tu tarea. La cara de horror del \ vampiro cuando le clavas la estaca \
-                                solo es comparable al rostro \
-                                lleno de paz que puedes observar \
-                                unos cuantos martillazos despu&eacute;s. \
-                                La reducci&oacute;n del cuerpo a cenizas \
-                                te confirma que tu misi&oacute;n est&aacute; ya \
-                                cumplida.",
-                        "res/portada_vampiro.jpg"
-                );
+            var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
+
+            dvFrame.style.display = "none";
+            msg = "\
+                    Abres el ata&uacute;d, y, protegido por \
+                    los ajos y el crucifijo, comienzas \
+                    tu tarea. La cara de horror del \
+                    vampiro cuando le clavas la estaca \
+                    solo es comparable al rostro \
+                    lleno de paz que puedes observar \
+                    unos cuantos martillazos despu&eacute;s. \
+                    La reducci&oacute;n del cuerpo a cenizas \
+                    te confirma que tu misi&oacute;n est&aacute; ya \
+                    cumplida. \
+                    <p class='clsAchieved'>Logros: "
+                + ctrl.logros.completadosComoTexto()
+                + "</p>";
+
+            ctrl.terminaJuego( msg, "res/portada_vampiro.jpg" );
         } else {
                 toret = "Revisas que tengas todo lo necesario...<br>"
                         + toret;
@@ -447,6 +451,10 @@ var objCrucifijoPlateado = ctrl.creaObj(
 
 objCrucifijoPlateado.ponPrenda();
 
+objCrucifijoPlateado.postWear = function() {
+    ctrl.logros.logrado( "ortodoxo" );
+};
+
 var objCuchillo = ctrl.creaObj(
 	"cuchillo",
 	[ "cuchillo" ],
@@ -497,6 +505,10 @@ var objMartillo = ctrl.creaObj(
 	Ent.Portable
 );
 
+objMartillo.postTake = function() {
+    ctrl.logros.logrado( "matavampiros" );
+};
+
 var objMesa = ctrl.creaObj(
 	"mesa",
 	[ "mesa" ],
@@ -543,6 +555,10 @@ var objRistraDeAjos = ctrl.creaObj(
 
 objRistraDeAjos.ponPrenda();
 
+objRistraDeAjos.postWear = function() {
+    ctrl.logros.logrado( "temeroso" );
+}
+
 var objSabanas = ctrl.creaObj(
 	"sabanas",
 	[ "sabanas" ],
@@ -579,6 +595,10 @@ var objTrajeBarato = ctrl.creaObj(
 	Ent.Portable
 );
 objTrajeBarato.ponPrenda();
+
+objTrajeBarato.postWear = function() {
+    ctrl.logros.logrado( "ropa", 25 );
+};
 
 var objTrofeos = ctrl.creaObj(
 	"trofeos",
@@ -632,6 +652,7 @@ objTrozoDeMadera.preSharpen = function() {
                 if ( !objTrozoDeMadera.afilado ) {
                         toret = "Has afilado el madero con el cuchillo.";
                         objTrozoDeMadera.afilado = true;
+                        ctrl.logros.logrado( "estaca" );
                 }
         }
 
@@ -648,7 +669,8 @@ var jugador = ctrl.personas.creaPersona( "reXXe",
 var murcielagos = ctrl.personas.creaPersona(
                     "murci&eacute;lagos",
                     [ "murcielago", "murcielagos" ],
-                    "Varios murci&eacute;lagos, no parecen saber muy bien qu&eacute; pensar de ti.",
+                    "Varios murci&eacute;lagos, no parecen saber \
+                     muy bien qu&eacute; pensar de ti.",
                     ctrl.lugares.limbo
 );
 murcielagos.ponAlcanzable( false );
@@ -729,6 +751,13 @@ sharpenAction.doIt = function(s) {
 
     return toret;
 };
+
+// Logros --------------------------------------------------------------
+ctrl.logros.add( "ropa", "Pudoroso (te pusiste el traje)." );
+ctrl.logros.add( "estaca", "El afilador (afilaste la estaca)." );
+ctrl.logros.add( "temeroso", "Temeroso (te pusiste los ajos)." );
+ctrl.logros.add( "ortodoxo", "Ortodoxo (te pusiste el crucifijo)." );
+ctrl.logros.add( "matavampiros", "Mata-vampiros (encontraste el martillo)." );
 
 // Arranque ------------------------------------------------------------
 ctrl.personas.cambiaJugador( jugador );
