@@ -605,6 +605,7 @@ var ctrl = ( function() {
         function completAsText()
         {
             var totals = complet();
+            var uncompleted_achievements = getRange( false );
             var toret = "<ul>";
 
             for(ach of totals.achs) {
@@ -615,6 +616,15 @@ var ctrl = ( function() {
 
             if ( totals.pts > 0 ) {
                 toret += " ─" + totals.pts+ "pts.─";
+            }
+
+            if ( uncompleted_achievements.length > 0 ) {
+                toret += "<ul>";
+                for(ach of uncompleted_achievements) {
+                    toret += "<li style='text-decoration: line-through;'>"
+                             + ach.explica + "</li>";
+                }
+                toret += "</ul>";
             }
 
             return toret;
