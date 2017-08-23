@@ -1205,9 +1205,9 @@ var ctrl = ( function() {
         // Hide the old picture and display the new one
         dvPic.style.display = "none";
         dvPic = document.createElement( "div" );
+        dvPic.setAttribute( "id", "dvPic" );
         dvDesc.appendChild( dvPic );
         dvPic.style.display = "none";
-        dvDesc.style = "scroll-y: hidden; scroll-x: hidden; height: 75%";
 
         if ( pic != null ) {
             var pImg = document.createElement( "p" );
@@ -1226,7 +1226,7 @@ var ctrl = ( function() {
         pDesc.style.textAlign = "justify";
         pDesc.innerHTML = msg;
         dvDesc.appendChild( pDesc );
-
+        dvDesc.style = "scroll-y: hidden; scroll-x: hidden; height: 75%";
 
         setGameOver();
         return;
