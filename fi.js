@@ -497,7 +497,7 @@ var ctrl = ( function() {
          */
         function set(id, completed, pts)
         {
-            var ach = achieves[ id ];
+            var ach = get( id );
 
             if ( arguments.length < 3 ) {
                 pts = -1;
@@ -517,7 +517,15 @@ var ctrl = ( function() {
          */
         function erase(id)
         {
-            delete achieves[ id ];
+            if ( id in achieves
+              && achieves.hasOwnProperty( id ) )
+            {
+                delete achieves[ id ];
+            } else {
+                ctrl.showError( "Achievement '" + id + "' was not found." );
+            }
+            
+            return;
         }
 
         function filterAchieves(filter)
@@ -548,7 +556,9 @@ var ctrl = ( function() {
                 complet = true;
             }
 
-            return filterAchieves( function(x) { return x.complet == complet; } );
+            return filterAchieves(
+                function(x) { return x.complet == complet; }
+            );
         }
 
         /** Returns a given achievement, by its id
@@ -558,10 +568,12 @@ var ctrl = ( function() {
         {
             var toret = null;
 
-            if ( ( id in achieves )
+            if ( id in achieves
               && achieves.hasOwnProperty( id ) )
             {
                 toret = achieves[ id ];
+            } else {
+                ctrl.showError( "Achievement '" + id + "' was not found." );
             }
 
             return toret;
@@ -637,24 +649,29 @@ var ctrl = ( function() {
         function achieved(id, pts)
         {
             var ach = get( id );
+            
+            if ( ach != null ) {
+                if ( !ach.complet ) {
+                    var suffix = "";
 
-            if ( !ach.complet ) {
-                var suffix = "";
+                    if ( arguments.length > 1 ) {
+                        ach.pts = pts;
+                    }
 
-                if ( arguments.length > 1 ) {
-                    ach.pts = pts;
+                    if ( ach.pts > 0 ) {
+                        suffix = " ─" + ach.pts + "pts.─";
+                    }
+
+                    set( id, true, pts );
+                    ctrl.print( "<span class=\""
+                                + HtmlClassRef.achievements + "\">"
+                                + prefix
+                                + get( id ).explica
+                                + "</span>"
+                                + suffix );
                 }
-
-                if ( ach.pts > 0 ) {
-                    suffix = " ─" + ach.pts + "pts.─";
-                }
-
-                set( id, true, pts );
-                ctrl.print( "<span class=\"" + HtmlClassRef.achievements + "\">"
-                            + prefix
-                            + get( id ).explica
-                            + "</span>"
-                            + suffix );
+            } else {
+                ctrl.showError( "Achievement '" + id + "' was not found." );
             }
 
             return;
