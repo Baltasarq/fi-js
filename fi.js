@@ -139,6 +139,13 @@ var Ent = function() {
               || owner === loc );
     }
     this.esVisible = this.isVisible;
+    
+    this.timesExamined = 0;
+    
+    this.getTimesExamined = function() {
+        return this.timesExamined;
+    }
+    this.devVecesExaminado = this.getTimesExamined;
 };
 
 Ent.Scenery = true;
@@ -152,7 +159,6 @@ var Loc = function(n, i, s, d) {
     this.id = i.trim();
     this.syn = s;
     this.desc = d;
-    this.visits = 0;
 
     this.scenery = true;
     this.container = true;
@@ -185,7 +191,8 @@ var Loc = function(n, i, s, d) {
     this.mueveA = this.moveTo;
 
     this.has = function(obj) {
-        return ( this.objs.indexOf( obj ) > -1 ) || ( this.personas.indexOf( obj ) > -1 );
+        return ( this.objs.indexOf( obj ) > -1 )
+            || ( this.personas.indexOf( obj ) > -1 );
     }
     this.tiene = this.has;
 
@@ -267,6 +274,16 @@ var Loc = function(n, i, s, d) {
     }
 
     this.devSalida = this.getExit;
+    
+    this.preExamine = function() {
+        var toret = "";
+        
+        if ( typeof( this.preExamina ) === "function" ) {
+            toret = this.preExamina();
+        }
+        
+        return toret;
+    }
 
     this.postExamine = function() {
         if ( typeof( this.postExamina ) === "function" ) {
@@ -291,7 +308,6 @@ var Obj = function(n, i, s, l, d) {
     this.owner = l;
 
     this.objs = [];
-    this.examinations = 0;
     this.container = false;
     this.scenery = false;
     this.reachable = true;
@@ -666,7 +682,7 @@ var ctrl = ( function() {
                     ctrl.print( "<span class=\""
                                 + HtmlClassRef.achievements + "\">"
                                 + prefix
-                                + get( id ).explica
+                                + ach.explica
                                 + "</span>"
                                 + suffix );
                 }
@@ -1433,13 +1449,19 @@ var ctrl = ( function() {
             {
                 desc = loc.desc;
             }
+            
+            var newDesc = loc.preExamine();
+            
+            if ( newDesc != "" ) {
+                desc = newDesc;
+            }
 
             // Update description and visits
             updateDesc( loc, desc );
-            ++loc.visits;
+            ++loc.timesExamined;
 
-            // Got to top, if first visit
-            if ( loc.visits == 1 ) {
+            // Go to top, if first visit
+            if ( loc.timesExamined == 1 ) {
                 window.scrollTo( 0, 0 );
             }
 

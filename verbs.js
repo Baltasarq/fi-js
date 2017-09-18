@@ -64,13 +64,13 @@ examineAction.doIt = function(s) {
     }
     else
     if ( objDest != null ) {
+        ++objDest.timesExamined;
         if ( typeof( objDest.preExamine ) === "function" ) {
             toret = objDest.preExamine();
         } else {
             toret = this.exe( s );
         }
         
-        objDest.examinations++;
         if ( typeof( objDest.postExamine ) === "function" ) {
             objDest.postExamine();
         }

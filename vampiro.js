@@ -22,7 +22,8 @@ ctrl.ponIntro( "<p><h2>Memorias de reXXe</h2><br>\
                 muy sencilla en un nuevo parser, de manera que para el \
                 autor experimentado, estas salgan a la luz enseguida. \
                 En este caso, el objetivo es demostrar las posibilidades \
-                de <a target=\"_blank\" href=\"http://caad.es/baltasarq/prys/fi.js/\">fi.js</a>\
+                de <a target=\"_blank\" \
+                href=\"http://caad.es/baltasarq/prys/fi.js/\">fi.js</a>\
                 </i></p>" );
 ctrl.ponImg( "res/portada_vampiro.jpg" );
 ctrl.ponAutor( "baltasarq" );
@@ -78,7 +79,8 @@ var locEscaleras = ctrl.lugares.creaLoc(
 	[ "escaleras" ],
 	"Te hallas en el final del pasillo. Delante de t&iacute; ves unas \
         escaleras que ${suben, sube} y otras que ${bajan, baja}. \
-        Al ${oeste, oeste} est&aacute; el ${dormitorio, oeste} y al ${este, este} \
+        Al ${oeste, oeste} est&aacute; \
+        el ${dormitorio, oeste} y al ${este, este} \
         la ${sala de estar, este}.<br>Salidas visibles: \
         ${sur, sur}, ${este, este}, ${oeste, oeste}, \
         ${arriba, arriba}, ${abajo, abajo}."
@@ -88,11 +90,12 @@ locEscaleras.pic = "res/escaleras.jpg";
 var locEscalerasSuperiores = ctrl.lugares.creaLoc(
 	"Escaleras superiores",
 	[ "escaleras", "rellano" ],
-	"Est&aacute;s en el piso superior del castillo. Aqu&iacute; hace m&aacute;s \
-        fr&iacute;o que ${abajo, abajo}. Detr&aacute;s de t&iacute; est&aacute;n las \
-        escaleras que ${bajan, baja} y \
-        hacia el ${oeste, oeste} est&aacute; la ${habitaci&oacute;n, oeste} del \
-        vampiro.<br>Salidas visibles: ${oeste, oeste}, ${abajo, abajo}."
+	"Est&aacute;s en el piso superior del castillo. \
+	Aqu&iacute; hace m&aacute;s \
+    fr&iacute;o que ${abajo, abajo}. Detr&aacute;s de t&iacute; est&aacute;n las \
+    escaleras que ${bajan, baja} y \
+    hacia el ${oeste, oeste} est&aacute; la ${habitaci&oacute;n, oeste} del \
+    vampiro.<br>Salidas visibles: ${oeste, oeste}, ${abajo, abajo}."
 );
 locEscalerasSuperiores.pic = "res/escaleras_superiores.jpg";
 
@@ -106,7 +109,6 @@ var locPasillo = ctrl.lugares.creaLoc(
          ${norte, norte}, ${sur, sur}, ${este, este}, ${oeste, oeste}."
 );
 locPasillo.pic = "res/pasillo.jpg";
-
 
 var locSalaDeEstar = ctrl.lugares.creaLoc(
 	"Sala de estar",
@@ -169,9 +171,14 @@ var objPuertaEntrada = ctrl.creaObj(
 	Ent.Escenario
 );
 
+objPuertaEntrada.preExamine = function() {
+    ctrl.logros.logrado( "cobardica" );
+    return this.desc;
+};
+
 objPuertaEntrada.preOpen = function() {
-        return objPuertaEntrada.desc;
-}
+    return actions.execute( "examine", "puerta" );
+};
 
 
 // *** Compas --
@@ -338,6 +345,7 @@ objAtaud.preOpen = function() {
             var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
 
             dvFrame.style.display = "none";
+            ctrl.logros.logrado( "matavampiros" );
             msg = "\
                     Abres el ata&uacute;d, y, protegido por \
                     los ajos y el crucifijo, comienzas \
@@ -506,7 +514,7 @@ var objMartillo = ctrl.creaObj(
 );
 
 objMartillo.postTake = function() {
-    ctrl.logros.logrado( "matavampiros" );
+    ctrl.logros.logrado( "carpintero" );
 };
 
 var objMesa = ctrl.creaObj(
@@ -597,7 +605,7 @@ var objTrajeBarato = ctrl.creaObj(
 objTrajeBarato.ponPrenda();
 
 objTrajeBarato.postWear = function() {
-    ctrl.logros.logrado( "ropa" );
+    ctrl.logros.logrado( "pudoroso" );
 };
 
 var objTrofeos = ctrl.creaObj(
@@ -676,7 +684,9 @@ var murcielagos = ctrl.personas.creaPersona(
 murcielagos.ponAlcanzable( false );
 
 murcielagos.preTalk = function() {
-    return "¿Pero para qu&eacute;? ...no molestes a los pobres murci&eacute;lagos...";
+    ctrl.logros.logrado( "charlatan" );
+    return "¿Pero para qu&eacute;? \
+            ...no molestes a los pobres murci&eacute;lagos...";
 }
 
 locPasillo.preSing = function() {
@@ -753,11 +763,14 @@ sharpenAction.doIt = function(s) {
 };
 
 // Logros --------------------------------------------------------------
-ctrl.logros.add( "ropa", "Pudoroso (te pusiste el traje)." );
+ctrl.logros.add( "charlatan", "Charlatán (molestaste a los murciélagos)." );
+ctrl.logros.add( "cobardica", "Cobarde (intentaste salir del castillo)." );
+ctrl.logros.add( "pudoroso", "Pudoroso (te pusiste el traje)." );
 ctrl.logros.add( "estaca", "El afilador (afilaste la estaca)." );
 ctrl.logros.add( "temeroso", "Temeroso (te pusiste los ajos)." );
 ctrl.logros.add( "ortodoxo", "Ortodoxo (te pusiste el crucifijo)." );
-ctrl.logros.add( "matavampiros", "Mata-vampiros (encontraste el martillo)." );
+ctrl.logros.add( "carpintero", "Carpintero (encontraste el martillo)." );
+ctrl.logros.add( "matavampiros", "Matavampiros (mataste al vampiro)." );
 
 // Arranque ------------------------------------------------------------
 ctrl.personas.cambiaJugador( jugador );
