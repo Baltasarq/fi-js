@@ -874,7 +874,7 @@ var ctrl = ( function() {
             return;
         }
 
-        delete daemons.id;
+        delete daemons[ id ];
     }
 
     var prepBuildingOrder = "";
