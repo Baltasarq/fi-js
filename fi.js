@@ -1,10 +1,9 @@
-// fi.js
+// fi.js (c) Baltasar 2014-2018 MIT License <baltasarq@gmail.com>
 /**
  * Motor de ficc. interactiva (fi.js IF Engine)
- * Licencia MIT (c) baltasar@gmail.com 2014, 2015, 2016
  */
 
-var Ent = function() {
+const Ent = function() {
     this.isScenery = function()
     {
         return this.scenery;
@@ -61,22 +60,22 @@ var Ent = function() {
             newOwner = ctrl.places.limbo;
         }
 
-		if ( this.owner != newOwner ) {
-			// Remove from current owner
-			if ( this.owner != null ) {
-				var i = this.owner.objs.indexOf( this );
+        if ( this.owner != newOwner ) {
+            // Remove from current owner
+            if ( this.owner != null ) {
+                var i = this.owner.objs.indexOf( this );
 
-				if ( i >= 0 ) {
-					this.owner.objs.splice( i, 1 );
-				}
-			}
+                if ( i >= 0 ) {
+                    this.owner.objs.splice( i, 1 );
+                }
+            }
 
-			// Put in new owner
-			this.owner = newOwner;
-			newOwner.objs.push( this );
-		}
+            // Put in new owner
+            this.owner = newOwner;
+            newOwner.objs.push( this );
+        }
 
-		return;
+        return;
     }
     this.mueveA = this.moveTo;
 
@@ -120,7 +119,7 @@ var Ent = function() {
 
     this.isVisible = function(persona) {
         var owner = this.owner;
-        var loc = ctrl.places.getCurrentLoc();
+        const loc = ctrl.places.getCurrentLoc();
 
         if ( arguments.length < 1
           || persona == null )
@@ -139,9 +138,9 @@ var Ent = function() {
               || owner === loc );
     }
     this.esVisible = this.isVisible;
-    
+
     this.timesExamined = 0;
-    
+
     this.getTimesExamined = function() {
         return this.timesExamined;
     }
@@ -152,7 +151,7 @@ Ent.Scenery = true;
 Ent.Escenario = true;
 Ent.Portable = false;
 
-var Loc = function(n, i, s, d) {
+const Loc = function(n, i, s, d) {
     Ent.call( this );
 
     this.num = n;
@@ -216,7 +215,7 @@ var Loc = function(n, i, s, d) {
 
     this.setExit = function(strDir, loc)
     {
-        var numExit = this.cnvtStrToExitOrd( strDir );
+        const numExit = this.cnvtStrToExitOrd( strDir );
 
         if ( numExit > -1 ) {
             this.exits[ numExit ] = loc;
@@ -246,8 +245,8 @@ var Loc = function(n, i, s, d) {
 
     this.setExitBi = function(strDir, loc)
     {
-        var numExit = this.cnvtStrToExitOrd( strDir );
-        var numInvExit = this.getInvExit( numExit );
+        const numExit = this.cnvtStrToExitOrd( strDir );
+        const numInvExit = this.getInvExit( numExit );
 
         if ( numExit > -1
           && numInvExit > -1 )
@@ -264,7 +263,7 @@ var Loc = function(n, i, s, d) {
     this.getExit = function(strDir)
     {
         var toret = null;
-        var numExit = this.cnvtStrToExitOrd( strDir );
+        const numExit = this.cnvtStrToExitOrd( strDir );
 
         if ( numExit > -1 ) {
             toret = this.exits[ numExit ];
@@ -274,14 +273,14 @@ var Loc = function(n, i, s, d) {
     }
 
     this.devSalida = this.getExit;
-    
+
     this.preExamine = function() {
         var toret = "";
-        
+
         if ( typeof( this.preExamina ) === "function" ) {
             toret = this.preExamina();
         }
-        
+
         return toret;
     }
 
@@ -298,7 +297,7 @@ var Loc = function(n, i, s, d) {
     }
 };
 
-var Obj = function(n, i, s, l, d) {
+const Obj = function(n, i, s, l, d) {
     Ent.call( this );
 
     this.num = n;
@@ -369,7 +368,7 @@ var Obj = function(n, i, s, l, d) {
     this.estaPuesto = this.isWorn;
 };
 
-var Persona = function(n, i, l, d) {
+const Persona = function(n, i, l, d) {
     Ent.call( this );
 
     this.num = n;
@@ -447,7 +446,9 @@ var Persona = function(n, i, l, d) {
     this.mueveA = this.moveTo;
 };
 
-var ctrl = ( function() {
+const ctrl = ( function() {
+    const alarms = [];
+    const daemons = {};
     var tit = "Ficci&oacute;n interactiva";
     var intro = "&iexcl;Comienza la aventura!";
     var pic = null;
@@ -455,14 +456,12 @@ var ctrl = ( function() {
     var version = "";
     var turns = 1;
     var useScore = false;
-    var alarms = [];
-    var daemons = {};
     var history = "";
     var seed = 1;
     var gameEnded = false;
     var booted = false;
 
-    var HtmlClassRef = {
+    const HtmlClassRef = {
         "links": {
             "obj": "clsLinkObj",
             "mov": "clsLinkMov",
@@ -471,9 +470,9 @@ var ctrl = ( function() {
         "achievements": "clsAchieved",
     };
 
-    var achievements = (function(){
+    const achievements = (function(){
         var prefix = "Logro: ";
-        var achieves = {};
+        const achieves = {};
 
         /** Creates a new achievement
          *  @param id The id of the achievement, such as "rockclimber".
@@ -540,7 +539,7 @@ var ctrl = ( function() {
             } else {
                 ctrl.showError( "Achievement '" + id + "' was not found." );
             }
-            
+
             return;
         }
 
@@ -632,8 +631,8 @@ var ctrl = ( function() {
         /** Returns the information of complet() as a textual list. */
         function completAsText()
         {
-            var totals = complet();
-            var uncompleted_achievements = getRange( false );
+            const totals = complet();
+            const uncompleted_achievements = getRange( false );
             var toret = "<ul>";
 
             for(ach of totals.achs) {
@@ -664,8 +663,8 @@ var ctrl = ( function() {
          */
         function achieved(id, pts)
         {
-            var ach = get( id );
-            
+            const ach = get( id );
+
             if ( ach != null ) {
                 if ( !ach.complet ) {
                     var suffix = "";
@@ -748,7 +747,7 @@ var ctrl = ( function() {
             var s = { "verb": cmd };
 
             if ( !saveAction.match( s )
-            &&   !loadAction.match( s ) )
+              && !loadAction.match( s ) )
             {
                 history += cmd;
             }
@@ -781,7 +780,7 @@ var ctrl = ( function() {
 
     function save() {
         var toret = false;
-        var savegame = {
+        const savegame = {
             "seed": seed,
             "history": history
         };
@@ -798,7 +797,7 @@ var ctrl = ( function() {
         var toret = false;
 
         if ( typeof( Storage ) !== "undefined" ) {
-            var strSavegame = localStorage.getItem( "fi_js-SaveGame" );
+            const strSavegame = localStorage.getItem( "fi_js-SaveGame" );
 
             if ( strSavegame != null ) {
                 var savegame = JSON.parse( strSavegame );
@@ -841,9 +840,9 @@ var ctrl = ( function() {
         return toret;
     }
 
-	function setAlarm(turns, f) {
-		alarms.push( new Alarm( turns, f ) );
-	}
+    function setAlarm(turns, f) {
+        alarms.push( new Alarm( turns, f ) );
+    }
 
     function addDaemon(id, fn) {
         if ( arguments.length != 2 ) {
@@ -881,7 +880,7 @@ var ctrl = ( function() {
 
     function updateObjects()
     {
-        var dvObjects = document.getElementById( "dvObjects" );
+        const dvObjects = document.getElementById( "dvObjects" );
 
         if ( dvObjects == null ) {
             return;
@@ -952,7 +951,7 @@ var ctrl = ( function() {
 
     function addTerm(w)
     {
-        var doEnter = ( this.prepBuildingOrder.length == 0 );
+        const doEnter = ( this.prepBuildingOrder.length == 0 );
 
         ctrl.inject( w, doEnter, false );
 
@@ -1026,7 +1025,7 @@ var ctrl = ( function() {
     }
 
     function setNewTurn() {
-		var player = personas.getPlayer();
+		const player = personas.getPlayer();
 
         ++turns;
         ++player.turns;
@@ -1100,7 +1099,7 @@ var ctrl = ( function() {
     function lookUpPersona(loc, w)
     {
 		var toret = null;
-		var personas = loc.personas;
+		const personas = loc.personas;
 
 		w = parser.canonical( w );
 
@@ -1120,8 +1119,8 @@ var ctrl = ( function() {
     function lookUpObj(container, w)
     {
         var toret = null;
-        var id = parser.canonical( container.id );
-        var containerIds = container.syn.concat( id );
+        const id = parser.canonical( container.id );
+        const containerIds = container.syn.concat( id );
 
         w = parser.canonical( w );
 
@@ -1162,8 +1161,8 @@ var ctrl = ( function() {
 
     function inject(txt, enter, replace)
     {
-        var edInput = getHtmlPart( "edInput", "missing input edit" );
-        var btSend = getHtmlPart( "btSend", "missing send button" );
+        const edInput = getHtmlPart( "edInput", "missing input edit" );
+        const btSend = getHtmlPart( "btSend", "missing send button" );
 
         if ( arguments.length < 1 ) {
             txt = "";
@@ -1194,8 +1193,8 @@ var ctrl = ( function() {
 
     function print(msg)
     {
-        var dvAnswer = getHtmlPart( "dvAnswer", "missing answer div" );
-        var pAnswer = document.createElement( "p" );
+        const dvAnswer = getHtmlPart( "dvAnswer", "missing answer div" );
+        const pAnswer = document.createElement( "p" );
 
         pAnswer.innerHTML = cnvtTextLinksToHtml( msg );
 
@@ -1212,10 +1211,10 @@ var ctrl = ( function() {
 
     function endGame(msg, pic)
     {
-        var dvInput = getHtmlPart( "dvInput", "missing input div" );
-        var dvAnswer = getHtmlPart( "dvAnswer", "missing input div" );
-        var dvDesc = getHtmlPart( "dvDesc", "missing desc div" );
-        var dvId = getHtmlPart( "dvId", "missing id div" );
+        const dvInput = getHtmlPart( "dvInput", "missing input div" );
+        const dvAnswer = getHtmlPart( "dvAnswer", "missing input div" );
+        const dvDesc = getHtmlPart( "dvDesc", "missing desc div" );
+        const dvId = getHtmlPart( "dvId", "missing id div" );
         var dvPic = getHtmlPart( "dvPic", "missing pic div" );
 
         if ( arguments.length < 2 ) {
@@ -1243,8 +1242,8 @@ var ctrl = ( function() {
         dvPic.style.display = "none";
 
         if ( pic != null ) {
-            var pImg = document.createElement( "p" );
-            var img = document.createElement( "img" );
+            const pImg = document.createElement( "p" );
+            const img = document.createElement( "img" );
 
             pImg.setAttribute( "align", "center" );
             img.setAttribute( "src", pic );
@@ -1255,7 +1254,7 @@ var ctrl = ( function() {
         }
 
         // Show end game text
-        var pDesc = document.createElement( "p" );
+        const pDesc = document.createElement( "p" );
         pDesc.style.textAlign = "justify";
         pDesc.innerHTML = msg;
         dvDesc.appendChild( pDesc );
@@ -1266,7 +1265,7 @@ var ctrl = ( function() {
     }
 
      /**
-     * Decides de links class, which could be of movement, objects or pnj's.
+     * Decides the links class, which could be of movement, objects or pnj's.
      * Returns, for example: "<a class=\"linkObj\""
      * Possibilities are: linkObj, linkPnj, linkMov
      * @param txt The text with the command.
@@ -1275,8 +1274,8 @@ var ctrl = ( function() {
     function decideLinkClass(cmd)
     {
         var toret = "<a class=\"" + HtmlClassRef.links.mov + "\"";
-        var pnjRefPrefix = "<a class=\"" + HtmlClassRef.links.pnj + "\"";
-        var objRefPrefix = "<a class=\"" + HtmlClassRef.links.obj + "\"";
+        const pnjRefPrefix = "<a class=\"" + HtmlClassRef.links.pnj + "\"";
+        const objRefPrefix = "<a class=\"" + HtmlClassRef.links.obj + "\"";
 
         if ( cmd != null ) {
             cmd = cmd.trim();
@@ -1287,13 +1286,13 @@ var ctrl = ( function() {
                 if ( words.length > 0 ) {
                     var firstWord = words[ 0 ];
 
-                    var objs = [
+                    const objs = [
                             "ex", "examina", "examinar", "examino",
                             "m", "mirar", "mira", "miro",
                             "look", "x", "take", "get", "pick",
                             "coger", "coge", "cojo", "tomar", "toma", "tomo" ];
 
-                    var pnjs = [ "habla", "hablar", "hablo", "talk" ];
+                    const pnjs = [ "habla", "hablar", "hablo", "talk" ];
 
                     if ( objs.indexOf( firstWord ) > -1 ) {
                         toret = objRefPrefix;
@@ -1353,11 +1352,11 @@ var ctrl = ( function() {
         return txt;
     }
 
-    var places = ( function() {
-        var locs = [];
+    const places = ( function() {
+        const locs = [];
+        const limbo = creaLoc( "limbo", [ "limbo" ], "limbo" );
         var start = null;
         var current = null;
-        var limbo = creaLoc( "limbo", [ "limbo" ], "limbo" );
 
         function getLocByNum(i)
         {
@@ -1414,7 +1413,7 @@ var ctrl = ( function() {
 
         function creaLoc(id, syn, desc)
         {
-            var toret = new Loc( locs.length, id, syn, desc );
+            const toret = new Loc( locs.length, id, syn, desc );
 
             locs.push( toret );
             return toret;
@@ -1449,9 +1448,9 @@ var ctrl = ( function() {
             {
                 desc = loc.desc;
             }
-            
+
             var newDesc = loc.preExamine();
-            
+
             if ( newDesc != "" ) {
                 desc = newDesc;
             }
@@ -1471,9 +1470,9 @@ var ctrl = ( function() {
 
         function updateDesc(loc, desc)
         {
-            var dvId = ctrl.getHtmlPart( "dvId", "missing div loc.id" );
-            var dvDesc = ctrl.getHtmlPart( "dvDesc", "missing div loc.desc" );
-            var dvPic = ctrl.getHtmlPart( "dvPic", "missing div loc.pic" );
+            const dvId = ctrl.getHtmlPart( "dvId", "missing div loc.id" );
+            const dvDesc = ctrl.getHtmlPart( "dvDesc", "missing div loc.desc" );
+            const dvPic = ctrl.getHtmlPart( "dvPic", "missing div loc.pic" );
 
             if ( arguments.length < 1
               || loc == null )
@@ -1488,7 +1487,7 @@ var ctrl = ( function() {
             }
 
             // Set loc's id
-            var id = document.createElement( "h2" );
+            const id = document.createElement( "h2" );
             id.innerHTML = loc.id;
             dvId.innerHTML = "";
             dvId.appendChild( id );
@@ -1514,8 +1513,8 @@ var ctrl = ( function() {
             }
 
             // Set loc's desc
-            var objsDesc = ctrl.list( loc );
-            var pDesc = document.createElement( "p" );
+            const objsDesc = ctrl.list( loc );
+            const pDesc = document.createElement( "p" );
             pDesc.innerHTML = ctrl.cnvtTextLinksToHtml( desc )
                     + ctrl.cnvtTextLinksToHtml( objsDesc );
 
@@ -1556,7 +1555,7 @@ var ctrl = ( function() {
         };
     })();
 
-    var audio = ( function() {
+    const audio = ( function() {
         var playing = null;
 
         function play()
@@ -1632,17 +1631,16 @@ var ctrl = ( function() {
 
     function creaObj(id, syn, desc, loc, isScenery)
     {
-        var toret = new Obj( loc.objs.length, id, syn, loc, desc );
+        const toret = new Obj( loc.objs.length, id, syn, loc, desc );
 
         toret.setScenery( isScenery );
         loc.objs.push( toret );
         return toret;
     }
 
-    var personas = ( function() {
-
+    const personas = ( function() {
         var player = null;
-        var personas = [];
+        const personas = [];
 
         function creaPersona(id, syn, desc, loc)
         {
@@ -1740,26 +1738,24 @@ var ctrl = ( function() {
 
     function showError(msg)
     {
-        var dvError = document.getElementById( "dvError" );
-        var pError = document.createElement( "p" );
+        const dvError = document.getElementById( "dvError" );
+        const pError = document.createElement( "p" );
 
         pError.style.color = "white";
         pError.style.backgroundColor = "red";
         pError.innerHTML = "ERROR: " + msg;
         dvError.appendChild( pError );
+        console.error( msg );
     }
 
     function goto(loc, persona)
     {
-        var currentLoc = ctrl.places.getCurrentLoc();
-
         if ( arguments.length == 1 ) {
             persona = personas.getPlayer();
         }
 
         persona.moveTo( loc );
         ctrl.places.setCurrentLoc( loc );
-
         actions.execute( "look" );
         return;
     }
@@ -1780,7 +1776,7 @@ var ctrl = ( function() {
             msgError = partId + " html element not found";
         }
 
-        var toret = document.getElementById( partId );
+        const toret = document.getElementById( partId );
 
         if ( toret == null ) {
             showError( msgError );
@@ -1797,12 +1793,10 @@ var ctrl = ( function() {
     {
         if ( !booted ) {
             booted = true;
-            var dvFi = getHtmlPart( "dvFi", "div Fi not found" );
-            var dvIntro = getHtmlPart( "dvIntro", "div Intro not found" );
-            var frmInput = getHtmlPart( "frmInput", "form Input not found" );
-            var dvHead = document.getElementsByTagName( "head" )[ 0 ];
-            var dvHeadStyle = document.createElement( "style" );
-            var startLoc = ctrl.places.getStart();
+            const dvFi = getHtmlPart( "dvFi", "div Fi not found" );
+            const dvIntro = getHtmlPart( "dvIntro", "div Intro not found" );
+            const frmInput = getHtmlPart( "frmInput", "form Input not found" );
+            const startLoc = ctrl.places.getStart();
 
             ctrl.places.setCurrentLoc( startLoc );
             goto( startLoc );
@@ -1823,14 +1817,14 @@ var ctrl = ( function() {
      */
     function start()
     {
-        var dvTitle = getHtmlPart( "dvTitle", "div title not found" );
-        var dvFi = getHtmlPart( "dvFi", "div Fi not found" );
-        var dvIntro = getHtmlPart( "dvIntro", "div Intro not found" );
-        var edInput = getHtmlPart( "edInput", "edit input in form input not found" );
-        var btSend = getHtmlPart( "btSend", "button send in form input not found" );
-        var btReset = getHtmlPart( "btReset", "button reset in form input not found" );
-        var hdTitle = document.createElement( "h1" );
-        var body = document.getElementsByTagName( "body" )[ 0 ];
+        const dvTitle = getHtmlPart( "dvTitle", "div title not found" );
+        const dvFi = getHtmlPart( "dvFi", "div Fi not found" );
+        const dvIntro = getHtmlPart( "dvIntro", "div Intro not found" );
+        const edInput = getHtmlPart( "edInput", "edit input in form input not found" );
+        const btSend = getHtmlPart( "btSend", "button send in form input not found" );
+        const btReset = getHtmlPart( "btReset", "button reset in form input not found" );
+        const hdTitle = document.createElement( "h1" );
+        const body = document.getElementsByTagName( "body" )[ 0 ];
 
         // Prepare web page
         dvIntro.style.display = "block";
@@ -1840,13 +1834,13 @@ var ctrl = ( function() {
         dvTitle.appendChild( hdTitle );
 
         // Prepare intro
-        var pIntro = document.createElement( "p" );
+        const pIntro = document.createElement( "p" );
         pIntro.innerHTML = ctrl.getIntro();
         dvIntro.insertBefore( pIntro, getHtmlPart( "frmIntro", "missing intro form" ) );
 
         if ( ctrl.getPic() != null ) {
-            var dvImgIntro = document.createElement( "div" );
-            var imgIntro = document.createElement( "img" );
+            const dvImgIntro = document.createElement( "div" );
+            const imgIntro = document.createElement( "img" );
             dvImgIntro.setAttribute( "align", "center" );
             imgIntro.setAttribute( "src", ctrl.getPic() );
             dvImgIntro.appendChild( imgIntro );
@@ -1854,7 +1848,7 @@ var ctrl = ( function() {
         }
 
         if ( ctrl.getVersion().length > 0 ) {
-            var pInfo = document.createElement( "p" );
+            const pInfo = document.createElement( "p" );
             pInfo.setAttribute( "id", "versionInfo" );
             pInfo.innerHTML = "<small>"
                     + "<b>" + ctrl.getTitle() + "</b>"
@@ -1864,15 +1858,15 @@ var ctrl = ( function() {
         }
 
         if ( ctrl.getAuthor().length > 0 ) {
-            var pInfo = document.getElementById( "versionInfo" );
+            const pvInfo = document.getElementById( "versionInfo" );
 
-            if ( pInfo == null ) {
-                pInfo = document.createElement( "p" );
+            if ( pvInfo == null ) {
+                pvInfo = document.createElement( "p" );
                 pInfo.setAttribute( "id", "versionInfo" );
-                dvIntro.insertBefore( pInfo, pIntro );
+                dvIntro.insertBefore( pvInfo, pIntro );
             }
 
-            pInfo.innerHTML += "<small>- <i>"
+            pvInfo.innerHTML += "<small>- <i>"
                     + ctrl.getAuthor()
                     + "</i></small>";
         }
@@ -1883,22 +1877,22 @@ var ctrl = ( function() {
         return;
     }
 
-	/** Lists all objects
+    /** Lists all objects
      * @param obj The vector of objects
      * @param strAction The action to apply to any object, as string.
      */
     function listVector(v, strAction)
     {
-		var toret = "";
+        var toret = "";
 
         if ( arguments === 1 ) {
             strAction = null;
         }
 
-		if ( v.length > 0 ) {
-			for(var i = 0; i < v.length; ++i) {
+        if ( v.length > 0 ) {
+            for(var i = 0; i < v.length; ++i) {
                 obj = v[ i ];
-				part = obj.id;
+                part = obj.id;
 
                 if ( strAction != null ) {
                     part = "${" + part
@@ -1907,42 +1901,42 @@ var ctrl = ( function() {
 
                 toret += part;
 
-				if ( i == ( v.length - 2 ) ) {
-					toret += " y ";
-				}
-				else
-				if ( i < ( v.length - 2 ) ) {
-					toret += ", ";
-				}
-			}
-		}
+                if ( i == ( v.length - 2 ) ) {
+                    toret += " y ";
+                }
+                else
+                if ( i < ( v.length - 2 ) ) {
+                    toret += ", ";
+                }
+            }
+        }
 
-		toret += ".";
+        toret += ".";
         return toret;
-	}
+    }
 
     /** Lists all personas inside a Loc
      * @param loc The Loc
      */
-	function listPersonas(loc)
-	{
-		var personas = loc.personas.filter( function(x) {
-			return ( x != ctrl.personas.getPlayer() );
-		});
+    function listPersonas(loc)
+    {
+        const personas = loc.personas.filter( function(x) {
+            return ( x != ctrl.personas.getPlayer() );
+        });
 
-		return listVector( personas, talkAction.verbs[ 0 ] );
-	}
+        return listVector( personas, talkAction.verbs[ 0 ] );
+    }
 
     /** Lists all objects inside a Loc
      * @param loc The Loc
      */
     function list(loc)
     {
-        var player = ctrl.personas.getPlayer();
+        const player = ctrl.personas.getPlayer();
+        const portableObjs = [];
         var totalObjsListed = 0;
         var toret = "<br>";
         var isInventory = false;
-        var portableObjs = [];
 
         if ( loc == player ) {
             isInventory = true;
@@ -1962,10 +1956,10 @@ var ctrl = ( function() {
 
         // List them
         for(var i = 0; i < portableObjs.length; ++i) {
-            var obj = portableObjs[ i ];
-            var examineAction = actions.getAction( "examine" );
-            var takeAction = actions.getAction( "take" );
-            var disrobeAction = actions.getAction( "disrobe" );
+            const obj = portableObjs[ i ];
+            const examineAction = actions.getAction( "examine" );
+            const takeAction = actions.getAction( "take" );
+            const disrobeAction = actions.getAction( "disrobe" );
 
             if ( !obj.isScenery() ) {
                 toret += "${" + obj.id + ',';
@@ -1985,12 +1979,12 @@ var ctrl = ( function() {
                 }
 
                 if ( i == ( portableObjs.length - 2 ) ) {
-					toret += " y ";
-				}
-				else
-				if ( i < ( portableObjs.length - 2 ) ) {
-					toret += ", ";
-				}
+                    toret += " y ";
+                }
+                else
+                if ( i < ( portableObjs.length - 2 ) ) {
+                    toret += ", ";
+                }
 
                 totalObjsListed++;
             }
@@ -2099,9 +2093,8 @@ var ctrl = ( function() {
     };
 }() );
 
-var parser = ( function() {
-
-    var sentence = {
+const parser = ( function() {
+    const sentence = {
         // Objects (only filled after parsing)
         persona: null,
         act: null,
@@ -2130,13 +2123,13 @@ var parser = ( function() {
         },
     }
 
-    var IgnoredWords = ( function() {
-        var Particles = [
+    const IgnoredWords = ( function() {
+        const Particles = [
             "el", "la", "las", "los", "un", "una", "uno", "y", "o",
             "pero", "cuidadosamente", "lentamente", "rapidamente"
         ];
 
-        var Prepositions = [
+        const Prepositions = [
             "a", "al", "ante", "bajo", "cabe", "con", "contra", "de", "del",
             "dentro", "desde", "en", "entre", "hacia", "hasta", "para", "por",
             "segun", "sin", "so", "sobre", "tras"
@@ -2166,12 +2159,12 @@ var parser = ( function() {
 
     function doParse()
     {
-        var frmInput = ctrl.getHtmlPart( "frmInput", "missing form: input" );
-        var dvAnswer = ctrl.getHtmlPart( "dvAnswer", "missing div answer" );
-        var cmd = frmInput[ "edInput" ].value.trim().toLowerCase();
+        const frmInput = ctrl.getHtmlPart( "frmInput", "missing form: input" );
+        const dvAnswer = ctrl.getHtmlPart( "dvAnswer", "missing div answer" );
+        const cmd = frmInput[ "edInput" ].value.trim().toLowerCase();
 
         if ( cmd.length > 0 ) {
-            var txtAnswer = ctrl.cnvtTextLinksToHtml( parse( cmd ) );
+            const txtAnswer = ctrl.cnvtTextLinksToHtml( parse( cmd ) );
 
             if ( txtAnswer != null
               && txtAnswer != "" )
@@ -2297,24 +2290,24 @@ var parser = ( function() {
 	 */
     function prepareInput(cmd)
 	{
-		var accentedVowels = "áéíóúäëïöüâêîôûàèìòùÁÉÍÓÚÄËÏÖÜÂÊÎÔÛÀÈÌÒÙ";
-		var regularVowels = "aeiou";
-		var specialChars = "ñÑçÇ";
-		var regularChars = "nNcC";
-		var aCode = "a".charCodeAt( 0 );
-		var zCode = "z".charCodeAt( 0 );
-		var zeroCode = "0".charCodeAt( 0 );
-		var nineCode = "9".charCodeAt( 0 );
+		const accentedVowels = "áéíóúäëïöüâêîôûàèìòùÁÉÍÓÚÄËÏÖÜÂÊÎÔÛÀÈÌÒÙ";
+		const regularVowels = "aeiou";
+		const specialChars = "ñÑçÇ";
+		const regularChars = "nNcC";
+		const aCode = "a".charCodeAt( 0 );
+		const zCode = "z".charCodeAt( 0 );
+		const zeroCode = "0".charCodeAt( 0 );
+		const nineCode = "9".charCodeAt( 0 );
 		var toret = "";
 
 		cmd = cmd.trim().toLowerCase();
 
 		for (var i = 0; i < cmd.length; i++)
 		{
-			var ch = cmd[ i ];
-			var posVowels = accentedVowels.indexOf( ch );
-			var posSpecial = specialChars.indexOf( ch );
-			var code = ch.charCodeAt( 0 );
+			const ch = cmd[ i ];
+			const posVowels = accentedVowels.indexOf( ch );
+			const posSpecial = specialChars.indexOf( ch );
+			const code = ch.charCodeAt( 0 );
 
 			if ( posVowels > -1 ) {
 				toret += regularVowels[ posVowels % 5 ];
@@ -2345,8 +2338,8 @@ var parser = ( function() {
         cmd = prepareInput( cmd );
 
         if ( cmd != "" ) {
-            var player = ctrl.personas.getPlayer();
-            var loc = ctrl.places.getCurrentLoc();
+            const player = ctrl.personas.getPlayer();
+            const loc = ctrl.places.getCurrentLoc();
 
             words = cmd.split( ' ' );
 
@@ -2370,7 +2363,7 @@ var parser = ( function() {
 
                 if ( sentence.act != null ) {
                     ctrl.addToHistory( cmd );
-                    var playerAnswer = player.preAction();
+                    const playerAnswer = player.preAction();
 
                     if ( playerAnswer == "" ) {
                         toret = sentence.act.doIt( sentence );
@@ -2409,10 +2402,8 @@ var parser = ( function() {
     };
 }() );
 
-var actions = ( function() {
-
-    var Act = function(i, v) {
-
+const actions = ( function() {
+    const Act = function(i, v) {
         this.id = i.trim();
         this.verbs = v;
 
@@ -2453,7 +2444,7 @@ var actions = ( function() {
         }
     };
 
-    var actList = [];
+    const actList = [];
 
     /**
      * Creates a new action, passing array of verbs
@@ -2461,7 +2452,7 @@ var actions = ( function() {
      */
     function create(id, v)
     {
-        var toret = new Act( id, v );
+        const toret = new Act( id, v );
 
         actList.push( toret );
         return toret;
@@ -2553,7 +2544,7 @@ var actions = ( function() {
 
         if ( arguments.length >= 1 ) {
             for(var i = 0; i < actList.length; ++i) {
-                var action = actList[ i ];
+                const action = actList[ i ];
 
                 if ( action.match( s ) ) {
                     toret = action;
@@ -2610,7 +2601,7 @@ window.onload = function() {
 
 // Redirect key presses to the user prompt
 window.onkeypress = function(e) {
-    var dvIntro = document.getElementById( "dvIntro" );
+    const dvIntro = document.getElementById( "dvIntro" );
 
     if ( dvIntro.style.display == "block" ) {
         document.getElementById( "btBoot" ).focus();

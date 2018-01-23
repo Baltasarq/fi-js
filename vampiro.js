@@ -1,5 +1,5 @@
-// vampiro.js
-/*
+// Vampiro (c) Baltasar 2014-2018 MIT License <baltasarq@gmail.com>
+/*  Demo de fi.js
     generado por FI.JS@txtMap, v0.1/ v0.6 20140612
     Sun Aug 31 22:46:09 2014
 
@@ -31,7 +31,7 @@ ctrl.ponVersion( "20140831" );
 
 // *** Locs --
 
-var locBiblioteca = ctrl.lugares.creaLoc(
+const locBiblioteca = ctrl.lugares.creaLoc(
     "Biblioteca",
     [ "biblioteca" ],
     "Te hallas en la biblioteca del castillo. Obviamente est&aacute; \
@@ -41,7 +41,7 @@ var locBiblioteca = ctrl.lugares.creaLoc(
 );
 locBiblioteca.pic = "res/biblioteca.jpg";
 
-var locCocina = ctrl.lugares.creaLoc(
+const locCocina = ctrl.lugares.creaLoc(
     "Cocina",
     [ "cocina", "habitacion", "estancia" ],
     "Est&aacute;s en la cocina del castillo. Esto est&aacute; lleno de \
@@ -53,7 +53,7 @@ var locCocina = ctrl.lugares.creaLoc(
 );
 locCocina.pic = "res/cocina.jpg";
 
-var locDormitorio = ctrl.lugares.creaLoc(
+const locDormitorio = ctrl.lugares.creaLoc(
     "Dormitorio",
     [ "dormitorio", "habitacion", "estancia" ],
     "Est&aacute;s en un dormitorio no muy grande ni tampoco muy peque&ntilde;o. \
@@ -64,7 +64,7 @@ var locDormitorio = ctrl.lugares.creaLoc(
 locDormitorio.pic = "res/dormitorio.jpg";
 
 
-var locElFinal = ctrl.lugares.creaLoc(
+const locElFinal = ctrl.lugares.creaLoc(
     "El Final",
     [ "habitacion", "estancia" ],
     "Est&aacute;s en una habitaci&oacute;n desnuda. Unicamente hay un \
@@ -74,7 +74,7 @@ var locElFinal = ctrl.lugares.creaLoc(
 );
 locElFinal.pic = "res/final.jpg";
 
-var locEscaleras = ctrl.lugares.creaLoc(
+const locEscaleras = ctrl.lugares.creaLoc(
     "Escaleras",
     [ "escaleras" ],
     "Te hallas en el final del pasillo. Delante de t&iacute; ves unas \
@@ -87,7 +87,7 @@ var locEscaleras = ctrl.lugares.creaLoc(
 );
 locEscaleras.pic = "res/escaleras.jpg";
 
-var locEscalerasSuperiores = ctrl.lugares.creaLoc(
+const locEscalerasSuperiores = ctrl.lugares.creaLoc(
     "Escaleras superiores",
     [ "escaleras", "rellano" ],
     "Est&aacute;s en el piso superior del castillo. \
@@ -99,7 +99,7 @@ var locEscalerasSuperiores = ctrl.lugares.creaLoc(
 );
 locEscalerasSuperiores.pic = "res/escaleras_superiores.jpg";
 
-var locPasillo = ctrl.lugares.creaLoc(
+const locPasillo = ctrl.lugares.creaLoc(
     "Pasillo",
     [ "pasillo" ],
     "Te encuentras en medio del pasillo principal de este piso. \
@@ -110,7 +110,7 @@ var locPasillo = ctrl.lugares.creaLoc(
 );
 locPasillo.pic = "res/pasillo.jpg";
 
-var locSalaDeEstar = ctrl.lugares.creaLoc(
+const locSalaDeEstar = ctrl.lugares.creaLoc(
     "Sala de estar",
     [ "sala", "habitacion", "estancia" ],
     "Es la sala m&aacute;s acogedora de todo el castillo. \
@@ -125,7 +125,7 @@ var locSalaDeEstar = ctrl.lugares.creaLoc(
 );
 locSalaDeEstar.pic = "res/sala_estar.jpg";
 
-var locSotano = ctrl.lugares.creaLoc(
+const locSotano = ctrl.lugares.creaLoc(
     "S&oacute;tano",
     [ "sotano" ],
     "En este peque&ntilde;o s&oacute;tano hace mucho calor, sientes una \
@@ -137,7 +137,7 @@ var locSotano = ctrl.lugares.creaLoc(
 );
 locSotano.pic = "res/sotano.jpg";
 
-var locVestibulo = ctrl.lugares.creaLoc(
+const locVestibulo = ctrl.lugares.creaLoc(
     "Vest&iacute;bulo",
     [ "vestibulo", "habitacion", "estancia" ],
     "Est&aacute;s en el vest&iacute;bulo del castillo. El ambiente es muy \
@@ -149,7 +149,7 @@ var locVestibulo = ctrl.lugares.creaLoc(
 locVestibulo.pic = "res/vestibulo.jpg";
 
 locVestibulo.preGo = function() {
-        var s = parser.sentencia;
+        const s = parser.sentencia;
         var toret = "";
 
         if ( s.term1 != "sur" ) {
@@ -161,7 +161,7 @@ locVestibulo.preGo = function() {
         return toret;
 };
 
-var objPuertaEntrada = ctrl.creaObj(
+const objPuertaEntrada = ctrl.creaObj(
     "puerta",
     [ "entrada" ],
     "No es el momento de irse, &iexcl;acabas de llegar! Debes cumplir \
@@ -229,7 +229,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objArmario = ctrl.creaObj(
+const objArmario = ctrl.creaObj(
     "armario",
     [ "armario", "aparador" ],
     "Es un armario de los que se usa para la vajilla. \
@@ -254,7 +254,7 @@ objArmario.preExamine = function() {
 
 objArmario.preOpen = function() {
         var toret = "No puedes abrirlo con eso.";
-        var s = parser.sentencia;
+        const s = parser.sentencia;
 
         if ( s.obj2 === null ) {
                 s.obj2 = objLlavecita;
@@ -291,7 +291,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objAtaud = ctrl.creaObj(
+const objAtaud = ctrl.creaObj(
     "ataud",
     [ "ataud", "sarcofago", "caja", "cajon" ],
     "Una sencilla caja de pino.",
@@ -341,7 +341,7 @@ objAtaud.preOpen = function() {
 
         // Es el final?
         if ( toret.length === 0 ) {
-            var dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
+            const dvFrame = ctrl.getHtmlPart( "dvFrame", "missing frame div" );
 
             dvFrame.style.display = "none";
             ctrl.logros.logrado( "matavampiros" );
@@ -369,7 +369,7 @@ objAtaud.preOpen = function() {
         return toret;
 };
 
-var objBarril = ctrl.creaObj(
+const objBarril = ctrl.creaObj(
     "barril",
     [ "barril", "tapa", "hendidura", "muesca" ],
     "Se trata de un barril con tapa, que presenta una peque&ntilde;a  \
@@ -395,7 +395,7 @@ objBarril.preExamine = function() {
 
 objBarril.preOpen = function() {
         var toret = "No puedes abrirlo con eso.";
-        var s = parser.sentencia;
+        const s = parser.sentencia;
 
         if ( s.obj2 === null ) {
                 s.obj2 = objPalanca;
@@ -448,7 +448,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objCrucifijoPlateado = ctrl.creaObj(
+const objCrucifijoPlateado = ctrl.creaObj(
     "crucifijo plateado",
     [ "crucifijo" ],
     "Es un peque&ntilde;o crucifijo plateado. Es uno de los cuatro elementos que nos servir&aacute;n para derrotar al vampiro.",
@@ -462,7 +462,7 @@ objCrucifijoPlateado.postWear = function() {
     ctrl.logros.logrado( "ortodoxo" );
 };
 
-var objCuchillo = ctrl.creaObj(
+const objCuchillo = ctrl.creaObj(
     "cuchillo",
     [ "cuchillo" ],
     "Un simple cuchillo de cocina. Pincha.",
@@ -496,7 +496,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objLlavecita = ctrl.creaObj(
+const objLlavecita = ctrl.creaObj(
     "llavecita",
     [ "llavecita", "llave" ],
     "Esta peque&ntilde;a llavecita tiene la pinta de abrir un armario o algo as&iacute;.",
@@ -504,7 +504,7 @@ var objLlavecita = ctrl.creaObj(
     Ent.Portable
 );
 
-var objMartillo = ctrl.creaObj(
+const objMartillo = ctrl.creaObj(
     "martillo",
     [ "martillo", "maza" ],
     "Un martillo grande. Es uno de los elementos que me permitir&aacute;n acabar con el vampiro.",
@@ -524,7 +524,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objPalanca = ctrl.creaObj(
+const objPalanca = ctrl.creaObj(
     "palanca",
     [ "palanca" ],
     "Es una palanca de acero toledano. Sirve para forzar cosas.",
@@ -532,7 +532,7 @@ var objPalanca = ctrl.creaObj(
     Ent.Portable
 );
 
-var objRestos = ctrl.creaObj(
+const objRestos = ctrl.creaObj(
     "restos",
     [ "restos", "fuego" ],
     "Chisporrotean algunas brasas entre madera a&uacute;n por quemar.",
@@ -552,7 +552,7 @@ objRestos.preExamine = function() {
         return toret;
 };
 
-var objRistraDeAjos = ctrl.creaObj(
+const objRistraDeAjos = ctrl.creaObj(
     "ristra de ajos",
     [ "ristra", "ajos", "ajo" ],
     "Es una ristra entera de ajos que expelen un olor un tanto asqueroso. Es uno de los cuatro elementos que me servir&aacute;n para derrotar al vampiro.",
@@ -566,7 +566,7 @@ objRistraDeAjos.postWear = function() {
     ctrl.logros.logrado( "temeroso" );
 };
 
-var objSabanas = ctrl.creaObj(
+const objSabanas = ctrl.creaObj(
     "sabanas",
     [ "sabanas" ],
     "Desordenadas y sucias.",
@@ -594,7 +594,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objTrajeBarato = ctrl.creaObj(
+const objTrajeBarato = ctrl.creaObj(
     "traje barato",
     [ "traje" ],
     "Es un traje barato comprado en las rebajas.",
@@ -615,7 +615,7 @@ ctrl.creaObj(
     Ent.Escenario
 );
 
-var objTrozoDeMadera = ctrl.creaObj(
+const objTrozoDeMadera = ctrl.creaObj(
     "trozo de madera",
     [ "trozo", "madera", "madero", "estaca", "palo" ],
     "Un trozo de madera, rectangular y alargado.",
@@ -667,13 +667,13 @@ objTrozoDeMadera.preSharpen = function() {
 };
 
 // --- Jugador ---------------------------------------------------------
-var jugador = ctrl.personas.creaPersona( "reXXe",
+const jugador = ctrl.personas.creaPersona( "reXXe",
                     [ "rexxe", "cazador", "cazavampiros" ],
                     "reXXe, un experimentado caza vampiros.",
                     locVestibulo
 );
 
-var murcielagos = ctrl.personas.creaPersona(
+const murcielagos = ctrl.personas.creaPersona(
                     "murci&eacute;lagos",
                     [ "murcielago", "murcielagos" ],
                     "Varios murci&eacute;lagos, no parecen saber \
@@ -695,11 +695,11 @@ locPasillo.preSing = function() {
 
 murcielagos.daemon = function() {
     if ( ctrl.getTurns() % 7 == 0 ) {
-            if ( ctrl.lugares.getCurrentLoc() == murcielagos.owner ) {
-                    ctrl.print( "Unos murci&eacute;lagos se alborotan un tanto, chillando entre ellos..." );
-            } else {
-                    ctrl.print( "Ahogados, d&eacute;biles chillidos provienen de alguna parte..." );
-            }
+        if ( ctrl.lugares.getCurrentLoc() == murcielagos.owner ) {
+                ctrl.print( "Unos murci&eacute;lagos se alborotan un tanto, chillando entre ellos..." );
+        } else {
+                ctrl.print( "Ahogados, d&eacute;biles chillidos provienen de alguna parte..." );
+        }
     }
 };
 
@@ -707,16 +707,16 @@ ctrl.ponAlarma( 3, function() {
     murcielagos.mueveA( locPasillo );
 
     if ( ctrl.lugares.devLocActual() == murcielagos.owner ) {
-            ctrl.print( "Despertados por tu presencia, los murci&eacute;lagos chillan como comenzando a desperezarse..." );
+        ctrl.print( "Despertados por tu presencia, los murci&eacute;lagos chillan como comenzando a desperezarse..." );
     } else {
-            ctrl.print( "Unos lejanos chillidos llegan a ti de forma apagada..." );
+        ctrl.print( "Unos lejanos chillidos llegan a ti de forma apagada..." );
     }
 
     ctrl.ponDaemon( "bats", murcielagos.daemon );
 });
 
 // --- Acciones --------------------------------------------------------
-var sharpenAction = acciones.crea( "sharpen",
+const sharpenAction = acciones.crea( "sharpen",
     [ "afila", "afilar", "afilo",
         "pule", "pulir", "pulo"]
 );
