@@ -1467,7 +1467,51 @@ const ctrl = ( function() {
             // Execute "postExamine" in loc
             loc.postExamine();
         }
+        
+        /** Shows a new pic instead of the existing one (if any).
+          * Passing null or "" as path, just removes the current picture.
+          * @param path The path for the new pic.
+          * @param alignment Should be "left", "center", or "right".
+          */
+        function showPic(path, alignment)
+        {
+            const dvPic = document.getElementById( "dvPic" );
 
+            if ( dvPic != null ) {
+                // Remove whatever is there now.
+                dvPic.innerHTML = "";
+                
+                if ( path != null
+                  && path != "" )
+                {
+                    const img = document.createElement( "img" );
+                    const p = document.createElement( "p" );
+                
+                    // Set centered alignment by default
+                    if ( arguments.length < 2 ) {
+                        alignment = "center";
+                    }
+                    
+                    // Prepare the built parts
+                    p.align = alignment;
+                    img.src = path;
+                    
+                    // Build it up all toghether
+                    dvPic.appendChild( p );
+                    p.appendChild( img );
+                }
+            } else {
+                ctrl.showError( "showPic(): dvPic was not found." );
+                console.log( "showPic(): dvPic was not found." );
+            }
+            
+            return;
+        }
+
+        /** Updates the whole description for a given location.
+         *  @param loc The location to update the description for,
+         *  @param desc The description, if different from the loc's one.
+         */ 
         function updateDesc(loc, desc)
         {
             const dvId = ctrl.getHtmlPart( "dvId", "missing div loc.id" );
@@ -1493,16 +1537,7 @@ const ctrl = ( function() {
             dvId.appendChild( id );
 
             // Set loc's pic
-            if ( loc.pic != null ) {
-                var pimg = document.createElement( "p" );
-                var img = document.createElement( "img" );
-                img.setAttribute( "src", loc.pic );
-                pimg.appendChild( img );
-                dvPic.innerHTML = "";
-                dvPic.appendChild( pimg );
-            } else {
-                dvPic.innerHTML = "";
-            }
+            showPic( loc.pic );
 
             // Set loc's audio
             audio.stop();
@@ -1519,9 +1554,9 @@ const ctrl = ( function() {
                     + ctrl.cnvtTextLinksToHtml( objsDesc );
 
             if ( loc.personas.length > 1 ) {
-					var personasDesc = ctrl.listPersonas( loc );
+                    var personasDesc = ctrl.listPersonas( loc );
                     pDesc.innerHTML += "<p>Aqu&iacute; puedes ver a: "
-							+ ctrl.cnvtTextLinksToHtml( personasDesc );
+                            + ctrl.cnvtTextLinksToHtml( personasDesc );
             }
 
             dvDesc.innerHTML = "";
@@ -1542,6 +1577,7 @@ const ctrl = ( function() {
             "devInicio": getStart,
             "doDesc": doDesc,
             "hazDesc": doDesc,
+            "showPic": showPic,
             "updateDesc": updateDesc,
             "actualizaDesc": updateDesc,
             "getCurrentLoc": getCurrentLoc,
