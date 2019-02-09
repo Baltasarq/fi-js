@@ -1,7 +1,35 @@
-// fi.js (c) Baltasar 2014-2018 MIT License <baltasarq@gmail.com>
+// fi.js (c) Baltasar 2014-2019 MIT License <baltasarq@gmail.com>
 /**
  * Motor de ficc. interactiva (fi.js IF Engine)
  */
+
+
+const MsgList = function(ml, alt=false) {
+    this.pos = 0;
+    this.ml = ml;
+    this.alt = alt;
+    
+    this.nextPos = function() {
+        const max = this.ml.length;
+        
+        if ( this.alt ) {
+            this.pos = Math.floor( Math.random() * max );
+        } else {
+            this.pos = ( this.pos + 1 ) % max;
+        }
+        
+        return this.pos;
+    };
+    this.sigPos = this.nextPos;
+    
+    this.nextMsg = function() {
+        const toret = this.ml[ this.pos ];
+        
+        this.nextPos();        
+        return toret;
+    };
+    this.sigMsj = this.nextMsg;
+};
 
 const Ent = function() {
     this.isScenery = function()
@@ -145,6 +173,11 @@ const Ent = function() {
         return this.timesExamined;
     }
     this.devVecesExaminado = this.getTimesExamined;
+    
+    this.setTimesExamined = function(x) {
+        this.timesExamined = x;
+    }
+    this.ponVecesExaminado = this.setTimesExamined;
 };
 
 Ent.Scenery = true;
