@@ -30,6 +30,7 @@ const MsgList = function(ml, alt=false) {
     };
     this.sigMsj = this.nextMsg;
 };
+const ListaMsjs = MsgList;
 
 const Ent = function() {
     this.isScenery = function()
