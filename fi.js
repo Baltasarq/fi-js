@@ -1366,18 +1366,27 @@ const ctrl = ( function() {
             if ( linkEndPos > -1 ) {
                 var txtLink = txt.slice( linkPos + 2, linkEndPos );
                 var parts = txtLink.split( ',' );
-                parts[ 0 ] = parts[ 0 ].trim();
-                parts[ 1 ] = parts[ 1 ].trim();
+                
+                if ( parts.length == 2 ) {
+                    parts[ 0 ] = parts[ 0 ].trim();
+                    parts[ 1 ] = parts[ 1 ].trim();
 
-                var link = decideLinkClass( parts[ 1 ] )
-                            + " href=\"javascript:void(0)\""
-                            + " onClick=\"javascript: ctrl.inject('"
-                            + parts[ 1 ]
-                            + "', true, true)\">"
-                            + parts[ 0 ]
-                            + "</a>";
-                txt = txt.slice( 0, linkPos ) + link
-                    + txt.slice( linkEndPos + 1 );
+                    var link = decideLinkClass( parts[ 1 ] )
+                                + " href=\"javascript:void(0)\""
+                                + " onClick=\"javascript: ctrl.inject('"
+                                + parts[ 1 ]
+                                + "', true, true)\">"
+                                + parts[ 0 ]
+                                + "</a>";
+                    txt = txt.slice( 0, linkPos ) + link
+                        + txt.slice( linkEndPos + 1 );
+                } else {
+                    txt = txt.slice( 0, linkPos )
+                        + "<a href='#ERROR' target='_blank'>ERROR</a>"
+                        + txt.slice( linkEndPos + 1 );
+                        
+                    ctrl.showError( "bad link: " + txtLink );
+                }
             }
 
             linkPos = txt.indexOf( "${", Math.max( linkPos + 2, linkEndPos ) );
