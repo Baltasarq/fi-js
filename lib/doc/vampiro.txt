@@ -1,0 +1,195 @@
+Vestíbulo
+
+Estás en el vestíbulo del castillo. El ambiente es muy húmedo y frío. Estás en un pasillo que se extiende hacia el norte. Al sur queda la puerta de entrada al castillo.
+Salidas visibles: norte.
+
+[ Despiertas aturdido. Después de unos segundos te incorporas en el frío suelo de piedra y ves que estás en un castillo. ¡Ahora recuerdas! Eres reXXe y tu misión es la de matar al vampiro. TIENES que matar al vampiro que vive en la parte superior del castillo...-Memorias de reXXe- (c) 1998 Jaume Alcazo Castellarnau.]
+
+
+>n
+
+Pasillo
+
+Te encuentras en medio del pasillo principal de este piso. Al oeste está la cocina y al este la biblioteca. El pasillo sigue hacia el norte.
+Salidas visibles: norte, sur, este, oeste.
+
+
+>ex traje barato
+Es un traje barato comprado en las rebajas.
+
+>coge traje barato
+Cogido.
+
+> ponte el traje barato
+Puesto.
+
+>i
+traje barato
+
+> o a Cocina
+
+> n a Escaleras
+
+>e
+
+Biblioteca
+Te hallas en la biblioteca del castillo. Obviamente está llena de libros interesantes, pero desgraciadamente no tienes tiempo para leerlos.
+Salidas visibles: oeste.
+
+Puedes ver un crucifijo plateado y una palanca.
+
+>ex crucifijo plateado
+Es un pequeño crucifijo plateado. Es uno de los cuatro elementos que nos servirán para derrotar al vampiro.
+
+>coge crucifijo plateado
+Cogido.
+
+>ex palanca
+Es una palanca de acero toledano. Sirve para forzar cosas.
+
+>coge la palanca
+Cogida.
+
+>ex libros
+Montones de libros, pero no tengo tiempo para leer ahora.
+
+.finloc
+
+Cocina
+Estás en la cocina del castillo. Esto está lleno de cacerolas y de cacharros para cocinar. Hay un horno, un fregadero y un armario pequeño.
+Salidas visibles: este.
+
+Puedes ver un cuchillo.
+
+[ El armario está cerrado con llave, que está en el dormitorio, entre las sábanas. > abre armario con llave -> "Abres el armario." Dentro del armario está la ristra de ajos ]
+
+>ex cuchillo
+Un simple cuchillo de cocina. Pincha.
+
+>coge el cuchillo
+Cogido.
+
+>ex cacerolas
+Simples cacerolas y cacharros de cocina.
+
+>ex cacharros
+Simples cacerolas y cacharros de cocina.
+
+>ex horno
+Un simple horno, no tiene ninguna importancia.
+
+>ex fregadero
+Es un fregadero de piedra. El fregadero está vacío.
+
+>ex armario
+Está cerrado con llave.
+
+>coge ristra de ajos
+Cogidos.
+
+>ex ristra de ajos
+Es una ristra entera de ajos que expelen un olor un tanto asqueroso. Es uno de los cuatro elementos que me servirán para derrotar al vampiro.
+
+.finloc
+
+Escaleras
+Te hallas en el final del pasillo. Delante de tí ves unas escaleras que suben y otras que bajan. Al oeste está el dormitorio y al este la sala de estar.
+Salidas visibles: sur, este, oeste, arriba, abajo.
+
+> abajo a Sótano
+> arriba a Escaleras superiores
+> o a Dormitorio
+
+>e
+
+Sala de estar
+Es la sala más acogedora de todo el castillo. En la chimenea los últimos restos de algún fuego chisporrotean alegremente. Hay una mesa grande con una silla al lado. De la pared cuelgan bastantes trofeos de caza y adornos varios.
+Salidas visibles: oeste.
+
+[ El trozo de madera aparece al examinar los restos del fuego de la chimenea. ]
+
+>ex chimenea
+Es una chimenea hecha de ladrillos y muy elegante.
+
+>ex trofeos
+Insignificantes trofeos.
+
+>ex adornos
+Adornan.
+
+>ex mesa
+Una mesa de caoba, bastante grande.
+
+>ex silla
+Una cómoda silla.
+
+>ex restos
+Entre los restos del fuego encuentras un trozo de madera.
+
+>ex trozo de madera
+Un trozo de madera, rectangular y alargado
+
+>coge el trozo de madera
+Cogido.
+
+.finloc
+
+Dormitorio
+Estás en un dormitorio no muy grande ni tampoco muy pequeño. Es bastante austero. Sólo hay una cama y un armario.
+Salidas visibles: este.
+
+>ex cama
+Está cubierta de sábanas.
+
+>ex armario ropero
+El armario está vacío.
+
+>ex sabanas
+Entre ellas encuentras una pequeña llavecita.
+
+>coge la llavecita
+Cogida.
+
+>ex llavecita
+Esta pequeña llavecita tiene la pinta de abrir un armario o algo así.
+
+.finloc
+
+Sótano
+En este pequeño sótano hace mucho calor, sientes una sensación de recogimiento. Está todo muy sucio. Hay un barril aquí, también hay unas escaleras que suben.
+Salidas visibles: arriba.
+
+[ >abre el barril -> "-¡Clack!- Haciendo palanca logras abrir el barril.". En el barril está el martillo. ]
+
+
+>ex barril
+No puedes ver lo que hay dentro del barril porque está cerrado.
+
+>coge el martillo
+Cogido.
+
+>ex martillo
+Un martillo grande. Es uno de los elementos que me permitirán acabar con el vampiro.
+
+.finloc
+
+Escaleras superiores
+Estás en el piso superior del castillo. Aquí hace aún más frío que abajo. Detrás de tí están las escaleras que bajan y hacia el oeste está la habitación del vampiro.
+Salidas visibles: oeste, abajo.
+
+>o
+
+El Final
+Estás en una habitación desnuda. Unicamente hay un altar en el centro. Encima del altar puedes ver un ataud.
+Salidas visibles: este.
+
+[ >afila trozo de madera con el cuchillo -> "Afilas la madera con el cuchillo ¡y obtienes una estaca!" ]
+
+[ >abre el ataud -> "Abres el ataud. Dentro contemplas la horrible cara del vampiro. Protegido por los ajos y el crucifijo empiezas tu horrible tarea. Le clavas la estaca en el pecho y de un terrible golpe de martillo la hundes en lo más profundo de su ser. Con un grito de agonía se deshace en polvo y tú acabas tu misión aquí." ]
+
+>ex altar
+Es un altar de dura piedra. Encima de éste está el ataud.
+
+>ex ataud
+Una sencilla caja de pino.
+
