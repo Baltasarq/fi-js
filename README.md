@@ -1,7 +1,8 @@
 fi.js
 =====
 
-Framework JavaScript para ficción interactiva / JavaScript framework for interactive fiction
+Framework JavaScript para ficción interactiva / JavaScript framework for interactive fiction.
+Distribuido con <a href="https://github.com/Baltasarq/fi-js/raw/master/LICENSE">licencia MIT</a>.
 
 <a href="http://baltasarq.github.io/fi-js/">Web</a>
 
